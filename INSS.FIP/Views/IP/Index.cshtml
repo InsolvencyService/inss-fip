@@ -1,0 +1,47 @@
+﻿@model SpecialMessageViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+@if (Model.ShowMessage)
+{
+    <div class="govuk-warning-text">
+        <h2 class="govuk-heading-m">Special Notice</h2>
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Special Notice</span>
+            @Model.Message
+        </strong>
+    </div>
+
+	<hr class="govuk-section-break govuk-section-break--l govuk-section-break govuk-section-break--visible">
+}
+
+<h2 class="govuk-heading-m">Information Summary</h2>
+
+<p class="govuk-body-l">
+    Use this service to find Insolvency Practitioners in your area, their contact details and those of their associated Authorising Body.
+</p>
+
+<p class="govuk-body">
+    The directory contains information on Insolvency Practitioners who have agreed to include their details. It is not a complete list of all Insolvency Practitioners in the UK.
+</p>
+
+<h2 class="govuk-heading-m">How to use the service</h2>
+
+<p class="govuk-body">
+    Search the directory by entering any known contact details for the Insolvency Practitioner (like their Name, Company Name, Authorisation Number etc) and / or by County.
+</p>
+
+@if (!Model.HideSearch)
+{
+    <a asp-controller="IP" asp-action="Search" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+        Start search
+        <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+        </svg>
+    </a>
+}

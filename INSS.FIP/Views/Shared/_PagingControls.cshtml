@@ -1,0 +1,20 @@
+﻿@model PagedViewModel
+
+@{
+    var previousPageNumber = Model.PageNumber > 1 ? Model.PageNumber - 1 : 1;
+    var nextPageNumber = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
+}
+
+<button name="PageNumber" value="1" title="First page" class="govuk-button govuk-button--secondary" data-module="govuk-button" type="submit">
+    |&lt;
+</button>
+<button name="PageNumber" value="@previousPageNumber" title="Previous page" class="govuk-button govuk-button--secondary" data-module="govuk-button" type="submit">
+    &lt;
+</button>
+<span class="govuk-body-s govuk-!-text-align-centre govuk-!-margin-4">Page @Model.PageNumber of @Model.TotalPages (Total of @Model.TotalResults.ToString("#,##0") results)</span>
+<button name="PageNumber" value="@nextPageNumber" title="Next page" class="govuk-button govuk-button--secondary" data-module="govuk-button" type="submit">
+    &gt;
+</button>
+<button name="PageNumber" value="@Model.TotalPages" title="Last page" class="govuk-button govuk-button--secondary" data-module="govuk-button" type="submit">
+    &gt;|
+</button>

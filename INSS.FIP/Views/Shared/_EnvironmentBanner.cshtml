@@ -1,0 +1,13 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    var environmentBanner = Configuration["EnvironmentBanner"].ToString();
+    var environmentBannerText = Configuration["EnvironmentBannerText"].ToString();
+
+    if (!string.IsNullOrWhiteSpace(environmentBanner) && !environmentBanner.Equals("prod") )
+    {
+        <div class="inss-app--app-environment inss-app--app-environment--@environmentBanner">
+            @environmentBannerText
+        </div>
+    }
+}

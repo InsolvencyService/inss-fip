@@ -1,0 +1,78 @@
+﻿@model InsolvencyPractitionerViewModel
+
+@{
+    ViewData["Title"] = "Insolvency practitioner details";
+}
+
+@section Breadcrumb {
+    <partial name="_Breadcrumb" for=Breadcrumbs />
+}
+
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.Name)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Company)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.Company)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Address)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.Address)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Telephone)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.Telephone)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Fax)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.Fax)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.IpNumber)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      @Html.DisplayFor(model => model.IpNumber)
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.LicensingBody)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <a class="govuk-link govuk-link--no-visited-state" href="/AuthBody?ipNumber=@Model.IpNumber&ipName=@Model.Name#@Model.LicensingBody">@Html.DisplayFor(model => model.LicensingBody)</a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <a class="govuk-link" href="mailto:@Html.DisplayFor(model => model.Email)">@Html.DisplayFor(model => model.Email)</a>
+    </dd>
+  </div>
+</dl>
