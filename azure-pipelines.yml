@@ -1,0 +1,117 @@
+trigger:
+- release/*
+  
+pool:
+  vmImage: windows-latest
+  demands:
+    - msbuild
+    - visualstudio
+
+variables:
+- name: buildConfiguration
+  value: 'Release'
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildPlatformForProjectFile
+  value: 'AnyCPU'
+
+resources:
+  repositories:
+  - repository: inss-devops-common-lib
+    type: github
+    endpoint: InsolvencyService
+    name: InsolvencyService/inss-devops-common-lib
+    ref: develop
+
+stages:
+- stage: BuildTest
+  displayName: 'Build and Test'
+  jobs:  
+      # Build .net projects
+    - job: BuildNetProject
+      steps:
+      - task: NuGetCommand@2
+        displayName: NuGet Restore (INSS.FIP)
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/INSS.FIP.sln'
+          feedsToUse: 'select'
+          vstsFeed: '55aed121-b2ec-4f93-be0c-66c47a84fc23/9759cc91-0c79-4700-9db6-cd44445e3b36'
+
+      - task: VSBuild@1
+        displayName: Build Solution (INSS.FIP)
+        inputs:
+          solution: '**/INSS.FIP/INSS.FIP.csproj'
+          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(Build.StagingDirectory)"'
+          platform: '$(buildPlatformForProjectFile)'
+          configuration: '$(buildConfiguration)'
+          maximumCpuCount: true
+      
+      - task: VSTest@2
+        displayName: Execute Tests
+        inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*test*.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          codeCoverageEnabled: true
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+
+      - script: ls -l
+
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact (INSS.FIP)'
+        inputs:
+          targetPath: '$(Build.StagingDirectory)\INSS.FIP.zip'
+          artifact: 'INSS.FIP'
+          publishLocation: 'pipeline'
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+
+- stage: DeployDev
+  displayName: 'Deploy to Dev'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: FIP-Dev
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'Dev'
+        fipEnvironment: $(FIPEnvironment)
+        
+- stage: DeploySIT
+  displayName: 'Deploy to SIT'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: FIP-SIT
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'SIT'
+        fipEnvironment: $(FIPEnvironment)
+
+- stage: DeployPreProd
+  displayName: 'Deploy to PreProd'
+  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
+  variables:
+    - group: FIP-PreProd  
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'PreProd'
+        fipEnvironment: $(FIPEnvironment)
+
+# - stage: DeployProd
+#   displayName: 'Deploy to Prod'
+#   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
+#   variables:
+#     - group: FIP-Prod  
+#   jobs:
+#     - template: deploy-jobs-template.yml
+#       parameters:
+#         environment: 'Prod'
+#         azureSubscription: 'App Services DevOps Prod'
+#         fipEnvironment: $(FIPEnvironment)
