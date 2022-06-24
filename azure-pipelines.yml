@@ -74,7 +74,7 @@ stages:
   displayName: 'Deploy to Dev'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
-    - group: DROAdmin-Dev
+    - group: FIP-Dev
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
@@ -85,7 +85,7 @@ stages:
   displayName: 'Deploy to SIT'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
-    - group: BankAccountService-SIT
+    - group: FIP-SIT
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
@@ -96,7 +96,7 @@ stages:
   displayName: 'Deploy to PreProd'
   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
   variables:
-    - group: BankAccountService-PreProd
+    - group: FIP-PreProd
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
@@ -107,7 +107,7 @@ stages:
 #   displayName: 'Deploy to Prod'
 #   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
 #   variables:
-#     - group: BankAccountService-Prod
+#     - group: FIP-Prod
 #   jobs:
 #     - template: deploy-jobs-template.yml
 #       parameters:
