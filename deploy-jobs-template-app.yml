@@ -22,6 +22,8 @@ parameters:
     default: 120
   - name: fipEnvironment
     type: string
+  - name: zipFile
+    type: string
 
 jobs:
   - deployment: 
@@ -36,11 +38,11 @@ jobs:
               ConnectionType: 'AzureRM'
               azureSubscription: ${{ parameters.azureSubscription }}
               appType: 'webApp'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
               deployToSlotOrASE: true
               resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
               slotName: 'staging'
-              package: '$(Pipeline.Workspace)/**/*.zip'
+              package: '$(Pipeline.Workspace)/**/{{ parameters.zipFile }}'
               appSettings: >
                 -Environment ${{ parameters.fipEnvironment }}
 
@@ -49,7 +51,7 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Start Azure App Service'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
               ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
               SpecifySlotOrASE: true
               Slot: 'staging'
@@ -63,7 +65,7 @@ jobs:
               targetType: 'filePath'
               filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
               arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-staging.azurewebsites.net"
+                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend-staging.azurewebsites.net"
                 -Method "${{ parameters.method }}"
                 -Retries ${{ parameters.retries }}
                 -SecondsDelay ${{ parameters.secondsDelay }}
@@ -74,7 +76,7 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Swap Slots'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
               ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
               SourceSlot: 'staging'
               SwapWithProduction: true
@@ -86,7 +88,7 @@ jobs:
               targetType: 'filePath'
               filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
               arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip.azurewebsites.net"
+                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend.azurewebsites.net"
                 -Method "${{ parameters.method }}"
                 -Retries ${{ parameters.retries }}
                 -SecondsDelay ${{ parameters.secondsDelay }}
@@ -97,7 +99,7 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Stop Azure App Service'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
               ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
               SpecifySlotOrASE: true
               Slot: 'staging'

@@ -8,6 +8,15 @@ parameters:
 - name: doPublish
   default: false
   type: boolean
+- name: doDeploy
+  default: false
+  type: boolean
+- name: frontDeploy
+  default: true
+  type: boolean
+- name: backDeploy
+  default: false
+  type: boolean
 
 variables:
 - name: buildConfiguration
@@ -74,10 +83,18 @@ stages:
   variables:
     - group: FIP-Dev
   jobs:
-    - template: deploy-jobs-template.yml
+    - template: deploy-jobs-template-app.yml
+      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.zip'
+    - template: deploy-jobs-template-func.yml
+      condition: eq('${{ parameters.backDeploy}}', 'true')
+      parameters:
+        environment: 'Dev'
+        fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.FnApp.zip'
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
@@ -85,10 +102,18 @@ stages:
   variables:
     - group: FIP-SIT
   jobs:
-    - template: deploy-jobs-template.yml
+    - template: deploy-jobs-template-app.yml
+      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'SIT'
         fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.zip'
+    - template: deploy-jobs-template-func.yml
+      condition: eq('${{ parameters.backDeploy}}', 'true')
+      parameters:
+        environment: 'SIT'
+        fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.FnApp.zip'
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
@@ -96,10 +121,18 @@ stages:
   variables:
     - group: FIP-PreProd
   jobs:
-    - template: deploy-jobs-template.yml
+    - template: deploy-jobs-template-app.yml
+      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'PreProd'
         fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.zip'
+    - template: deploy-jobs-template-func.yml
+      condition: eq('${{ parameters.backDeploy}}', 'true')
+      parameters:
+        environment: 'PreProd'
+        fipEnvironment: $(FIPEnvironment)
+        zipFile: 'INSS.FIP.FnApp.zip'
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
@@ -107,7 +140,15 @@ stages:
 #   variables:
 #     - group: FIP-Prod
 #   jobs:
-#     - template: deploy-jobs-template.yml
+#     - template: deploy-jobs-template-app.yml
+#       condition: eq('${{ parameters.frontDeploy}}', 'true')
 #       parameters:
 #         environment: 'Prod'
 #         fipEnvironment: $(FIPEnvironment)
+#         zipFile: 'INSS.FIP.zip'
+#     - template: deploy-jobs-template-func.yml
+#       condition: eq('${{ parameters.backDeploy}}', 'true')
+#       parameters:
+#         environment: 'Prod'
+#         fipEnvironment: $(FIPEnvironment)
+#         zipFile: 'INSS.FIP.FnApp.zip'
