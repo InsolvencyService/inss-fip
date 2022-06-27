@@ -77,75 +77,76 @@ stages:
           artifactName: 'INSS.FIP'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-- stage: DeployDev
-  displayName: 'Deploy to Dev'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+- stage: DeployDev_FrontEnd
+  displayName: 'Deploy Frontend to Dev'
+  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.frontDeploy}}', 'true'))
   variables:
     - group: FIP-Dev
   jobs:
-  - job: FrontEnd
-    condition: eq('${{ parameters.frontDeploy}}', 'true')
-    steps:
     - template: deploy-jobs-template-app.yml
       parameters:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.zip'
-  - job: BackEnd
-    condition: eq('${{ parameters.backDeploy}}', 'true')
-    steps:
+
+- stage: DeployDev_BackEnd
+  displayName: 'Deploy Backend to Dev'
+  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.backDeploy}}', 'true'))
+  variables:
+    - group: FIP-Dev
+  jobs:
     - template: deploy-jobs-template-func.yml
       parameters:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.FnApp.zip'
 
-- stage: DeploySIT
-  displayName: 'Deploy to SIT'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  variables:
-    - group: FIP-SIT
-  jobs:
-  - job: FrontEnd
-    condition: eq('${{ parameters.frontDeploy}}', 'true')
-    steps:
-    - template: deploy-jobs-template-app.yml
-      parameters:
-        environment: 'SIT'
-        fipEnvironment: $(FIPEnvironment)
-        zipFile: 'INSS.FIP.zip'
-  - job: BackEnd
-    condition: eq('${{ parameters.backDeploy}}', 'true')
-    steps:
-    - template: deploy-jobs-template-func.yml
-      parameters:
-        environment: 'SIT'
-        fipEnvironment: $(FIPEnvironment)
-        zipFile: 'INSS.FIP.FnApp.zip'
-
-- stage: DeployPreProd
-  displayName: 'Deploy to PreProd'
-  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
-  variables:
-    - group: FIP-PreProd
-  jobs:
-  - job: FrontEnd
-    condition: eq('${{ parameters.frontDeploy}}', 'true')
-    steps:
-    - template: deploy-jobs-template-app.yml
-      parameters:
-        environment: 'PreProd'
-        fipEnvironment: $(FIPEnvironment)
-        zipFile: 'INSS.FIP.zip'
-  - job: BackEnd
-    condition: eq('${{ parameters.backDeploy}}', 'true')
-    steps:
-    - template: deploy-jobs-template-func.yml
-      parameters:
-        environment: 'PreProd'
-        fipEnvironment: $(FIPEnvironment)
-        zipFile: 'INSS.FIP.FnApp.zip'
-
+###- stage: DeploySIT
+###  displayName: 'Deploy to SIT'
+###  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+###  variables:
+###    - group: FIP-SIT
+###  jobs:
+###  - job: FrontEnd
+###    condition: eq('${{ parameters.frontDeploy}}', 'true')
+###    steps:
+###    - template: deploy-jobs-template-app.yml
+###      parameters:
+###        environment: 'SIT'
+###        fipEnvironment: $(FIPEnvironment)
+###        zipFile: 'INSS.FIP.zip'
+###  - job: BackEnd
+###    condition: eq('${{ parameters.backDeploy}}', 'true')
+###    steps:
+###    - template: deploy-jobs-template-func.yml
+###      parameters:
+###        environment: 'SIT'
+###        fipEnvironment: $(FIPEnvironment)
+###        zipFile: 'INSS.FIP.FnApp.zip'
+###
+###- stage: DeployPreProd
+###  displayName: 'Deploy to PreProd'
+###  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
+###  variables:
+###    - group: FIP-PreProd
+###  jobs:
+###  - job: FrontEnd
+###    condition: eq('${{ parameters.frontDeploy}}', 'true')
+###    steps:
+###    - template: deploy-jobs-template-app.yml
+###      parameters:
+###        environment: 'PreProd'
+###        fipEnvironment: $(FIPEnvironment)
+###        zipFile: 'INSS.FIP.zip'
+###  - job: BackEnd
+###    condition: eq('${{ parameters.backDeploy}}', 'true')
+###    steps:
+###    - template: deploy-jobs-template-func.yml
+###      parameters:
+###        environment: 'PreProd'
+###        fipEnvironment: $(FIPEnvironment)
+###        zipFile: 'INSS.FIP.FnApp.zip'
+###
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
 #   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
