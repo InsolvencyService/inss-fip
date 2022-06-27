@@ -38,14 +38,14 @@ stages:
         displayName: NuGet Restore
         inputs:
           command: 'restore'
-          projects: '**/INSS.FIP.sln'
-          feedsToUse: 'select'
+          projects: '**/INSS.FIP/INSS.FIP.csproj'
           vstsFeed: '55aed121-b2ec-4f93-be0c-66c47a84fc23/9759cc91-0c79-4700-9db6-cd44445e3b36'
   
       - task: DotNetCoreCLI@2
         displayName: 'Build Solution'
         inputs:
           command: 'build'
+          projects: '**/INSS.FIP/INSS.FIP.csproj'
           arguments: '--configuration $(buildConfiguration)'        
 
       - task: DotNetCoreCLI@2
