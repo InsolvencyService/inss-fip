@@ -34,6 +34,8 @@ stages:
         inputs:
           version: '6.0.x'
 
+      - script: curl https://pkgs.dev.azure.com/inss-org/55aed121-b2ec-4f93-be0c-66c47a84fc23/_packaging/9759cc91-0c79-4700-9db6-cd44445e3b36/nuget/v3/index.json
+
       - task: DotNetCoreCLI@2
         displayName: NuGet Restore
         inputs:
