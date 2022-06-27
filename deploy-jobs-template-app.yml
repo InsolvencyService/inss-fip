@@ -42,7 +42,7 @@ jobs:
               deployToSlotOrASE: true
               resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
               slotName: 'staging'
-              package: '$(Pipeline.Workspace)/**/{{ parameters.zipFile }}'
+              package: '$(Pipeline.Workspace)/**/${{ parameters.zipFile }}'
               appSettings: >
                 -Environment ${{ parameters.fipEnvironment }}
 
