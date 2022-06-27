@@ -13,6 +13,14 @@ variables:
 - name: buildConfiguration
   value: 'Release'
 
+resources:
+  repositories:
+  - repository: inss-devops-common-lib
+    type: github
+    endpoint: InsolvencyService
+    name: InsolvencyService/inss-devops-common-lib
+    ref: develop
+    
 stages:
 - stage: BuildTest
   displayName: 'Build and Test'
