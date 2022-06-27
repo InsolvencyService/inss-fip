@@ -57,7 +57,7 @@ stages:
         displayName: 'Publish Artifact'
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)' 
-          artifactName: 'INSS.FIPs'
+          artifactName: 'INSS.FIP'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - stage: DeployDev
