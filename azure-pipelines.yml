@@ -83,14 +83,18 @@ stages:
   variables:
     - group: FIP-Dev
   jobs:
+  - job: FrontEnd
+    condition: eq('${{ parameters.frontDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-app.yml
-      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.zip'
+  - job: BackEnd
+    condition: eq('${{ parameters.backDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-func.yml
-      condition: eq('${{ parameters.backDeploy}}', 'true')
       parameters:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
@@ -102,14 +106,18 @@ stages:
   variables:
     - group: FIP-SIT
   jobs:
+  - job: FrontEnd
+    condition: eq('${{ parameters.frontDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-app.yml
-      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'SIT'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.zip'
+  - job: BackEnd
+    condition: eq('${{ parameters.backDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-func.yml
-      condition: eq('${{ parameters.backDeploy}}', 'true')
       parameters:
         environment: 'SIT'
         fipEnvironment: $(FIPEnvironment)
@@ -121,14 +129,18 @@ stages:
   variables:
     - group: FIP-PreProd
   jobs:
+  - job: FrontEnd
+    condition: eq('${{ parameters.frontDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-app.yml
-      condition: eq('${{ parameters.frontDeploy}}', 'true')
       parameters:
         environment: 'PreProd'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.zip'
+  - job: BackEnd
+    condition: eq('${{ parameters.backDeploy}}', 'true')
+    steps:
     - template: deploy-jobs-template-func.yml
-      condition: eq('${{ parameters.backDeploy}}', 'true')
       parameters:
         environment: 'PreProd'
         fipEnvironment: $(FIPEnvironment)
@@ -140,14 +152,18 @@ stages:
 #   variables:
 #     - group: FIP-Prod
 #   jobs:
+#   - job: FrontEnd
+#     condition: eq('${{ parameters.frontDeploy}}', 'true')
+#     steps:
 #     - template: deploy-jobs-template-app.yml
-#       condition: eq('${{ parameters.frontDeploy}}', 'true')
 #       parameters:
 #         environment: 'Prod'
 #         fipEnvironment: $(FIPEnvironment)
 #         zipFile: 'INSS.FIP.zip'
+#   - job: BackEnd
+#     condition: eq('${{ parameters.backDeploy}}', 'true')
+#     steps:
 #     - template: deploy-jobs-template-func.yml
-#       condition: eq('${{ parameters.backDeploy}}', 'true')
 #       parameters:
 #         environment: 'Prod'
 #         fipEnvironment: $(FIPEnvironment)
