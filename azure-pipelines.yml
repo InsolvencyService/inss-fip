@@ -88,7 +88,6 @@ stages:
         environment: 'Dev'
         fipEnvironment: $(FIPEnvironment)
         zipFile: 'INSS.FIP.zip'
-      continueOnError: true
 
 - stage: DeployDev_BackEnd
   displayName: 'Deploy Backend to Dev'
