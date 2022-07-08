@@ -91,7 +91,7 @@ stages:
 
 - stage: DeployDev_BackEnd
   displayName: 'Deploy Backend to Dev'
-  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.backDeploy}}', 'true'))
+  condition: and(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ parameters.backDeploy}}', 'true'))
   variables:
     - group: FIP-Dev
   jobs:
