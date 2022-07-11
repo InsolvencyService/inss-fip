@@ -22,10 +22,6 @@ parameters:
     default: 120
   - name: phaseBanner 
     type: string
-    values:
-    - ALPHA
-    - BETA
-    - null
   - name: environmentBannerText
     type: string
   - name: fipApiConnectorClientOptions__BaseAddress
