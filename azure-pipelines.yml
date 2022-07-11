@@ -79,7 +79,7 @@ stages:
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
-        environment: $(Environment)
+        environment: 'Dev'
         phaseBanner: $(PhaseBanner)
         environmentBannerText: $(EnvironmentBannerText)
         fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
