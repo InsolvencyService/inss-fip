@@ -28,20 +28,16 @@ parameters:
     - null
   - name: environmentBannerText
     type: string
-    default: Environment - Do Not Enter Personal Data
   - name: fipApiConnectorClientOptions__BaseAddress
     type: string
   - name: iirwebdbContextConnectionString
     type: string
   - name: openApi__Version
     type: string
-    default: v3
   - name: openApi__DocVersion
     type: string
-    default: 1.0.0
   - name: openApi__DocTitle
     type: string
-    default: Swagger FIP Services
   - name: appZipFile
     type: string
   - name: funcZipFile
@@ -65,9 +61,9 @@ jobs:
               slotName: 'staging'
               package: '$(Pipeline.Workspace)/**/${{ parameters.appZipFile }}'
               appSettings: >
-                -PhaseBanner ${{ parameters.phaseBanner }}
+                -PhaseBanner "${{ parameters.phaseBanner }}"
                 -EnvironmentBanner ${{ parameters.environment }}
-                -EnvironmentBannerText "${{ upper(parameters.environment) }} ${{ parameters.environmentBannerText }}"
+                -EnvironmentBannerText ${{ parameters.environmentBannerText }}
                 -FipApiConnectorClientOptions__BaseAddress ${{ parameters.fipApiConnectorClientOptions__BaseAddress }}
 
           - task: AzureAppServiceManage@0

@@ -81,7 +81,7 @@ stages:
       parameters:
         environment: $(Environment)
         phaseBanner: $(PhaseBanner)
-        environmentBannerText: $(Environment)
+        environmentBannerText: $(EnvironmentBannerText)
         fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
         iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
         openApi__Version: $(OpenApi__Version)
