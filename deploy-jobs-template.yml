@@ -1,0 +1,209 @@
+parameters:
+  - name: environment
+    type: string
+    default: Dev
+  - name: location
+    type: string
+    default: 'uksouth'
+  - name: azureSubscription
+    type: string
+    default: 'AppServicesDevOps-NonProd'
+  - name: method
+    type: string
+    default: 'GET'
+  - name: retries
+    type: number
+    default: 5
+  - name: secondsDelay
+    type: number
+    default: 10
+  - name: timeoutSec
+    type: number
+    default: 120
+  - name: phaseBanner 
+    type: string
+    values:
+    - ALPHA
+    - BETA
+    - null
+  - name: environmentBannerText
+    type: string
+    default: Environment - Do Not Enter Personal Data
+  - name: fipApiConnectorClientOptions__BaseAddress
+    type: string
+  - name: iirwebdbContextConnectionString
+    type: string
+  - name: openApi__Version
+    type: string
+    default: v3
+  - name: openApi__DocVersion
+    type: string
+    default: 1.0.0
+  - name: openApi__DocTitle
+    type: string
+    default: Swagger FIP Services
+  - name: appZipFile
+    type: string
+  - name: funcZipFile
+    type: string
+jobs:
+  - deployment: 
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: Azure Web App Deploy
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: ${{ parameters.azureSubscription }}
+              appType: 'webApp'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
+              deployToSlotOrASE: true
+              resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/**/${{ parameters.appZipFile }}'
+              appSettings: >
+                -PhaseBanner ${{ parameters.phaseBanner }}
+                -EnvironmentBanner ${{ parameters.environment }}
+                -EnvironmentBannerText "${{ upper(parameters.environment) }} ${{ parameters.environmentBannerText }}"
+                -FipApiConnectorClientOptions__BaseAddress ${{ parameters.fipApiConnectorClientOptions__BaseAddress }}
+
+          - task: AzureAppServiceManage@0
+            displayName: Start Staging Slot
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Start Azure App Service'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              SpecifySlotOrASE: true
+              Slot: 'staging'
+
+          - checkout: inss-devops-common-lib
+
+          - task: PowerShell@2
+            displayName: 'Performing Health Check - Staging'    
+            inputs:
+              failOnStderr: true
+              targetType: 'filePath'
+              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+              arguments: > # Use this to avoid newline characters in multi-line string
+                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend-staging.azurewebsites.net/health/ping"
+                -Method "${{ parameters.method }}"
+                -Retries ${{ parameters.retries }}
+                -SecondsDelay ${{ parameters.secondsDelay }}
+                -TimeoutSec ${{ parameters.timeoutSec }} 
+            
+          - task: AzureAppServiceManage@0
+            displayName: Swap Staging Slot into Production
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Swap Slots'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              SourceSlot: 'staging'
+              SwapWithProduction: true
+
+          - task: PowerShell@2
+            displayName: 'Performing Health Check - Production'    
+            inputs:
+              failOnStderr: true
+              targetType: 'filePath'
+              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+              arguments: > # Use this to avoid newline characters in multi-line string
+                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend.azurewebsites.net/health/ping"
+                -Method "${{ parameters.method }}"
+                -Retries ${{ parameters.retries }}
+                -SecondsDelay ${{ parameters.secondsDelay }}
+                -TimeoutSec ${{ parameters.timeoutSec }} 
+
+          - task: AzureAppServiceManage@0
+            displayName: Stop Staging Slot
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Stop Azure App Service'
+              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              SpecifySlotOrASE: true
+              Slot: 'staging'
+
+  - deployment: 
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureFunctionApp@1
+            displayName: Azure Function App Deploy
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              appType: 'functionApp'
+              appName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
+              deployToSlotOrASE: true
+              resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/**/${{ parameters.funcZipFile }}'
+              appSettings: >
+                -iirwebdbContextConnectionString ${{ parameters.iirwebdbContextConnectionString }}
+                -OpenApi__Version ${{ parameters.openApi__Version }}
+                -OpenApi__DocVersion ${{ parameters.openApi__DocVersion }}
+                -OpenApi__DocTitle ${{ parameters.openApi__DocTitle }}
+
+          - task: AzureAppServiceManage@0
+            displayName: Start Staging Slot
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Start Azure App Service'
+              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              SpecifySlotOrASE: true
+              Slot: 'staging'
+
+          - checkout: inss-devops-common-lib
+
+          - task: PowerShell@2
+            displayName: 'Performing Health Check - Staging'
+            inputs:
+              failOnStderr: true
+              targetType: 'filePath'
+              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+              arguments: > # Use this to avoid newline characters in multi-line string
+                -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend-staging.azurewebsites.net/api/health/ping"
+                -Method "${{ parameters.method }}"
+                -Retries ${{ parameters.retries }}
+                -SecondsDelay ${{ parameters.secondsDelay }}
+                -TimeoutSec ${{ parameters.timeoutSec }}
+
+          - task: AzureAppServiceManage@0
+            displayName: Swap Staging Slot into Production
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Swap Slots'
+              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              SourceSlot: 'staging'
+              SwapWithProduction: true
+
+          - task: PowerShell@2
+            displayName: 'Performing Health Check - Production'
+            inputs:
+              failOnStderr: true
+              targetType: 'filePath'
+              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+              arguments: > # Use this to avoid newline characters in multi-line string
+                -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend.azurewebsites.net/api/health/ping"
+                -Method "${{ parameters.method }}"
+                -Retries ${{ parameters.retries }}
+                -SecondsDelay ${{ parameters.secondsDelay }}
+                -TimeoutSec ${{ parameters.timeoutSec }}
+
+          - task: AzureAppServiceManage@0
+            displayName: Stop Staging Slot
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscription }}
+              Action: 'Stop Azure App Service'
+              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
+              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              SpecifySlotOrASE: true
+              Slot: 'staging'
