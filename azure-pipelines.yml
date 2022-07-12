@@ -91,3 +91,62 @@ stages:
         funcZipFile: 'INSS.FIP.FnApp.zip'
         appInsightsConnectionString: $(AppInsightsConnectionString)
 
+- stage: DeploySIT
+  displayName: 'Deploy to SIT'
+  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+  variables:
+    - group: FIP-SIT
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'SIT'
+        phaseBanner: $(PhaseBanner)
+        environmentBannerText: $(EnvironmentBannerText)
+        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+        openApi__Version: $(OpenApi__Version)
+        openApi__DocVersion: $(OpenApi__DocVersion)
+        openApi__DocTitle: $(OpenApi__DocTitle)
+        appZipFile: 'INSS.FIP.zip'
+        funcZipFile: 'INSS.FIP.FnApp.zip'
+        appInsightsConnectionString: $(AppInsightsConnectionString)
+
+- stage: DeployPreProd
+  displayName: 'Deploy to PreProd'
+  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+  variables:
+    - group: FIP-PreProd
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'PreProd'
+        phaseBanner: $(PhaseBanner)
+        environmentBannerText: $(EnvironmentBannerText)
+        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+        openApi__Version: $(OpenApi__Version)
+        openApi__DocVersion: $(OpenApi__DocVersion)
+        openApi__DocTitle: $(OpenApi__DocTitle)
+        appZipFile: 'INSS.FIP.zip'
+        funcZipFile: 'INSS.FIP.FnApp.zip'
+        appInsightsConnectionString: $(AppInsightsConnectionString)
+
+# - stage: DeployProd
+#   displayName: 'Deploy to Prod'
+#   condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+#   variables:
+#     - group: FIP-Prod
+#   jobs:
+#     - template: deploy-jobs-template.yml
+#       parameters:
+#         environment: 'Prod'
+#         phaseBanner: $(PhaseBanner)
+#         environmentBannerText: $(EnvironmentBannerText)
+#         fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+#         iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+#         openApi__Version: $(OpenApi__Version)
+#         openApi__DocVersion: $(OpenApi__DocVersion)
+#         openApi__DocTitle: $(OpenApi__DocTitle)
+#         appZipFile: 'INSS.FIP.zip'
+#         funcZipFile: 'INSS.FIP.FnApp.zip'
+#         appInsightsConnectionString: $(AppInsightsConnectionString)
