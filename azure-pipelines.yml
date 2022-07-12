@@ -89,4 +89,5 @@ stages:
         openApi__DocTitle: $(OpenApi__DocTitle)
         appZipFile: 'INSS.FIP.zip'
         funcZipFile: 'INSS.FIP.FnApp.zip'
+        appInsightsConnectionString: $(AppInsightsConnectionString)
 
