@@ -144,7 +144,7 @@ jobs:
                 -iirwebdbContextConnectionString "${{ parameters.iirwebdbContextConnectionString }}"
                 -OpenApi__Version "${{ parameters.openApi__Version }}"
                 -OpenApi__DocVersion "${{ parameters.openApi__DocVersion }}"
-                -OpenApi__DocTitle "${{ parameters.openApi__DocTitle }}
+                -OpenApi__DocTitle "${{ parameters.openApi__DocTitle }}"
                 -APPLICATIONINSIGHTS_CONNECTION_STRING ${{ parameters.appInsightsConnectionString }}
 
           - task: AzureAppServiceManage@0
