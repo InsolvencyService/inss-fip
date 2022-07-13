@@ -62,8 +62,6 @@ stages:
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         condition: eq('${{ parameters.doPublish}}', 'true')
 
-      - script: ls -l
-
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Artifact'
         inputs:
