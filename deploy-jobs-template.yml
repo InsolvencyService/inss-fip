@@ -36,8 +36,10 @@ parameters:
     type: string
   - name: appZipFile
     type: string
+    default: 'INSS.FIP.zip'
   - name: funcZipFile
     type: string
+    default: 'INSS.FIP.FnApp.zip'
   - name: appInsightsConnectionString
     type: string
 

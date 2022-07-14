@@ -4,14 +4,6 @@ trigger:
 pool:
   vmImage: windows-latest
 
-parameters:
-- name: doPublish
-  default: false
-  type: boolean
-- name: toDeploy
-  default: false
-  type: boolean
-
 variables:
 - name: buildConfiguration
   value: 'Release'
@@ -60,7 +52,6 @@ stages:
           publishWebProjects: false
           projects: '**/*.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        condition: eq('${{ parameters.doPublish}}', 'true')
 
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Artifact'
@@ -71,7 +62,7 @@ stages:
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
-  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-Dev
   jobs:
@@ -85,13 +76,11 @@ stages:
         openApi__Version: $(OpenApi__Version)
         openApi__DocVersion: $(OpenApi__DocVersion)
         openApi__DocTitle: $(OpenApi__DocTitle)
-        appZipFile: 'INSS.FIP.zip'
-        funcZipFile: 'INSS.FIP.FnApp.zip'
         appInsightsConnectionString: $(AppInsightsConnectionString)
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-SIT
   jobs:
@@ -105,13 +94,11 @@ stages:
         openApi__Version: $(OpenApi__Version)
         openApi__DocVersion: $(OpenApi__DocVersion)
         openApi__DocTitle: $(OpenApi__DocTitle)
-        appZipFile: 'INSS.FIP.zip'
-        funcZipFile: 'INSS.FIP.FnApp.zip'
         appInsightsConnectionString: $(AppInsightsConnectionString)
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
-  condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-PreProd
   jobs:
@@ -125,13 +112,11 @@ stages:
         openApi__Version: $(OpenApi__Version)
         openApi__DocVersion: $(OpenApi__DocVersion)
         openApi__DocTitle: $(OpenApi__DocTitle)
-        appZipFile: 'INSS.FIP.zip'
-        funcZipFile: 'INSS.FIP.FnApp.zip'
         appInsightsConnectionString: $(AppInsightsConnectionString)
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
-#   condition: and(and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')), eq('${{ parameters.toDeploy}}', 'true'))
+#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 #   variables:
 #     - group: FIP-Prod
 #   jobs:
@@ -145,6 +130,4 @@ stages:
 #         openApi__Version: $(OpenApi__Version)
 #         openApi__DocVersion: $(OpenApi__DocVersion)
 #         openApi__DocTitle: $(OpenApi__DocTitle)
-#         appZipFile: 'INSS.FIP.zip'
-#         funcZipFile: 'INSS.FIP.FnApp.zip'
 #         appInsightsConnectionString: $(AppInsightsConnectionString)
