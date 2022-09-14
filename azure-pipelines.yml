@@ -36,6 +36,7 @@ stages:
         displayName: 'Build Solution'
         inputs:
           command: 'build'
+          projects: '**/INSS.FIP.sln'
           arguments: '--configuration $(buildConfiguration)'        
 
       - task: DotNetCoreCLI@2
