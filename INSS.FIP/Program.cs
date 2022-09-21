@@ -4,6 +4,7 @@ using INSS.FIP.Extensions;
 using INSS.FIP.Models.ClientOptionsModels;
 using INSS.FIP.Services;
 using Joonasw.AspNetCore.SecurityHeaders;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Diagnostics.CodeAnalysis;
 
@@ -87,6 +88,10 @@ app.UseCsp(csp =>
     //};
 });
 
+var options = new RewriteOptions()
+    .AddRedirect("security.txt$", @"https://security.insolvency.gov.uk/.well-known/security.txt");
+
+app.UseRewriter(options);
 
 app.MapControllerRoute(
     name: "default",
