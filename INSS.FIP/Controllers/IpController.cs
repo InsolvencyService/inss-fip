@@ -54,6 +54,8 @@ public class IpController : Controller
 
     public async Task<IActionResult> Index()
     {
+        return StatusCode(503);
+
         var specialMessageViewModel = new SpecialMessageViewModel();
         var webMessageDomainModels = await _webMessageService.GetAsync("fip");
         var webMessageDomainModel = webMessageDomainModels?.FirstOrDefault();

@@ -7,14 +7,14 @@ using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Diagnostics.CodeAnalysis;
 
-WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureServices(services =>
 {
-    RetryPolicyOptions? retryPolicyOptions = new()
+    RetryPolicyOptions retryPolicyOptions = new()
     {
         BackoffPower = 2,
-        Count = 3,
+        Count = 3
     };
 
     services.AddCsp(nonceByteAmount: 32);
@@ -26,7 +26,7 @@ builder.Host.ConfigureServices(services =>
     services.AddTransient<IInsolvencyPractitionerService, InsolvencyPractitionerService>();
     services.AddTransient<IWebMessageService, WebMessageService>();
 
-    Polly.Registry.IPolicyRegistry<string>? policyRegistry = services.AddPolicyRegistry();
+    Polly.Registry.IPolicyRegistry<string> policyRegistry = services.AddPolicyRegistry();
     const string retryPolicyName = "RetryPolicyName";
 
     services
@@ -47,7 +47,10 @@ WebApplication? app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseStatusCodePagesWithReExecute("/errors", "?statusCode={0}");
+
+    app.UseExceptionHandler("/Errors");
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

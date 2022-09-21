@@ -6,11 +6,6 @@ namespace INSS.FIP.Controllers;
 
 public class HomeController : Controller
 {
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
 
     [Route("/home/accessibility-statement")]
     public IActionResult AccessibilityStatement()
