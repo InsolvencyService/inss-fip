@@ -9,22 +9,6 @@ namespace INSS.FIP.UnitTests.ControllerTests.HomeControllerTests;
 public class HomeControllerTests : BaseHomeControllerTests
 {
     [Fact]
-    public void HomeControllerControllerErrorReturnsSuccess()
-    {
-        // Arrange
-        using var controller = BuildHomeController();
-
-        // Act
-        var result = controller.Error();
-
-        // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<ErrorViewModel>(viewResult.ViewData.Model);
-
-        Assert.NotNull(model);
-    }
-
-    [Fact]
     public void HomeControllerAccessibilityStatementReturnsSuccess()
     {
         // Arrange
