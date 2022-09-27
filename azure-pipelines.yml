@@ -1,0 +1,134 @@
+trigger:
+- release/*
+  
+pool:
+  vmImage: windows-latest
+
+variables:
+- name: buildConfiguration
+  value: 'Release'
+
+resources:
+  repositories:
+  - repository: inss-devops-common-lib
+    type: github
+    endpoint: InsolvencyService
+    name: InsolvencyService/inss-devops-common-lib
+    ref: develop
+    
+stages:
+- stage: BuildTest
+  displayName: 'Build and Test'
+  jobs:  
+    - job: 
+      steps:
+      - task: UseDotNet@2
+        inputs:
+          version: '6.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: NuGet Restore
+        inputs:
+          command: 'restore'
+          projects: '**/INSS.FIP.sln'
+  
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Solution'
+        inputs:
+          command: 'build'
+          projects: '**/INSS.FIP.sln'
+          arguments: '--configuration $(buildConfiguration)'        
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run Tests'
+        inputs:
+          command: test
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish Project'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: '**/*.csproj'
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)' 
+          artifactName: 'INSS.FIP'
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- stage: DeployDev
+  displayName: 'Deploy to Dev'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: FIP-Dev
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'Dev'
+        phaseBanner: $(PhaseBanner)
+        environmentBannerText: $(EnvironmentBannerText)
+        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+        openApi__Version: $(OpenApi__Version)
+        openApi__DocVersion: $(OpenApi__DocVersion)
+        openApi__DocTitle: $(OpenApi__DocTitle)
+        appInsightsConnectionString: $(AppInsightsConnectionString)
+
+- stage: DeploySIT
+  displayName: 'Deploy to SIT'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: FIP-SIT
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'SIT'
+        phaseBanner: $(PhaseBanner)
+        environmentBannerText: $(EnvironmentBannerText)
+        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+        openApi__Version: $(OpenApi__Version)
+        openApi__DocVersion: $(OpenApi__DocVersion)
+        openApi__DocTitle: $(OpenApi__DocTitle)
+        appInsightsConnectionString: $(AppInsightsConnectionString)
+
+- stage: DeployPreProd
+  displayName: 'Deploy to PreProd'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: FIP-PreProd
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'PreProd'
+        phaseBanner: $(PhaseBanner)
+        environmentBannerText: $(EnvironmentBannerText)
+        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+        openApi__Version: $(OpenApi__Version)
+        openApi__DocVersion: $(OpenApi__DocVersion)
+        openApi__DocTitle: $(OpenApi__DocTitle)
+        appInsightsConnectionString: $(AppInsightsConnectionString)
+
+# - stage: DeployProd
+#   displayName: 'Deploy to Prod'
+#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+#   variables:
+#     - group: FIP-Prod
+#   jobs:
+#     - template: deploy-jobs-template.yml
+#       parameters:
+#         environment: 'Prod'
+#         phaseBanner: $(PhaseBanner)
+#         environmentBannerText: $(EnvironmentBannerText)
+#         fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
+#         iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
+#         openApi__Version: $(OpenApi__Version)
+#         openApi__DocVersion: $(OpenApi__DocVersion)
+#         openApi__DocTitle: $(OpenApi__DocTitle)
+#         appInsightsConnectionString: $(AppInsightsConnectionString)
