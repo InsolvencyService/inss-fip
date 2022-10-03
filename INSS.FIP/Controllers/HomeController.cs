@@ -1,8 +1,6 @@
-﻿using INSS.FIP.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace INSS.FIP.Controllers;
+namespace INSS.FIP.Web.Controllers;
 
 public class HomeController : Controller
 {

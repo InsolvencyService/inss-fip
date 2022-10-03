@@ -1,6 +1,6 @@
-﻿using INSS.FIP.Helpers;
-using INSS.FIP.ViewModels;
-using System.Linq;
+﻿using System.Linq;
+using INSS.FIP.Services;
+using INSS.FIP.Web.ViewModels;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.UnitTests.ValidationTests;

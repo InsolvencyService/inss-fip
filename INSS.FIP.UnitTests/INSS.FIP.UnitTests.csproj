@@ -18,7 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\INSS.FIP\INSS.FIP.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Interfaces\INSS.FIP.Interfaces.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Models\INSS.FIP.Models.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Services\INSS.FIP.Services.csproj" />
+    <ProjectReference Include="..\INSS.FIP\INSS.FIP.Web.csproj" />
   </ItemGroup>
 
 </Project>

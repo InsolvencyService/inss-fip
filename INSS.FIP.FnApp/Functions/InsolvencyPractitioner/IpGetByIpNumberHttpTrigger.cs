@@ -1,6 +1,9 @@
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Helpers;
-using INSS.FIP.FnApp.Models.RequestModels.InsolvencyPractitioner;
+using System.Net;
+using System.Net.Mime;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
+using INSS.FIP.Models.ResponseModels;
+using INSS.FIP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -10,19 +13,17 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Net.Mime;
 
-namespace INSS.FIP.FnApp.Functions.InsolvencyPractitioner;
+namespace INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 
 public class IpGetByIpNumberHttpTrigger
 {
     private readonly ILogger<IpGetByIpNumberHttpTrigger> _logger;
-    private readonly IInsolvencyPractitionerService _insolvencyPractitionerService;
+    private readonly IInsolvencyPractitionerProvider _insolvencyPractitionerService;
 
     public IpGetByIpNumberHttpTrigger(
         ILogger<IpGetByIpNumberHttpTrigger> logger,
-        IInsolvencyPractitionerService insolvencyPractitionerService)
+        IInsolvencyPractitionerProvider insolvencyPractitionerService)
     {
         _logger = logger.ThrowIfNullOrDefault();
         _insolvencyPractitionerService = insolvencyPractitionerService.ThrowIfNullOrDefault();

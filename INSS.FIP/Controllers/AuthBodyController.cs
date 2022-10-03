@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using INSS.FIP.Helpers;
-using INSS.FIP.Services;
-using INSS.FIP.ViewModels;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Web.Helpers;
+using INSS.FIP.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace INSS.FIP.Controllers;
+namespace INSS.FIP.Web.Controllers;
 
 public class AuthBodyController : Controller
 {

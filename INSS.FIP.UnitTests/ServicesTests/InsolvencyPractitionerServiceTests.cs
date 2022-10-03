@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using FakeItEasy;
-using INSS.FIP.ApiModels.Models.RequestModels;
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.Common.Models.ApiConnectorModels;
-using INSS.FIP.Connectors;
-using INSS.FIP.Models.DomainModels;
 using INSS.FIP.Services;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.ApiConnectorModels;
+using INSS.FIP.Models.DomainModels;
+using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Models.ResponseModels;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.ServicesTests;

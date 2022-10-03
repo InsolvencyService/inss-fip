@@ -1,7 +1,4 @@
 using FakeItEasy;
-using INSS.FIP.Common.Connectors;
-using INSS.FIP.Common.Models.ApiConnectorModels;
-using INSS.FIP.Connectors;
 using INSS.FIP.UnitTests.FakeHttpHandlers;
 using INSS.FIP.UnitTests.TestModels;
 using Microsoft.Extensions.Logging;
@@ -9,6 +6,9 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.ApiConnectorModels;
+using INSS.FIP.Services;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.ConnectorTests;

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using FakeItEasy;
-using INSS.FIP.Controllers;
+using INSS.FIP.Interfaces;
 using INSS.FIP.Services;
+using INSS.FIP.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

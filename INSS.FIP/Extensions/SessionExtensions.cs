@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
-namespace INSS.FIP.Extensions;
+namespace INSS.FIP.Web.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class SessionExtensions

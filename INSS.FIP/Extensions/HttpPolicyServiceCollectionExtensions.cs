@@ -1,11 +1,11 @@
-﻿using INSS.FIP.Common.Models.ClientOptionsModels;
-using INSS.FIP.Common.Models.PollyModels;
+﻿using System.Diagnostics.CodeAnalysis;
+using INSS.FIP.Models.ClientOptionsModels;
+using INSS.FIP.Models.PollyModels;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Registry;
-using System.Diagnostics.CodeAnalysis;
 
-namespace INSS.FIP.Extensions;
+namespace INSS.FIP.Web.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class HttpPolicyServiceCollectionExtensions

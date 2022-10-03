@@ -1,6 +1,6 @@
-﻿using INSS.FIP.ViewModels;
+﻿using INSS.FIP.Web.ViewModels;
 
-namespace INSS.FIP.Helpers;
+namespace INSS.FIP.Web.Helpers;
 
 public static class BreadcrumbHelpers
 {

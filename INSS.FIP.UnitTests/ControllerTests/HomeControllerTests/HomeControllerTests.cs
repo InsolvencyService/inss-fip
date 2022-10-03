@@ -1,5 +1,4 @@
-﻿using INSS.FIP.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.ControllerTests.HomeControllerTests;

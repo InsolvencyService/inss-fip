@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using INSS.FIP.Models.DomainModels;
-using INSS.FIP.ViewModels;
-using System.Diagnostics.CodeAnalysis;
+using INSS.FIP.Web.ViewModels;
 
-namespace INSS.FIP.AutoMapperProfiles;
+namespace INSS.FIP.Web.AutoMapperProfiles;
 
 [ExcludeFromCodeCoverage]
 public class DomainModelToViewModelProfiles : Profile

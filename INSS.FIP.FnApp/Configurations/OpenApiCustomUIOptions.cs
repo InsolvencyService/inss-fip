@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 
-namespace INSS.FIP.FnApp.Configurations;
+namespace INSS.FIP.Functions.Configurations;
 
 [ExcludeFromCodeCoverage]
 public class OpenApiCustomUIOptions : DefaultOpenApiCustomUIOptions

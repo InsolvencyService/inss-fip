@@ -1,4 +1,4 @@
-﻿using INSS.FIP.Controllers;
+﻿using INSS.FIP.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

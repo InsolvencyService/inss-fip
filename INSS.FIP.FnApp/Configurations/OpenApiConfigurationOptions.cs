@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
-using System.Diagnostics.CodeAnalysis;
 
-namespace INSS.FIP.FnApp.Configurations;
+namespace INSS.FIP.Functions.Configurations;
 
 [ExcludeFromCodeCoverage]
 public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
