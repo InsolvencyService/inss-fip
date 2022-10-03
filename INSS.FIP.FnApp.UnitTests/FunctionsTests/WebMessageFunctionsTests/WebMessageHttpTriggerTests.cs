@@ -1,8 +1,4 @@
 ﻿using FakeItEasy;
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Functions.WebMessage;
-using INSS.FIP.FnApp.Models.RequestModels.WebMessage;
-using INSS.FIP.FnApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +6,10 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using INSS.FIP.Functions.Functions.WebMessage;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.RequestModels.WebMessage;
+using INSS.FIP.Models.ResponseModels;
 using Xunit;
 
 namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.WebMessageFunctionsTests;
@@ -18,7 +18,7 @@ namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.WebMessageFunctionsTests;
 public class WebMessageHttpTriggerTests
 {
     private readonly ILogger<WebMessageGetHttpTrigger> _fakeLogger = A.Fake<ILogger<WebMessageGetHttpTrigger>>();
-    private readonly IWebMessageService _fakeWebMessageService = A.Fake<IWebMessageService>();
+    private readonly IWebMessageProvider _fakeWebMessageService = A.Fake<IWebMessageProvider>();
     private readonly WebMessageGetHttpTrigger _WebMessageHttpTrigger;
 
     public WebMessageHttpTriggerTests()

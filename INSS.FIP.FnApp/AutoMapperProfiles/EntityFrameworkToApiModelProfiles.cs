@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using INSS.FIP.ApiModels.Models.RequestModels;
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Models.RequestModels.InsolvencyPractitioner;
-using INSS.FIP.Repository.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
+using INSS.FIP.Data;
+using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
+using INSS.FIP.Models.ResponseModels;
 
-namespace INSS.FIP.FnApp.AutoMapperProfiles;
+namespace INSS.FIP.Functions.AutoMapperProfiles;
 
 [ExcludeFromCodeCoverage]
 public class EntityFrameworkToApiModelProfiles : Profile

@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using INSS.FIP.ApiModels.Models.RequestModels;
-using INSS.FIP.ApiModels.Models.ResponseModels;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using INSS.FIP.Models.DomainModels;
-using INSS.FIP.ViewModels;
-using System.Diagnostics.CodeAnalysis;
+using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Models.ResponseModels;
+using INSS.FIP.Web.ViewModels;
 
-namespace INSS.FIP.AutoMapperProfiles;
+namespace INSS.FIP.Web.AutoMapperProfiles;
 
 [ExcludeFromCodeCoverage]
 public class ApiModelToDomainModelProfiles : Profile

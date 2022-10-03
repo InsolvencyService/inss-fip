@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace INSS.FIP.ViewModels;
+namespace INSS.FIP.Web.ViewModels;
 
 [ExcludeFromCodeCoverage]
 public class SearchParametersViewModel : IValidatableObject

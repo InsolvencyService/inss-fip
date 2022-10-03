@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\INSS.FIP.FnApp\INSS.FIP.FnApp.csproj" />
+    <ProjectReference Include="..\INSS.FIP.FnApp\INSS.FIP.Functions.csproj" />
   </ItemGroup>
 
 </Project>

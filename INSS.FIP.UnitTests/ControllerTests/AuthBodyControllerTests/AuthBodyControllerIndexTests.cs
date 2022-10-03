@@ -1,9 +1,9 @@
 ﻿using FakeItEasy;
-using INSS.FIP.Models.DomainModels;
-using INSS.FIP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using INSS.FIP.Models.DomainModels;
+using INSS.FIP.Web.ViewModels;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.ControllerTests.AuthBodyControllerTests;

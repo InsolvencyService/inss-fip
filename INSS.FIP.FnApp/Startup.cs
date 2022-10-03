@@ -1,12 +1,14 @@
-﻿using INSS.FIP.FnApp.Services;
-using INSS.FIP.Repository.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using INSS.FIP.Data;
+using INSS.FIP.DataAccess;
+using INSS.FIP.Functions;
+using INSS.FIP.Interfaces;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.CodeAnalysis;
 
-[assembly: FunctionsStartup(typeof(INSS.FIP.FnApp.Startup))]
+[assembly: FunctionsStartup(typeof(Startup))]
 
-namespace INSS.FIP.FnApp;
+namespace INSS.FIP.Functions;
 
 [ExcludeFromCodeCoverage]
 public class Startup : FunctionsStartup
@@ -15,18 +17,18 @@ public class Startup : FunctionsStartup
     {
         var config = builder.GetContext().Configuration;
 
-        //   builder.Services.AddApplicationInsightsTelemetry();
+        //builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddHttpClient();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        builder.Services.AddTransient((s) =>
+        builder.Services.AddTransient(_ =>
         {
             var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
             return new iirwebdbContext(connectionString);
         });
 
-        builder.Services.AddTransient<IAuthBodyService, AuthBodyService>();
-        builder.Services.AddTransient<IInsolvencyPractitionerService, InsolvencyPractitionerService>();
-        builder.Services.AddTransient<IWebMessageService, WebMessageService>();
+        builder.Services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
+        builder.Services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
+        builder.Services.AddTransient<IWebMessageProvider, WebMessageProvider>();
     }
 }

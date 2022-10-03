@@ -1,12 +1,12 @@
-using INSS.FIP.Common.Models.PollyModels;
-using INSS.FIP.Connectors;
-using INSS.FIP.Extensions;
+using System.Diagnostics.CodeAnalysis;
+using INSS.FIP.Interfaces;
 using INSS.FIP.Models.ClientOptionsModels;
+using INSS.FIP.Models.PollyModels;
 using INSS.FIP.Services;
+using INSS.FIP.Web.Extensions;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,6 +99,9 @@ app.MapControllerRoute(
 
 app.Run();
 
-[ExcludeFromCodeCoverage]
-[SuppressMessage("Design", "CA1050:Declare types in namespaces", Justification = "Used to eliminate from code coverage")]
-public partial class Program { }
+namespace INSS.FIP.Web
+{
+    [ExcludeFromCodeCoverage]
+    [SuppressMessage("Design", "CA1050:Declare types in namespaces", Justification = "Used to eliminate from code coverage")]
+    public partial class Program { }
+}

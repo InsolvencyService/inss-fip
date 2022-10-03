@@ -1,12 +1,12 @@
 ﻿using FakeItEasy;
-using INSS.FIP.ApiModels.Models.RequestModels;
-using INSS.FIP.Models.DomainModels;
-using INSS.FIP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using INSS.FIP.Models.DomainModels;
+using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Web.ViewModels;
 using Xunit;
 
 namespace INSS.FIP.UnitTests.ControllerTests.IpControllerTests;

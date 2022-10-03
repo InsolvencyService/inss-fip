@@ -1,4 +1,7 @@
-using INSS.FIP.ApiModels.Models.ResponseModels;
+using System.Net;
+using System.Net.Mime;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -7,20 +10,17 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Net.Mime;
 
-namespace INSS.FIP.FnApp.Functions.AuthBody;
+namespace INSS.FIP.Functions.Functions.AuthBody;
 
 public class AuthBodyGetHttpTrigger
 {
     private readonly ILogger<AuthBodyGetHttpTrigger> _logger;
-    private readonly IAuthBodyService _authBodyService;
+    private readonly IAuthBodyProvider _authBodyService;
 
     public AuthBodyGetHttpTrigger(
         ILogger<AuthBodyGetHttpTrigger> logger,
-        IAuthBodyService authBodyService)
+        IAuthBodyProvider authBodyService)
     {
         _logger = logger.ThrowIfNullOrDefault();
         _authBodyService = authBodyService.ThrowIfNullOrDefault();

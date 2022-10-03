@@ -1,7 +1,9 @@
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Helpers;
-using INSS.FIP.FnApp.Models.RequestModels.WebMessage;
-using INSS.FIP.FnApp.Services;
+using System.Net;
+using System.Net.Mime;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.RequestModels.WebMessage;
+using INSS.FIP.Models.ResponseModels;
+using INSS.FIP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -11,19 +13,17 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Net.Mime;
 
-namespace INSS.FIP.FnApp.Functions.WebMessage;
+namespace INSS.FIP.Functions.Functions.WebMessage;
 
 public class WebMessageGetHttpTrigger
 {
     private readonly ILogger<WebMessageGetHttpTrigger> _logger;
-    private readonly IWebMessageService _webMessageService;
+    private readonly IWebMessageProvider _webMessageService;
 
     public WebMessageGetHttpTrigger(
         ILogger<WebMessageGetHttpTrigger> logger,
-        IWebMessageService webMessageService)
+        IWebMessageProvider webMessageService)
     {
         _logger = logger.ThrowIfNullOrDefault();
         _webMessageService = webMessageService.ThrowIfNullOrDefault();

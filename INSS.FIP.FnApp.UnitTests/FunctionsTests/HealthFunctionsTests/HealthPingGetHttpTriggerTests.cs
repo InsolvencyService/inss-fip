@@ -1,4 +1,4 @@
-﻿using INSS.FIP.FnApp.Functions.Health;
+﻿using INSS.FIP.Functions.Functions.Health;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;

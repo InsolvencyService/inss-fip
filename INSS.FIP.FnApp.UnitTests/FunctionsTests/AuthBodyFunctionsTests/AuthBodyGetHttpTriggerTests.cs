@@ -1,6 +1,4 @@
 ﻿using FakeItEasy;
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Functions.AuthBody;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using INSS.FIP.Functions.Functions.AuthBody;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.ResponseModels;
 using Xunit;
 
 namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.AuthBodyFunctionsTests;
@@ -16,7 +17,7 @@ namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.AuthBodyFunctionsTests;
 public class AuthBodyGetHttpTriggerTests
 {
     private readonly ILogger<AuthBodyGetHttpTrigger> _fakeLogger = A.Fake<ILogger<AuthBodyGetHttpTrigger>>();
-    private readonly IAuthBodyService _fakeAuthBodyService = A.Fake<IAuthBodyService>();
+    private readonly IAuthBodyProvider _fakeAuthBodyService = A.Fake<IAuthBodyProvider>();
     private readonly AuthBodyGetHttpTrigger _authBodyGetHttpTrigger;
 
     public AuthBodyGetHttpTriggerTests()

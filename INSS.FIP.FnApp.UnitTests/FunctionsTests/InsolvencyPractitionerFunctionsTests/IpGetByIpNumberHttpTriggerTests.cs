@@ -1,13 +1,14 @@
 ﻿using FakeItEasy;
-using INSS.FIP.ApiModels.Models.ResponseModels;
-using INSS.FIP.FnApp.Functions.InsolvencyPractitioner;
-using INSS.FIP.FnApp.Models.RequestModels.InsolvencyPractitioner;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
+using INSS.FIP.Functions.Functions.InsolvencyPractitioner;
+using INSS.FIP.Interfaces;
+using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
+using INSS.FIP.Models.ResponseModels;
 using Xunit;
 
 namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.InsolvencyPractitionerFunctionsTests;
@@ -16,7 +17,7 @@ namespace INSS.FIP.FnApp.UnitTests.FunctionsTests.InsolvencyPractitionerFunction
 public class IpGetByIpNumberHttpTriggerTests
 {
     private readonly ILogger<IpGetByIpNumberHttpTrigger> _fakeLogger = A.Fake<ILogger<IpGetByIpNumberHttpTrigger>>();
-    private readonly IInsolvencyPractitionerService _fakeInsolvencyPractitionerService = A.Fake<IInsolvencyPractitionerService>();
+    private readonly IInsolvencyPractitionerProvider _fakeInsolvencyPractitionerService = A.Fake<IInsolvencyPractitionerProvider>();
     private readonly IpGetByIpNumberHttpTrigger _ipGetByIpNumberHttpTrigger;
 
     public IpGetByIpNumberHttpTriggerTests()

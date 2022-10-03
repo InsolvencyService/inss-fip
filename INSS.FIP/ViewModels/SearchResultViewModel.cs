@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
-namespace INSS.FIP.ViewModels;
+namespace INSS.FIP.Web.ViewModels;
 
 [ExcludeFromCodeCoverage]
 public class SearchResultViewModel
