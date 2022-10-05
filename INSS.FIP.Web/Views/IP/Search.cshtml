@@ -1,0 +1,54 @@
+﻿@model INSS.FIP.Web.ViewModels.SearchParametersViewModel
+
+@{
+    ViewData["Title"] = "Search the directory";
+}
+
+@section Breadcrumb {
+    <partial name="_Breadcrumb" for=Breadcrumbs />
+}
+
+@{
+    if (!string.IsNullOrWhiteSpace(Model.ShowWarningMessage))
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+                @Model.ShowWarningMessage
+            </strong>
+        </div>
+    }
+}
+
+    <div class="govuk-form-group">
+    <form asp-controller="IP" asp-action="Search" class="inss-app-validation">
+        <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
+        <input type="hidden" name="PageSize" value="@Model.PageSize" />
+
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            @Html.EditorFor(model => model.FirstName)
+            @Html.EditorFor(model => model.LastName)
+            @Html.EditorFor(model => model.Company)
+            @Html.EditorFor(model => model.Town)
+            @Html.EditorFor(model => model.IpNumber)
+            @Html.EditorFor(model => model.County, new {
+                SelectList = Model.Counties,
+                DefaultSelect = "Select from list"
+            })
+        </fieldset>
+
+        <br />
+
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" type="submit">
+            Search
+        </button>
+
+    </form>
+</div>
