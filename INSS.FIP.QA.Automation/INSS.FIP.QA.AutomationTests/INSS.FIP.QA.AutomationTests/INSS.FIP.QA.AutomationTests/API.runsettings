@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <TestRunParameters>
+    <parameter name="baseurl" value="https://dro-form-fn-int-ods.insolvency-development.co.uk/account/login" />
+    <parameter name="ApiBaseUrl" value="https://app-uksouth-sit-ods-worldpay-api.azurewebsites.net" />
+    <parameter name="ApiBaseUrlCred" value="https://apim-uksouth-devsit-inss001.azure-api.net/bssintegrationapi/dev/v1" />
+    <parameter name="MoneyAdviserApiBaseUrl" value="https://apim-uksouth-devsit-inss001.azure-api.net/breathingspace/ma/dev/v1/MoneyAdviser" />
+    <parameter name="CreditorApiBaseUrl" value="https://apim-uksouth-devsit-inss001.azure-api.net/breathingspace/cr/dev/v1/Creditor" />
+    <parameter name="ApiExampleBaseUrl" value="https://apim-uksouth-devsit-inss001.azure-api.net/example/dev/v1" />
+    <parameter name="ApiNotificationBaseUrl" value="https://apim-uksouth-devsit-inss001.azure-api.net/notifications/dev/v1/" />
+  </TestRunParameters>
+</RunSettings>
