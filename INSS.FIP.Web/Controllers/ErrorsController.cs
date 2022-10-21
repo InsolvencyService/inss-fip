@@ -7,6 +7,8 @@ namespace INSS.FIP.Web.Controllers
         [Route("/errors/{statusCode?}")]
         public IActionResult Index(int? statusCode)
         {
+            Response.StatusCode = 200;
+            
             if (statusCode != null)
             {
                 switch (statusCode.Value)
