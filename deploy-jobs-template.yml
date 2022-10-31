@@ -26,8 +26,6 @@ parameters:
   - name: funcZipFile
     type: string
     default: 'INSS.FIP.Functions.zip'
-  - name: appInsightsConnectionString
-    type: string
 
 jobs:
   - deployment: 
