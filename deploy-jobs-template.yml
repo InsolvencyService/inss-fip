@@ -20,20 +20,6 @@ parameters:
   - name: timeoutSec
     type: number
     default: 120
-  - name: phaseBanner 
-    type: string
-  - name: environmentBannerText
-    type: string
-  - name: fipApiConnectorClientOptions__BaseAddress
-    type: string
-  - name: iirwebdbContextConnectionString
-    type: string
-  - name: openApi__Version
-    type: string
-  - name: openApi__DocVersion
-    type: string
-  - name: openApi__DocTitle
-    type: string
   - name: appZipFile
     type: string
     default: 'INSS.FIP.Web.zip'
@@ -62,11 +48,11 @@ jobs:
               slotName: 'staging'
               package: '$(Pipeline.Workspace)/**/${{ parameters.appZipFile }}'
               appSettings: >
-                -PhaseBanner "${{ parameters.phaseBanner }}"
-                -EnvironmentBanner "${{ parameters.environment }}"
-                -EnvironmentBannerText "${{ parameters.environmentBannerText }}"
-                -FipApiConnectorClientOptions__BaseAddress "${{ parameters.fipApiConnectorClientOptions__BaseAddress }}"
-                -APPLICATIONINSIGHTS_CONNECTION_STRING ${{ parameters.appInsightsConnectionString }}
+                -PhaseBanner "$(phaseBanner)"
+                -EnvironmentBanner "${{ parameters.environment }}" 
+                -EnvironmentBannerText "$(EnvironmentBannerText)"
+                -FipApiConnectorClientOptions__BaseAddress "$(FipApiConnectorClientOptions__BaseAddress)"
+                -APPLICATIONINSIGHTS_CONNECTION_STRING "$(appInsightsConnectionString)"
 
           - task: AzureAppServiceManage@0
             displayName: Start Staging Slot
@@ -143,11 +129,11 @@ jobs:
               slotName: 'staging'
               package: '$(Pipeline.Workspace)/**/${{ parameters.funcZipFile }}'
               appSettings: >
-                -iirwebdbContextConnectionString "${{ parameters.iirwebdbContextConnectionString }}"
-                -OpenApi__Version "${{ parameters.openApi__Version }}"
-                -OpenApi__DocVersion "${{ parameters.openApi__DocVersion }}"
-                -OpenApi__DocTitle "${{ parameters.openApi__DocTitle }}"
-                -APPLICATIONINSIGHTS_CONNECTION_STRING ${{ parameters.appInsightsConnectionString }}
+                -iirwebdbContextConnectionString "$(iirwebdbContextConnectionString)"
+                -OpenApi__Version "$(OpenApi__Version)"
+                -OpenApi__DocVersion "$(OpenApi__DocVersion)"
+                -OpenApi__DocTitle "$(OpenApi__DocTitle)"
+                -APPLICATIONINSIGHTS_CONNECTION_STRING "$(appInsightsConnectionString)"
 
           - task: AzureAppServiceManage@0
             displayName: Start Staging Slot

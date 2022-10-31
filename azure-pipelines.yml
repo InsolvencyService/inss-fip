@@ -75,14 +75,6 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'Dev'
-        phaseBanner: $(PhaseBanner)
-        environmentBannerText: $(EnvironmentBannerText)
-        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
-        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
-        openApi__Version: $(OpenApi__Version)
-        openApi__DocVersion: $(OpenApi__DocVersion)
-        openApi__DocTitle: $(OpenApi__DocTitle)
-        appInsightsConnectionString: $(AppInsightsConnectionString)
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
@@ -93,14 +85,6 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'SIT'
-        phaseBanner: $(PhaseBanner)
-        environmentBannerText: $(EnvironmentBannerText)
-        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
-        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
-        openApi__Version: $(OpenApi__Version)
-        openApi__DocVersion: $(OpenApi__DocVersion)
-        openApi__DocTitle: $(OpenApi__DocTitle)
-        appInsightsConnectionString: $(AppInsightsConnectionString)
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
@@ -111,14 +95,6 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'PreProd'
-        phaseBanner: $(PhaseBanner)
-        environmentBannerText: $(EnvironmentBannerText)
-        fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
-        iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
-        openApi__Version: $(OpenApi__Version)
-        openApi__DocVersion: $(OpenApi__DocVersion)
-        openApi__DocTitle: $(OpenApi__DocTitle)
-        appInsightsConnectionString: $(AppInsightsConnectionString)
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
@@ -129,11 +105,3 @@ stages:
 #     - template: deploy-jobs-template.yml
 #       parameters:
 #         environment: 'Prod'
-#         phaseBanner: $(PhaseBanner)
-#         environmentBannerText: $(EnvironmentBannerText)
-#         fipApiConnectorClientOptions__BaseAddress: $(FipApiConnectorClientOptions__BaseAddress)
-#         iirwebdbContextConnectionString: $(IirwebdbContextConnectionString)
-#         openApi__Version: $(OpenApi__Version)
-#         openApi__DocVersion: $(OpenApi__DocVersion)
-#         openApi__DocTitle: $(OpenApi__DocTitle)
-#         appInsightsConnectionString: $(AppInsightsConnectionString)
