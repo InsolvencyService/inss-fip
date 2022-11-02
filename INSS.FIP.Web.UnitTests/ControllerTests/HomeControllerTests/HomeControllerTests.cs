@@ -20,31 +20,7 @@ public class HomeControllerTests : BaseHomeControllerTests
         var viewResult = Assert.IsType<ViewResult>(result);
     }
 
-    [Fact]
-    public void HomeControllerContactReturnsSuccess()
-    {
-        // Arrange
-        using var controller = BuildHomeController();
-
-        // Act
-        var result = controller.Contact();
-
-        // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public void HomeControllerCookeiesReturnsSuccess()
-    {
-        // Arrange
-        using var controller = BuildHomeController();
-
-        // Act
-        var result = controller.Cookies();
-
-        // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-    }
+ 
 
     [Fact]
     public void HomeControllerControllerPrivacyPolicyReturnsSuccess()
