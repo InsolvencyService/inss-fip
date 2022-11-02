@@ -11,16 +11,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Contact()
-    {
-        return View();
-    }
-
-    public IActionResult Cookies()
-    {
-        return View();
-    }
-
     [Route("/home/privacy-policy")]
     public IActionResult PrivacyPolicy()
     {

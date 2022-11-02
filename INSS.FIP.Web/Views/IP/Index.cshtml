@@ -1,10 +1,9 @@
 ﻿@model INSS.FIP.Web.ViewModels.SpecialMessageViewModel
 
 @{
-    ViewData["Title"] = "Search";
+    ViewData["Title"] = "Find an insolvency practitioner";
 }
 
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
 @if (Model.ShowMessage)
 {
@@ -20,21 +19,32 @@
 	<hr class="govuk-section-break govuk-section-break--l govuk-section-break govuk-section-break--visible">
 }
 
-<h2 class="govuk-heading-m">Information Summary</h2>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @ViewData["Title"]
+        </h1>
+    </div>
+    <div class="govuk-grid-column-one-third">
+    </div>
+</div>
 
-<p class="govuk-body-l">
-    Use this service to find Insolvency Practitioners in your area, their contact details and those of their associated Authorising Body.
-</p>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-<p class="govuk-body">
-    The directory contains information on Insolvency Practitioners who have agreed to include their details. It is not a complete list of all Insolvency Practitioners in the UK.
-</p>
-
-<h2 class="govuk-heading-m">How to use the service</h2>
-
-<p class="govuk-body">
-    Search the directory by entering any known contact details for the Insolvency Practitioner (like their Name, Company Name, Authorisation Number etc) and / or by County.
-</p>
+        <p class="govuk-body">
+            Find licenced insolvency practitioners in your area, including their contact details and authorising body.
+            You can search by:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>name</li>
+            <li>company</li>
+            <!--
+            <li>insolvency practitioner number</li>
+            -->
+            <li>town or city</li>
+            <li>postcode</li>
+        </ul>
 
 @if (!Model.HideSearch)
 {
@@ -44,4 +54,48 @@
             <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
         </svg>
     </a>
+
 }
+
+        <h2 class="govuk-heading-m">Before you start</h2>
+
+        <p class="govuk-body">
+            The service contains information on insolvency practitioners who have agreed to include their details.
+        </p>
+        <p class="govuk-body">
+            It is not a complete list of all insolvency practitioners in the UK.
+        </p>
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+
+        <aside class="app-related-items" role="complementary">
+            <h2 class="govuk-heading-s" id="subsection-title">
+                Related content
+            </h2>
+            <nav role="navigation" aria-labelledby="subsection-title">
+                <ul class="govuk-list govuk-!-font-size-16">
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/get-help-insolvency-service">
+                            Get help from the Insolvency Service
+                        </a>
+                    </li>
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/browse/tax/court-claims-debt-bankruptcy">
+                            Find out more about bankruptcy and insolvency
+                        </a>
+                    </li>
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.insolvencydirect.bis.gov.uk/ExternalOnlineForms/GeneralEnquiry.aspx">
+                            Give feedback about the Find an insolvency practitioner service
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </aside>
+
+    </div>
+</div>
