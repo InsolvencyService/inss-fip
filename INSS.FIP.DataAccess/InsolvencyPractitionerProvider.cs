@@ -4,6 +4,7 @@ using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
 using INSS.FIP.Models.ResponseModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace INSS.FIP.DataAccess;
 
@@ -75,14 +76,22 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
         return await Task.FromResult(results);
     }
 
-    public async Task<FipApiInsolvencyPractitionerResponseModel> GetByIpNumberAsync(IpGetByIpNumberRequestModel ipGetByIpNumberRequestModel)
+    public async Task<FipApiInsolvencyPractitionerWithAuthResponseModel> GetByIpNumberAsync(IpGetByIpNumberRequestModel ipGetByIpNumberRequestModel)
     {
-        var query = BaseQuery;
+        var ipNumber = ipGetByIpNumberRequestModel.IpNumber;
+        var data = await (from cip in _iirwebdbContext.CiIps
+                    join cab in _iirwebdbContext.CiIpAuthorisingBodies
+                        on cip.LicensingBody equals cab.AuthBodyCode into jab
+                        from x in jab.DefaultIfEmpty()
+                    where cip.IpNo == ipNumber && cip.IncludeOnInternet == "Y"
+                    select new { IP = cip, IpAb = x }).FirstOrDefaultAsync();
 
-        var data = query.FirstOrDefault(f => f.IpNo == ipGetByIpNumberRequestModel.IpNumber);
 
-        var result = _mapper.Map<FipApiInsolvencyPractitionerResponseModel>(data);
+        var ip = _mapper.Map<CiIp, FipApiInsolvencyPractitionerResponseModel>(data?.IP);
+        var authBody = _mapper.Map<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>(data?.IpAb);
 
-        return await Task.FromResult(result);
+        var result = new FipApiInsolvencyPractitionerWithAuthResponseModel { IP = ip, AuthorisingBody = authBody };
+
+        return result;
     }
 }

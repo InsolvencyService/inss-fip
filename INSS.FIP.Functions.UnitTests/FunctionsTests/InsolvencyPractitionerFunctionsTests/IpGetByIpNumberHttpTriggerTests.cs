@@ -31,7 +31,7 @@ public class IpGetByIpNumberHttpTriggerTests
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.OK;
         const int ipNumber = 123;
-        var dummyFipApiInsolvencyPractitionerResponseModel = A.Dummy<FipApiInsolvencyPractitionerResponseModel>();
+        var dummyFipApiInsolvencyPractitionerResponseModel = A.Dummy<FipApiInsolvencyPractitionerWithAuthResponseModel>();
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).Returns(dummyFipApiInsolvencyPractitionerResponseModel);
 
@@ -69,7 +69,7 @@ public class IpGetByIpNumberHttpTriggerTests
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.NoContent;
         const int ipNumber = 123;
-        FipApiInsolvencyPractitionerResponseModel? nullFipApiInsolvencyPractitionerResponseModel = default;
+        FipApiInsolvencyPractitionerWithAuthResponseModel? nullFipApiInsolvencyPractitionerResponseModel = default;
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).Returns(nullFipApiInsolvencyPractitionerResponseModel);
 
