@@ -24,6 +24,12 @@
     <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 
+    <ItemGroup>
+    <Content Include="wwwroot\robots.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\INSS.FIP.Interfaces\INSS.FIP.Interfaces.csproj" />
     <ProjectReference Include="..\INSS.FIP.Models\INSS.FIP.Models.csproj" />
