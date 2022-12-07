@@ -15,6 +15,7 @@ public class InsolvencyPractitionerViewModel
 
     public string? Company { get; set; }
 
+    public string? Town { get; set; }
     public string? Address { get; set; }
 
     public string? Telephone { get; set; }

@@ -28,6 +28,7 @@ public class DomainModelToViewModelProfiles : Profile
             .ForMember(d => d.Breadcrumbs, opt => opt.Ignore())
             .ForMember(d => d.Company, opt => opt.MapFrom(s => s.RegisteredFirmName))
             .ForMember(d => d.Name, opt => opt.MapFrom(s => $"{s.Title} {s.FirstNames} {s.LastName}".Trim()))
+            .ForMember(d => d.Town, opt => opt.MapFrom(s => s.RegisteredAddressLine4))
             .ForMember(d => d.Address, opt => opt.MapFrom(s => String.Join(", ", $"{s.RegisteredAddressLine1}|{s.RegisteredAddressLine2}|{s.RegisteredAddressLine3}|{s.RegisteredAddressLine4}|{s.RegisteredAddressLine5}|{s.RegisteredPostCode}".Split('|', StringSplitOptions.RemoveEmptyEntries))));
     }
 }
