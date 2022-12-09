@@ -11,19 +11,9 @@ public static class FipApiSearchRequestExtensions
     {
         var qb = new QueryBuilder();
 
-        if (model.IpNumber != null)
-        {
-            qb.Add(nameof(FipApiSearchRequestModel.IpNumber), $"{model.IpNumber}");
-        }
-
         if (model.Company != null)
         {
             qb.Add(nameof(FipApiSearchRequestModel.Company), $"{model.Company}");
-        }
-
-        if (model.County != null)
-        {
-            qb.Add(nameof(FipApiSearchRequestModel.County), $"{model.County}");
         }
 
         if (model.FirstName != null)
@@ -39,6 +29,11 @@ public static class FipApiSearchRequestExtensions
         if (model.Town != null)
         {
             qb.Add(nameof(FipApiSearchRequestModel.Town), $"{model.Town}");
+        }
+
+        if (model.Postcode != null)
+        {
+            qb.Add(nameof(FipApiSearchRequestModel.Postcode), $"{model.Postcode}");
         }
 
         return qb.ToQueryString();

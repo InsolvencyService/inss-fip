@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Web.Constants;
 using INSS.FIP.Web.Extensions;
 using INSS.FIP.Web.Helpers;
 using INSS.FIP.Web.ViewModels;
@@ -70,9 +71,9 @@ public class IpController : Controller
     {
         SessionSearchResults = default;
 
-        var searchParametersViewModel = new SearchParametersViewModel()
+        var searchParametersViewModel = new SearchParametersViewModel
         {
-            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(),
+            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs()
         };
 
         return View(searchParametersViewModel);
@@ -80,7 +81,7 @@ public class IpController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Search([Bind("PageSize,PageNumber,FirstName,LastName,Company,Town,IpNumber,County")] SearchParametersViewModel searchParametersViewModel)
+    public async Task<IActionResult> Search([Bind("PageSize,PageNumber,FirstName,LastName,Company,Town,Postcode")] SearchParametersViewModel searchParametersViewModel)
     {
         searchParametersViewModel.Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs();
 
@@ -90,6 +91,8 @@ public class IpController : Controller
 
             return await Results(searchParametersViewModel.PageNumber);
         }
+
+        GetSortedErrors();
 
         return View(searchParametersViewModel);
     }
@@ -152,6 +155,8 @@ public class IpController : Controller
 
         SessionSearchResults = default;
 
+        GetSortedErrors();
+
         return View(nameof(Search), searchParametersViewModel);
     }
 
@@ -170,5 +175,26 @@ public class IpController : Controller
         }
 
         return NotFound();
+    }
+
+    private void GetSortedErrors()
+    {
+        if (ModelState.ErrorCount > 0)
+        {
+            ViewBag.SortedErrors = ModelState
+                .Select(m => new
+                {
+                    Key = m.Key,
+                    Order = ValidationOrder.SearchFieldValidationOrder.IndexOf(m.Key),
+                    Error = m.Value
+                })
+                .SelectMany(m => m.Error.Errors.Select(e => new
+                {
+                    m.Key,
+                    m.Order,
+                    e.ErrorMessage
+                }))
+                .OrderBy(m => m.Order);
+        }
     }
 }
