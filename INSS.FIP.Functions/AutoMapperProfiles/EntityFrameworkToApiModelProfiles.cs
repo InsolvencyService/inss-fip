@@ -21,6 +21,7 @@ public class EntityFrameworkToApiModelProfiles : Profile
             .ForMember(d => d.FirstNames, opt => opt.MapFrom(s => s.Forenames))
             .ForMember(d => d.LastName, opt => opt.MapFrom(s => s.Surname))
             .ForMember(d => d.Company, opt => opt.MapFrom(s => s.RegisteredFirmName))
+            .ForMember(d => d.Town, opt => opt.MapFrom(s => s.RegisteredAddressLine4))
             .ForMember(d => d.Postcode, opt => opt.MapFrom(s => s.RegisteredPostCode));
 
         CreateMap<CiIp, FipApiInsolvencyPractitionerResponseModel>()
@@ -29,6 +30,7 @@ public class EntityFrameworkToApiModelProfiles : Profile
             .ForMember(d => d.LastName, opt => opt.MapFrom(s => s.Surname))
             .ForMember(d => d.Telephone, opt => opt.MapFrom(s => s.RegisteredPhone))
             .ForMember(d => d.Fax, opt => opt.MapFrom(s => s.RegisteredFax))
+            .ForMember(d => d.RegisteredAddressLine4, opt => opt.MapFrom(s => s.RegisteredAddressLine4))
             .ForMember(d => d.Email, opt => opt.MapFrom(s => s.IpEmailAddress));
 
         CreateMap<WebMessage, FipApiWebMessageResponseModel>()

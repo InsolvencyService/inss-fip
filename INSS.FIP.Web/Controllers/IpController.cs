@@ -160,7 +160,7 @@ public class IpController : Controller
         return View(nameof(Search), searchParametersViewModel);
     }
 
-    [Route("IP/IP/{ipNumber}")]
+    [Route("ip/ip/{ipNumber}")]
     public async Task<IActionResult> IP([Bind("IpNumber")] int ipNumber)
     {
         var insolvencyPractitionerDomainModel = await _insolvencyPractitionerService.IpGetByIpNumberAsync(ipNumber);
