@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace INSS.FIP.Web.ViewModels;
 
@@ -39,107 +38,17 @@ public class SearchParametersViewModel : IValidatableObject
     [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
     public string? Town { get; set; }
 
-    [DisplayName("IP Number")]
-    [DataType("int")]
-    public int? IpNumber { get; set; }
-
-    [DataType("DropdownList")]
-    public string? County { get; set; }
-
-    public SelectList? Counties
-    {
-        get
-        {
-            var countyList = new[] {
-                "Alderney",
-                "Argyll",
-                "Argyll and Bute",
-                "Avon",
-                "Ayrshire",
-                "Bedfordshire",
-                "Berkshire",
-                "Buckinghamshire",
-                "Cambridgeshire",
-                "Cheshire",
-                "Cleveland",
-                "Cork",
-                "Cornwall",
-                "County Down",
-                "County Wicklow",
-                "Cumbria",
-                "Derbyshire",
-                "Devon",
-                "Dorset",
-                "Dumfries and Galloway",
-                "East Yorkshire",
-                "Essex",
-                "Fife",
-                "Flintshire",
-                "Galway",
-                "Glamorgan",
-                "Gloucestershire",
-                "Grampian",
-                "Greater Manchester",
-                "Guernsey",
-                "Gwent",
-                "Gwynedd",
-                "Hampshire",
-                "Herefordshire",
-                "Hertfordshire",
-                "Highlands",
-                "Hong Kong",
-                "Invernesshire",
-                "Isle of Lewis",
-                "Kent",
-                "Lancashire",
-                "Leicestershire",
-                "Lincolnshire",
-                "Lothian",
-                "Merseyside",
-                "Middlesex",
-                "New South Wales",
-                "Norfolk",
-                "North Lanarkshire",
-                "North Yorkshire",
-                "Northamptonshire",
-                "Nottinghamshire",
-                "Oxfordshire",
-                "Pembrokeshire",
-                "Perthshire",
-                "Shropshire",
-                "Somerset",
-                "South Glamorgan",
-                "South Yorkshire",
-                "Staffordshire",
-                "Strathclyde",
-                "Suffolk",
-                "Surrey",
-                "Sussex",
-                "Tayside",
-                "Tyne and Wear",
-                "Warwickshire",
-                "West Lothian",
-                "West Midlands",
-                "West Yorkshire",
-                "Wiltshire",
-                "Worcestershire",
-            };
-
-            return new SelectList(countyList);
-        }
-    }
+    [StringLength(8, ErrorMessage = StringLengthValidationError)]
+    [RegularExpression("(?i:^(([A-Z]{1,2}[0-9][A-Z0-9]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?[0-9][A-Z]{2}|BFPO ?[0-9]{1,4}|(KY[0-9]|MSR|VG|AI)[ -]?[0-9]{4}|[A-Z]{2} ?[0-9]{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$)",
+        ErrorMessage = InvalidCharactersValidationError)]
+    public string? Postcode { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         bool isValid = false;
-        var stringValues = new List<string?> { FirstName, LastName, Company, Town, County };
+        var stringValues = new List<string?> { FirstName, LastName, Company, Town, Postcode };
 
         if (stringValues.Any(a => !string.IsNullOrWhiteSpace(a)))
-        {
-            isValid = true;
-        }
-
-        if (IpNumber.HasValue && IpNumber.Value > 0)
         {
             isValid = true;
         }

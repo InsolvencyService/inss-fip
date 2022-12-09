@@ -9,24 +9,23 @@ namespace INSS.FIP.Web.UnitTests.ValidationTests;
 public class SearchParametersViewModelValidationTests
 {
     [Theory]
-    [InlineData(1, null, null, null, null, null)]
-    [InlineData(null, "first", null, null, null, null)]
-    [InlineData(null, null, "last", null, null, null)]
-    [InlineData(null, null, null, "company", null, null)]
-    [InlineData(null, null, null, null, "town", null)]
-    [InlineData(null, null, null, null, null, "county")]
-    [InlineData(1, "first", "last", "company", "town", "county")]
-    public void SearchParametersViewModelWithValidModelReturnsSuccess(int? ipNumber, string? firstName, string? lastName, string? company, string? town, string? county)
+    [InlineData(null, null, null, null, null)]
+    [InlineData("first", null, null, null, null)]
+    [InlineData(null, "last", null, null, null)]
+    [InlineData(null, null, "company", null, null)]
+    [InlineData(null, null, null, "town", null)]
+    [InlineData(null, null, null, null, "postcode")]
+    [InlineData("first", "last", "company", "town", "postcode")]
+    public void SearchParametersViewModelWithValidModelReturnsSuccess(string? firstName, string? lastName, string? company, string? town, string? postcode)
     {
         // Arrange
         var SearchParametersViewModel = new SearchParametersViewModel
         {
-            IpNumber = ipNumber,
             FirstName = firstName,
             LastName = lastName,
             Company = company,
             Town = town,
-            County = county
+            Postcode = postcode
         };
 
         // Act
@@ -38,19 +37,17 @@ public class SearchParametersViewModelValidationTests
     }
 
     [Theory]
-    [InlineData(null, null, null, null, null, null)]
-    [InlineData(0, null, null, null, null, null)]
-    public void SearchParametersViewModelWithInvalidModelReturnsFailue(int? ipNumber, string? firstName, string? lastName, string? company, string? town, string? county)
+    [InlineData(null, null, null, null, null)]
+    public void SearchParametersViewModelWithInvalidModelReturnsFailue(string? firstName, string? lastName, string? company, string? town, string? postcode)
     {
         // Arrange
         var SearchParametersViewModel = new SearchParametersViewModel
         {
-            IpNumber = ipNumber,
             FirstName = firstName,
             LastName = lastName,
             Company = company,
             Town = town,
-            County = county
+            Postcode = postcode
         };
 
 
