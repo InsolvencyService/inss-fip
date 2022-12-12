@@ -9,13 +9,12 @@ namespace INSS.FIP.Web.UnitTests.ValidationTests;
 public class SearchParametersViewModelValidationTests
 {
     [Theory]
-    [InlineData(null, null, null, null, null)]
     [InlineData("first", null, null, null, null)]
     [InlineData(null, "last", null, null, null)]
     [InlineData(null, null, "company", null, null)]
     [InlineData(null, null, null, "town", null)]
-    [InlineData(null, null, null, null, "postcode")]
-    [InlineData("first", "last", "company", "town", "postcode")]
+    [InlineData(null, null, null, null, "NN1 1DB")]
+    [InlineData("first", "last", "company", "town", "NN1 1DB")]
     public void SearchParametersViewModelWithValidModelReturnsSuccess(string? firstName, string? lastName, string? company, string? town, string? postcode)
     {
         // Arrange
