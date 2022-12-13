@@ -8,11 +8,7 @@ public class IpSearchRequestModel : IValidatableObject
 {
     public string Company { get; set; }
 
-    public string County { get; set; }
-
     public string FirstName { get; set; }
-
-    public int? IpNumber { get; set; }
 
     public string LastName { get; set; }
 
