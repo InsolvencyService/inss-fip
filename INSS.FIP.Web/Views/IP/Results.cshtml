@@ -32,7 +32,8 @@
                     @foreach (var searchResult in Model.SearchResults) {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">
-                                <a class="govuk-link govuk-link--no-visited-state" asp-controller="IP", asp-action="IP" asp-route-ipNumber="@searchResult.IpNumber">@Html.DisplayFor(modelItem => searchResult.Name)</a>
+                                <a class="govuk-link govuk-link--no-visited-state" asp-controller="IP", asp-action="Details"
+                                   asp-route-ipNumber="@searchResult.IpNumber" asp-route-pageNumber="@Model.Paged.PageNumber">@Html.DisplayFor(modelItem => searchResult.Name)</a>
                             </td>
                             <td class="govuk-table__cell">@Html.DisplayFor(modelItem => searchResult.Company)</td>
                             <td class="govuk-table__cell">@Html.DisplayFor(modelItem => searchResult.Town)</td>
@@ -43,7 +44,7 @@
                 <ftoot>
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell" colspan="6">
-                            <partial name="_PagingControls" for=Paged />
+                            <partial name="_Paging" for=Paged />
                         </td>
                     </tr>
                 </ftoot>

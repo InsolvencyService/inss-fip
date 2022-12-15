@@ -17,13 +17,13 @@ public class AuthBodyController : Controller
         _authBodyService = authBodyService;
     }
 
-    public async Task<IActionResult> Index(int? ipNumber = default, string? ipName = default)
+    public async Task<IActionResult> Index(int? ipNumber = default, string? ipName = default, int page = 1)
     {
         var authBodyDomainModels = await _authBodyService.GetAsync();
 
         var authBodiesViewModel = new AuthBodiesViewModel
         {
-            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(ipNumber.HasValue, ipNumber.HasValue, ipNumber.HasValue, ipNumber, ipName),
+            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(ipNumber.HasValue, ipNumber.HasValue, ipNumber.HasValue, ipNumber: ipNumber, ipName: ipName, page: page),
 
             AuthBodies = from a in authBodyDomainModels
                          select _mapper.Map<AuthBodyViewModel>(a),

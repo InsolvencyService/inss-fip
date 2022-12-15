@@ -35,7 +35,12 @@
 
         <p class="govuk-body govuk-input--width-30">You can search for an insolvency practitioner by name, company, town, city or postcode.</p>
 
-        <form asp-controller="IP" asp-action="Search" class="inss-app-validation">
+        <form asp-controller="IP" asp-action="Search" method="post" class="inss-app-validation">
+            @Html.AntiForgeryToken()
+            
+            <input type="hidden" asp-for="PageNumber" />
+            <input type="hidden" asp-for="PageSize" />
+            
             <div class="govuk-form-group">
                 <label class="govuk-label" for="FirstName">
                     First name
@@ -57,7 +62,7 @@
                 }
                 <input class="govuk-input govuk-input--width-30" id="LastName" name="LastName" type="text" asp-for="LastName">
             </div>
-            
+
             <div class="govuk-form-group">
                 <label class="govuk-label" for="Company">
                     Company

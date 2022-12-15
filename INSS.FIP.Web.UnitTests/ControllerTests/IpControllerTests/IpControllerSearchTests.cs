@@ -44,21 +44,10 @@ public class IpControllerSearchTests : BaseIpController
         A.CallTo(() => _fakeMapper.Map<SearchResultViewModel>(A<SearchResultDomainModel>.Ignored)).Returns(A.Dummy<SearchResultViewModel>());
 
         // Act
-        var result = await controller.Search(searchParametersViewModel);
+        var result = controller.Search(searchParametersViewModel);
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<SearchResultsViewModel>(viewResult.ViewData.Model);
-
-        Assert.NotNull(model);
-        Assert.NotNull(model.Breadcrumbs);
-        Assert.NotNull(model.Paged);
-        Assert.NotNull(model.SearchResults);
-        Assert.Equal(expectedResults, model.SearchResults!.Count());
-
-        A.CallTo(() => _fakeInsolvencyPractitionerService.SearchAsync(A<FipApiSearchRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<FipApiSearchRequestModel>(A<SearchParametersViewModel>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<SearchResultViewModel>(A<SearchResultDomainModel>.Ignored)).MustHaveHappened(expectedResults, Times.Exactly);
+        Assert.IsType<RedirectToActionResult>(result);
     }
 
     [Fact]
@@ -191,7 +180,7 @@ public class IpControllerSearchTests : BaseIpController
         A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerViewModel>(A<InsolvencyPractitionerDomainModel>.Ignored)).Returns(A.Dummy<InsolvencyPractitionerViewModel>());
 
         // Act
-        var result = await controller.IP(1);
+        var result = await controller.Details(1);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -214,7 +203,7 @@ public class IpControllerSearchTests : BaseIpController
         A.CallTo(() => _fakeInsolvencyPractitionerService.IpGetByIpNumberAsync(A<int>.Ignored)).Returns(nullServiceGetByIpResults);
 
         // Act
-        var result = await controller.IP(1);
+        var result = await controller.Details(1);
 
         // Assert
         var viewResult = Assert.IsType<NotFoundResult>(result);

@@ -49,11 +49,11 @@ namespace INSS.FIP.Services
             {
                 Uri = new Uri($"api/Ip/{ipNumber}", UriKind.Relative),
             };
-            var apiResponse = await _fipApiConnector.ProcessAsync<FipApiInsolvencyPractitionerResponseModel>(apiConnectorRequestModel);
+            var apiResponse = await _fipApiConnector.ProcessAsync<FipApiInsolvencyPractitionerWithAuthResponseModel>(apiConnectorRequestModel);
 
             if (apiResponse.IsSuccessStatusCode)
             {
-                return _mapper.Map<InsolvencyPractitionerDomainModel>(apiResponse.Payload);
+                return _mapper.Map<InsolvencyPractitionerDomainModel>(apiResponse.Payload.IP);
             }
 
             _logger.LogError("Error response from {Method} API: {Code}, {Reason}", nameof(IpGetByIpNumberAsync), apiResponse.StatusCode, apiResponse.ErrorReasonPhrase);
