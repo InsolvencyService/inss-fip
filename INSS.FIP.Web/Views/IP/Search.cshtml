@@ -33,6 +33,8 @@
         
         @await Html.PartialAsync("_ValidationSummary", ViewData.ModelState)
 
+        <h1 class="govuk-heading-l">Search</h1>
+
         <p class="govuk-body govuk-input--width-30">You can search for an insolvency practitioner by name, company, town, city or postcode.</p>
 
         <form asp-controller="IP" asp-action="Search" method="post" class="inss-app-validation">
