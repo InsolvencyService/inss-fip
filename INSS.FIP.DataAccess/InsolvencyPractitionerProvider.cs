@@ -38,10 +38,6 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
     {
         var query = BaseQuery;
 
-        if (ipSearchRequestModel.IpNumber.HasValue)
-        {
-            query = query.Where(x => x.IpNo == ipSearchRequestModel.IpNumber.Value);
-        }
         if (!string.IsNullOrWhiteSpace(ipSearchRequestModel.LastName))
         {
             query = query.Where(x => x.Surname.StartsWith(ipSearchRequestModel.LastName));
@@ -60,11 +56,9 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
                                      (x.RegisteredAddressLine4 != null && x.RegisteredAddressLine4.StartsWith(ipSearchRequestModel.Town)) ||
                                      (x.RegisteredAddressLine5 != null && x.RegisteredAddressLine5.StartsWith(ipSearchRequestModel.Town)));
         }
-        if (!string.IsNullOrWhiteSpace(ipSearchRequestModel.County))
+        if (!string.IsNullOrWhiteSpace(ipSearchRequestModel.Postcode))
         {
-            query = query.Where(x => (x.RegisteredAddressLine3 != null && x.RegisteredAddressLine3.StartsWith(ipSearchRequestModel.County)) ||
-                                     (x.RegisteredAddressLine4 != null && x.RegisteredAddressLine4.StartsWith(ipSearchRequestModel.County)) ||
-                                     (x.RegisteredAddressLine5 != null && x.RegisteredAddressLine5.StartsWith(ipSearchRequestModel.County)));
+            query = query.Where(x => x.RegisteredPostCode.StartsWith(ipSearchRequestModel.Postcode));
         }
 
         query = query.OrderBy(o => o.RegisteredFirmName);

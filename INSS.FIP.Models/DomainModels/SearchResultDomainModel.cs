@@ -15,7 +15,7 @@ public class SearchResultDomainModel
 
     public string Company { get; set; }
 
-    public string Postcode { get; set; }
+    public string Town { get; set; }
 
-    public string LicensingBody { get; set; }
+    public string Postcode { get; set; }
 }

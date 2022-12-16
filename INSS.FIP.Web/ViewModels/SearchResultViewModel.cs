@@ -13,9 +13,9 @@ public class SearchResultViewModel
 
     public string? Company { get; set; }
 
+    [DisplayName("Town or city")]
+    public string? Town { get; set; }
+
     [DisplayName("Post code")]
     public string? Postcode { get; set; }
-
-    [DisplayName("Authorising body")]
-    public string? LicensingBody { get; set; }
 }

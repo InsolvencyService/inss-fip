@@ -21,5 +21,7 @@ public class ApiModelToDomainModelProfiles : Profile
         CreateMap<FipApiSearchResultResponseModel, SearchResultDomainModel>();
 
         CreateMap<SearchParametersViewModel, FipApiSearchRequestModel>();
+
+        CreateMap<FipApiInsolvencyPractitionerWithAuthResponseModel, InsolvencyPractitionerWithAuthBodyDomainModel>();
     }
 }

@@ -41,7 +41,10 @@ stages:
         displayName: 'Build Solution'
         inputs:
           command: 'build'
-          projects: '**/INSS.FIP.sln'
+          projects: |
+            **/INSS.FIP*.csproj
+            !**/INSS.FIP.QA*.csproj
+          # projects: '**/INSS.FIP.sln'
           arguments: '--configuration $(buildConfiguration)'        
 
       - task: DotNetCoreCLI@2
@@ -56,7 +59,9 @@ stages:
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '**/*.csproj'
+          projects: |
+            **/INSS.FIP*.csproj
+            !**/INSS.FIP.QA*.csproj
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishPipelineArtifact@1

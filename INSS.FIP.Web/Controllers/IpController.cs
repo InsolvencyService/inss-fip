@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels;
+using INSS.FIP.Web.Constants;
 using INSS.FIP.Web.Extensions;
 using INSS.FIP.Web.Helpers;
 using INSS.FIP.Web.ViewModels;
@@ -52,6 +53,7 @@ public class IpController : Controller
         }
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var specialMessageViewModel = new SpecialMessageViewModel();
@@ -66,21 +68,22 @@ public class IpController : Controller
         return View(specialMessageViewModel);
     }
 
+    [HttpGet("search")]
     public IActionResult Search()
     {
         SessionSearchResults = default;
 
-        var searchParametersViewModel = new SearchParametersViewModel()
+        var searchParametersViewModel = new SearchParametersViewModel
         {
-            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(),
+            Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs()
         };
 
         return View(searchParametersViewModel);
     }
 
-    [HttpPost]
+    [HttpPost("search")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Search([Bind("PageSize,PageNumber,FirstName,LastName,Company,Town,IpNumber,County")] SearchParametersViewModel searchParametersViewModel)
+    public IActionResult Search([FromForm]SearchParametersViewModel searchParametersViewModel)
     {
         searchParametersViewModel.Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs();
 
@@ -88,22 +91,16 @@ public class IpController : Controller
         {
             SessionSearchParametersViewModel = searchParametersViewModel;
 
-            return await Results(searchParametersViewModel.PageNumber);
+            return RedirectToAction("Results", new { searchParametersViewModel.PageNumber });
         }
+
+        GetSortedErrors();
 
         return View(searchParametersViewModel);
     }
 
-    public async Task<IActionResult> Results()
-    {
-        var searchParametersViewModel = SessionSearchParametersViewModel ?? new SearchParametersViewModel();
-
-        return await Results(searchParametersViewModel.PageNumber);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Results([Bind("PageNumber")] int pageNumber)
+    [HttpGet("search-results/{pageNumber?}")]
+    public async Task<IActionResult> Results(int pageNumber = 1)
     {
         var searchParametersViewModel = SessionSearchParametersViewModel ?? new SearchParametersViewModel();
         searchParametersViewModel.PageNumber = pageNumber;
@@ -127,17 +124,22 @@ public class IpController : Controller
 
             if (searchResults != null && searchResults.Any())
             {
-                var pagedViewModel = new PagedViewModel(searchParametersViewModel.PageNumber, searchParametersViewModel.PageSize, searchResults.Count());
+                var pagedViewModel = new PagedViewModel(
+                    searchParametersViewModel.PageNumber,
+                    searchParametersViewModel.PageSize,
+                    searchResults.Count(),
+                    "search-results");
+
                 var searchResultsViewModel = new SearchResultsViewModel
                 {
-                    Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(true),
+                    Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(true, page: pageNumber),
                     Paged = pagedViewModel,
                     SearchResults = searchResults.Skip(pagedViewModel.SkipCount).Take(pagedViewModel.PageSize),
                 };
 
                 SessionSearchResults = searchResults;
 
-                return View(nameof(Results), searchResultsViewModel);
+                return View("Results", searchResultsViewModel);
             }
 
             if (searchResults == null)
@@ -152,23 +154,48 @@ public class IpController : Controller
 
         SessionSearchResults = default;
 
-        return View(nameof(Search), searchParametersViewModel);
+        GetSortedErrors();
+
+        return View("Search", searchParametersViewModel);
     }
 
-    [Route("IP/IP/{ipNumber}")]
-    public async Task<IActionResult> IP([Bind("IpNumber")] int ipNumber)
+    [HttpGet("insolvency-practitioner-details/{ipNumber}/{pageNumber?}")]
+    public async Task<IActionResult> Details(int ipNumber, int pageNumber = 1)
     {
         var insolvencyPractitionerDomainModel = await _insolvencyPractitionerService.IpGetByIpNumberAsync(ipNumber);
 
         if (insolvencyPractitionerDomainModel != null)
         {
-            var searchResulViewModel = _mapper.Map<InsolvencyPractitionerViewModel>(insolvencyPractitionerDomainModel);
+            var searchResultViewModel = _mapper.Map<InsolvencyPractitionerViewModel>(insolvencyPractitionerDomainModel);
 
-            searchResulViewModel.Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(true, true);
+            searchResultViewModel.Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(true, true, page : pageNumber);
 
-            return View(searchResulViewModel);
+            searchResultViewModel.PageNumber = pageNumber;
+
+            return View(searchResultViewModel);
         }
 
         return NotFound();
+    }
+
+    private void GetSortedErrors()
+    {
+        if (ModelState.ErrorCount > 0)
+        {
+            ViewBag.SortedErrors = ModelState
+                .Select(m => new
+                {
+                    Key = m.Key,
+                    Order = ValidationOrder.SearchFieldValidationOrder.IndexOf(m.Key),
+                    Error = m.Value
+                })
+                .SelectMany(m => m.Error.Errors.Select(e => new
+                {
+                    m.Key,
+                    m.Order,
+                    e.ErrorMessage
+                }))
+                .OrderBy(m => m.Order);
+        }
     }
 }

@@ -8,6 +8,8 @@ public class InsolvencyPractitionerViewModel
 {
     public IEnumerable<BreadcrumbItemViewModel>? Breadcrumbs { get; set; }
 
+    public int PageNumber { get; set; }
+
     [DisplayName("IP Number")]
     public int? IpNumber { get; set; }
 
@@ -15,6 +17,7 @@ public class InsolvencyPractitionerViewModel
 
     public string? Company { get; set; }
 
+    public string? Town { get; set; }
     public string? Address { get; set; }
 
     public string? Telephone { get; set; }

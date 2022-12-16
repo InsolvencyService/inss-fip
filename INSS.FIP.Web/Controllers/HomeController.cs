@@ -4,7 +4,6 @@ namespace INSS.FIP.Web.Controllers;
 
 public class HomeController : Controller
 {
-
     [Route("/home/accessibility-statement")]
     public IActionResult AccessibilityStatement()
     {
