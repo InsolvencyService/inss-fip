@@ -11,7 +11,7 @@ namespace INSS.FIP.QA.Automation.Pages
         private static string expectedPageTitle { get; } = "Find an insolvency practitioner - Find an insolvency practitioner";
         private static string expectedPageHeader { get; } = "Find an insolvency practitioner";
         private static By expectedPageHeaderElement { get; } = By.XPath("//*[@id='main-content']//h1");
-        private static By startSearchButton { get; } = By.XPath("//*[@href='/ip/search']");
+        private static By startSearchButton { get; } = By.XPath("//*[@href='/search']");
         private static By privacyFooterLink { get; } = By.XPath("//footer//li[1]/a");
         private static By accessibilityFooterLink { get; } = By.XPath("//footer//li[2]/a");
         private static By termsAndConditionsFooterLink { get; } = By.XPath("//footer//li[3]/a");
