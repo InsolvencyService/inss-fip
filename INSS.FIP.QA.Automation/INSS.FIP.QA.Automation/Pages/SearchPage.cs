@@ -20,6 +20,7 @@ namespace INSS.FIP.QA.Automation.Pages
         private static By MainErroMessageElement = By.XPath("//*[@class='govuk-error-summary__body']");
         private static By SubErroMessageElement = By.Id("organisationName-error");
         private static By homeBreadcrumb { get; } = By.LinkText("Home");
+        private static By searchBreadcrumb { get; } = By.XPath("/html/body/div[2]/div/ol/li[2]");
 
         public static void verifyFIPSearchPage()
         {
@@ -75,6 +76,12 @@ namespace INSS.FIP.QA.Automation.Pages
             Assert.AreEqual(expectedPageTitle, WebDriver.Title);
             Assert.AreEqual(expectedPageHeader, WebDriver.FindElement(expectedPageHeaderElement).Text);
             Assert.IsTrue(WebDriver.FindElement(By.XPath("//*[@id='main-content']/div[2]")).Text.Contains(ExpectedText));
+        }
+
+        public static void VerifyBreadcrumbText()
+        {
+            Assert.AreEqual("Home", WebDriver.FindElement(homeBreadcrumb).Text);
+            Assert.AreEqual("Search", WebDriver.FindElement(searchBreadcrumb).Text);           
         }
     }
 }

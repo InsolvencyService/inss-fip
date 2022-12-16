@@ -27,6 +27,7 @@ namespace INSS.FIP.QA.Automation
         public void ThenTheURLPageTitleAndPageHeadingWillBeDisplayedForTheSearchResultsPage()
         {
             SearchResultsPage.verifyFIPSearchResultsPage();
+            SearchResultsPage.VerifyBreadcrumbText();
         }
 
         [When(@"I press the Home breadcrumb on the Search results page")]

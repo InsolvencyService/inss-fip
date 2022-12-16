@@ -16,6 +16,7 @@ namespace INSS.FIP.QA.Automation.Pages
         private static By SearchResultsFirstRecordLink { get; } = By.XPath("//*[@id='main-content']//td[1]/a");
         private static By homeBreadcrumb { get; } = By.LinkText("Home");
         private static By searchBreadcrumb { get; } = By.LinkText("Search");
+        private static By searchResultsBreadcrumb { get; } = By.XPath("/html/body/div[2]/div/ol/li[3]");
         private static By NameElement { get; } = By.XPath("//*[@id='main-content']/div[3]/form/table/tbody[1]/tr/td[1]");
                                                  
         private static By CompanyElement { get; } = By.XPath("//*[@id='main-content']//table/tbody[1]/tr/td[2]");
@@ -50,6 +51,13 @@ namespace INSS.FIP.QA.Automation.Pages
             Assert.AreEqual(Constants.companyName, WebDriver.FindElement(CompanyElement).Text);
             Assert.AreEqual(Constants.town, WebDriver.FindElement(TownElement).Text);
             Assert.AreEqual(Constants.postcode, WebDriver.FindElement(PostcodeElement).Text);
+        }
+
+        public static void VerifyBreadcrumbText()
+        {
+            Assert.AreEqual("Home", WebDriver.FindElement(homeBreadcrumb).Text);
+            Assert.AreEqual("Search", WebDriver.FindElement(searchBreadcrumb).Text);
+            Assert.AreEqual("Search results", WebDriver.FindElement(searchResultsBreadcrumb).Text);
         }
     }
 }

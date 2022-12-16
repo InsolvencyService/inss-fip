@@ -20,6 +20,7 @@ namespace INSS.FIP.QA.Automation
         public void ThenTheFIPSearchPageWillBeDisplayedAndTheURLPageTitleAndThePageHeadingWillBeAsPerRequirements()
         {
             SearchPage.verifyFIPSearchPage();
+            SearchPage.VerifyBreadcrumbText();
         }
 
         [When(@"I press the Search button without entering any search values")]
