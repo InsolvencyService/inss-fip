@@ -28,7 +28,7 @@ public class IpSearchRequestModel : IValidatableObject
 
         if (!isValid)
         {
-            yield return new ValidationResult("No valid search values have been entered");
+            yield return new ValidationResult("Enter either first name, last name, company, town or city, or postcode");
         }
     }
 }
