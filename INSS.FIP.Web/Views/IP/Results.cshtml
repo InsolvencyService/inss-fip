@@ -44,7 +44,10 @@
                 <ftoot>
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell" colspan="6">
-                            <partial name="_Paging" for=Paged />
+                            @if (Model?.Paged?.TotalResults > Model?.SearchResults.Count())
+                            {
+                               <partial name="_Paging" for=Paged />
+                            }
                         </td>
                     </tr>
                 </ftoot>
