@@ -26,14 +26,22 @@ namespace INSS.FIP.QA.Automation
         [When(@"I press the Search button without entering any search values")]
         public void WhenIPressTheSearchButtonWithoutEnteringAnySearchValues()
         {
-            throw new PendingStepException();
+            SearchPage.CLickSearchButton();
         }
 
-        [Then(@"I am shown the following error message")]
-        public void ThenIAmShownTheFollowingErrorMessage()
+        [Then(@"I am shown the single error message ""([^""]*)""")]
+        public void ThenIAmShownTheSingleErrorMessage(string ErrorMessage)
         {
-            throw new PendingStepException();
+            SearchPage.VerifySingleErrorMessage(ErrorMessage);
         }
+
+
+        [Then(@"I am shown the following error message ""([^""]*)""")]
+        public void ThenIAmShownTheFollowingErrorMessage(string ErrorMessage)
+        {
+            SearchPage.VerifyErrorMessage(ErrorMessage);
+        }
+
 
         [When(@"I enter valid values but I enter an invalid First name")]
         public void WhenIEnterValidValuesButIEnterAnInvalidFirstName()
@@ -74,7 +82,7 @@ namespace INSS.FIP.QA.Automation
         [When(@"I enter valid values but I enter an invalid Postcode")]
         public void WhenIEnterValidValuesButIEnterAnInvalidPostcode()
         {
-            throw new PendingStepException();
+            SearchPage.EnterPostcode("B43 AAA");
         }
 
         [When(@"I press the Home breadcrumb on the FIP Search page")]
