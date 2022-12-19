@@ -93,8 +93,5 @@ namespace INSS.FIP.QA.Automation
         {
             IPDetailsPage.verifyIPDetailsforIPPractitioner();
         }
-
-
-
     }
 }
