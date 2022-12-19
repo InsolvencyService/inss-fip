@@ -7,9 +7,9 @@ namespace INSS.FIP.QA.Automation.Pages
 {
     internal class SearchPage : ElementHelper
     {
-        private static string expectedPageUrl { get; } = string.Concat(Constants.StartPageUrl, "search");
-        private static string expectedPageTitle { get; } = "Search - Find an insolvency practitioner";
-        private static string expectedPageHeader { get; } = "Search";
+        private static string expectedPageUrl { get; } = string.Concat(Constants.StartPageUrl, "IP/Search");
+        private static string expectedPageTitle { get; } = "Search the directory - Find an insolvency practitioner";
+        private static string expectedPageHeader { get; } = "Search the directory";
         private static By expectedPageHeaderElement { get; } = By.XPath("//*[@id='main-content']//h1");
         private static By searchButton { get; } = By.XPath("//button");
         private static By firstNameField { get; } = By.Id("FirstName");
