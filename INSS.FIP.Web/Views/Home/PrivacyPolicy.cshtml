@@ -1,5 +1,11 @@
-﻿@{
+﻿@model INSS.FIP.Web.ViewModels.InfoPagesViewModel
+@{
     ViewData["Title"] = "Privacy policy";
+}
+
+@section Breadcrumb
+{
+    <partial name="_Breadcrumb" model="Model.Breadcrumbs" />
 }
 
 <div class="govuk-grid-row">

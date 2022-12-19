@@ -1,7 +1,12 @@
-﻿@{
+﻿@model INSS.FIP.Web.ViewModels.InfoPagesViewModel
+@{
     ViewData["Title"] = "Terms and conditions";
 }
 
+@section Breadcrumb
+{
+    <partial name="_Breadcrumb" model="Model.Breadcrumbs" />
+}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
