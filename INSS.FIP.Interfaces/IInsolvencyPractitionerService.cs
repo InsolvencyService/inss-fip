@@ -7,5 +7,5 @@ public interface IInsolvencyPractitionerService
 {
     Task<IList<SearchResultDomainModel>> SearchAsync(FipApiSearchRequestModel fipApiSearchRequest);
 
-    Task<InsolvencyPractitionerDomainModel> IpGetByIpNumberAsync(int ipNumber);
+    Task<InsolvencyPractitionerWithAuthBodyDomainModel> IpGetByIpNumberAsync(int ipNumber);
 }

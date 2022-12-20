@@ -22,6 +22,8 @@ public class ApiModelToDomainModelProfiles : Profile
 
         CreateMap<SearchParametersViewModel, FipApiSearchRequestModel>();
 
-        CreateMap<FipApiInsolvencyPractitionerWithAuthResponseModel, InsolvencyPractitionerWithAuthBodyDomainModel>();
+        CreateMap<FipApiInsolvencyPractitionerWithAuthResponseModel, InsolvencyPractitionerWithAuthBodyDomainModel>()
+            .ForMember(m => m.InsolvencyPractitioner, opt => opt.MapFrom(rm => rm.IP))
+            .ForMember(m => m.AuthBodyDomainModel, opt => opt.MapFrom(rm => rm.AuthorisingBody));
     }
 }
