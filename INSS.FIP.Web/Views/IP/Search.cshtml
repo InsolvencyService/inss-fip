@@ -7,7 +7,6 @@
     var companyError = ViewContext?.ModelState["Company"]?.Errors != null && ViewContext.ModelState["Company"].Errors.Count > 0;
     var townError = ViewContext?.ModelState["Town"]?.Errors != null && ViewContext.ModelState["Town"].Errors.Count > 0;
     var postcodeError = ViewContext?.ModelState["Postcode"]?.Errors != null && ViewContext.ModelState["Postcode"].Errors.Count > 0;
-
 }
 
 @section Breadcrumb 
@@ -43,7 +42,7 @@
             <input type="hidden" asp-for="PageNumber" />
             <input type="hidden" asp-for="PageSize" />
             
-            <div class="govuk-form-group">
+            <div class="@(firstNameError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
                 <label class="govuk-label" for="FirstName">
                     First name
                 </label>
@@ -54,7 +53,7 @@
                 <input class="govuk-input govuk-input--width-30" id="FirstName" name="FirstName" type="text" asp-for="FirstName">
             </div>
 
-            <div class="govuk-form-group">
+            <div class="@(lastNameError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
                 <label class="govuk-label" for="LastName">
                     Last name
                 </label>
@@ -65,7 +64,7 @@
                 <input class="govuk-input govuk-input--width-30" id="LastName" name="LastName" type="text" asp-for="LastName">
             </div>
 
-            <div class="govuk-form-group">
+            <div class="@(companyError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
                 <label class="govuk-label" for="Company">
                     Company
                 </label>
@@ -76,7 +75,7 @@
                 <input class="govuk-input govuk-input--width-30" id="Company" name="Company" type="text" asp-for="Company">
             </div>
 
-            <div class="govuk-form-group">
+            <div class="@(townError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
                 <label class="govuk-label" for="Town">
                     Town or city
                 </label>
@@ -87,7 +86,7 @@
                 <input class="govuk-input govuk-input--width-30" id="Town" name="Town" type="text" asp-for="Town">
             </div>
 
-            <div class="govuk-form-group">
+            <div class="@(postcodeError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
                 <label class="govuk-label" for="Postcode">
                     Postcode
                 </label>
