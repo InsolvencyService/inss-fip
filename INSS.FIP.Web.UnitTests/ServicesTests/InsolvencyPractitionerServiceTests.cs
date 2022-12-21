@@ -78,7 +78,7 @@ public class InsolvencyPractitionerServiceTests
         dummyApiConnectorResponseModel.Payload = A.Dummy<FipApiInsolvencyPractitionerWithAuthResponseModel>();
 
         A.CallTo(() => _fakeFipApiConnector.ProcessAsync<FipApiInsolvencyPractitionerWithAuthResponseModel>(A<ApiConnectorRequestModel>.Ignored)).Returns(dummyApiConnectorResponseModel);
-        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerDomainModel>(A<FipApiInsolvencyPractitionerResponseModel>.Ignored)).Returns(A.Dummy<InsolvencyPractitionerDomainModel>());
+        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerWithAuthBodyDomainModel>(A<FipApiInsolvencyPractitionerResponseModel>.Ignored)).Returns(A.Dummy<InsolvencyPractitionerWithAuthBodyDomainModel>());
 
         // Act
         var result = await InsolvencyPractitionerService.IpGetByIpNumberAsync(123);
@@ -87,7 +87,7 @@ public class InsolvencyPractitionerServiceTests
         Assert.NotNull(result);
 
         A.CallTo(() => _fakeFipApiConnector.ProcessAsync<FipApiInsolvencyPractitionerWithAuthResponseModel>(A<ApiConnectorRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerDomainModel>(A<FipApiInsolvencyPractitionerWithAuthResponseModel>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerWithAuthBodyDomainModel>(A<FipApiInsolvencyPractitionerWithAuthResponseModel>.Ignored)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]

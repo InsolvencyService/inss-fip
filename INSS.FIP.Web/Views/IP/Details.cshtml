@@ -1,4 +1,4 @@
-﻿@model INSS.FIP.Web.ViewModels.InsolvencyPractitionerViewModel
+﻿@model INSS.FIP.Web.ViewModels.InsolvencyPractitionerWithAuthBodyViewModel
 
 @{
     ViewData["Title"] = "Insolvency practitioner details";
@@ -15,66 +15,131 @@
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Name)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.Name)
+                    @Html.DisplayFor(model => model.InsolvencyPractitioner.Name)
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Company)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Company)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.Company)
+                    @Html.DisplayFor(model => model.InsolvencyPractitioner.Company)
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Address)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Address)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.Address)
+                    @Html.DisplayFor(model => model.InsolvencyPractitioner.Address)
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Telephone)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Telephone)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.Telephone)
+                    @Html.DisplayFor(model => model.InsolvencyPractitioner.Telephone)
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Fax)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Fax)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.Fax)
+                    @{
+                        var fax = !string.IsNullOrWhiteSpace(Model.InsolvencyPractitioner.Fax) ? Model.InsolvencyPractitioner.Fax : "N/A";
+                    }
+                    @fax
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.IpNumber)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.Email)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @Html.DisplayFor(model => model.IpNumber)
+                    <a class="govuk-link" href="mailto:@Html.DisplayFor(model => model.InsolvencyPractitioner.Email)">@Html.DisplayFor(model => model.InsolvencyPractitioner.Email)</a>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.LicensingBody)
+                    @Html.DisplayNameFor(model => model.InsolvencyPractitioner.IpNumber)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <a class="govuk-link govuk-link--no-visited-state" href="/AuthBody?ipNumber=@Model.IpNumber&ipName=@Model.Name&page=@Model.PageNumber#@Model.LicensingBody">@Html.DisplayFor(model => model.LicensingBody)</a>
+                    @Html.DisplayFor(model => model.InsolvencyPractitioner.IpNumber)
+                </dd>
+            </div>
+        </dl>
+        
+        <h2 class="govuk-heading-m">Authorising body</h2>
+        
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">@Model.AuthBody.Name</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Website
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <p class="govuk-body">
+                        <a href="@Model.AuthBody.Website">@Model.AuthBody.Website</a>
+                    </p>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    @Html.DisplayNameFor(model => model.Email)
+                    Address
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <a class="govuk-link" href="mailto:@Html.DisplayFor(model => model.Email)">@Html.DisplayFor(model => model.Email)</a>
+                    @if (!string.IsNullOrWhiteSpace(Model.AuthBody.AuthBodyAddressLine1))
+                    {
+                        @Model.AuthBody.AuthBodyAddressLine1 <br />
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.AuthBody.AuthBodyAddressLine2))
+                    {
+                        @Model.AuthBody.AuthBodyAddressLine2 <br />
+                    }
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.AuthBody.AuthBodyAddressLine3))
+                    {
+                        @Model.AuthBody.AuthBodyAddressLine3 <br />
+                    }
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.AuthBody.AuthBodyAddressLine4))
+                    {
+                        @Model.AuthBody.AuthBodyAddressLine4 <br />
+                    }
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.AuthBody.AuthBodyAddressLine5))
+                    {
+                        @Model.AuthBody.AuthBodyAddressLine5 <br />
+                    }
+
+                    @Model.AuthBody.AuthBodyPostcode
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Telephone number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <p class="govuk-body">@Model.AuthBody.Telephone</p>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Fax number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <p class="govuk-body">@Model.AuthBody.Fax</p>
                 </dd>
             </div>
         </dl>

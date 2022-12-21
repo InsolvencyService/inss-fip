@@ -166,7 +166,7 @@ public class IpController : Controller
 
         if (insolvencyPractitionerDomainModel != null)
         {
-            var searchResultViewModel = _mapper.Map<InsolvencyPractitionerViewModel>(insolvencyPractitionerDomainModel);
+            var searchResultViewModel = _mapper.Map<InsolvencyPractitionerWithAuthBodyViewModel>(insolvencyPractitionerDomainModel);
 
             searchResultViewModel.Breadcrumbs = BreadcrumbHelpers.BuildBreadcrumbs(true, true, page : pageNumber);
 

@@ -173,31 +173,30 @@ public class IpControllerSearchTests : BaseIpController
     public async Task IpControllerIpReturnsSuccess()
     {
         // Arrange
-        var serviceGetByIpResults = A.Dummy<InsolvencyPractitionerDomainModel>();
+        var serviceGetByIpResults = A.Dummy<InsolvencyPractitionerWithAuthBodyDomainModel>();
         using var controller = BuildIpController();
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.IpGetByIpNumberAsync(A<int>.Ignored)).Returns(serviceGetByIpResults);
-        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerViewModel>(A<InsolvencyPractitionerDomainModel>.Ignored)).Returns(A.Dummy<InsolvencyPractitionerViewModel>());
+        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerWithAuthBodyViewModel>(A<InsolvencyPractitionerDomainModel>.Ignored)).Returns(A.Dummy<InsolvencyPractitionerWithAuthBodyViewModel>());
 
         // Act
         var result = await controller.Details(1);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<InsolvencyPractitionerViewModel>(viewResult.ViewData.Model);
+        var model = Assert.IsAssignableFrom<InsolvencyPractitionerWithAuthBodyViewModel>(viewResult.ViewData.Model);
 
         Assert.NotNull(model);
-        Assert.NotNull(model.Breadcrumbs);
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.IpGetByIpNumberAsync(A<int>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerViewModel>(A<InsolvencyPractitionerDomainModel>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerWithAuthBodyViewModel>(A<InsolvencyPractitionerWithAuthBodyDomainModel>.Ignored)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
     public async Task IpControllerIpReturnsNotFound()
     {
         // Arrange
-        InsolvencyPractitionerDomainModel? nullServiceGetByIpResults = default;
+        InsolvencyPractitionerWithAuthBodyDomainModel? nullServiceGetByIpResults = default;
         using var controller = BuildIpController();
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.IpGetByIpNumberAsync(A<int>.Ignored)).Returns(nullServiceGetByIpResults);
@@ -211,6 +210,6 @@ public class IpControllerSearchTests : BaseIpController
         Assert.Equal((int)HttpStatusCode.NotFound, viewResult.StatusCode);
 
         A.CallTo(() => _fakeInsolvencyPractitionerService.IpGetByIpNumberAsync(A<int>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerViewModel>(A<InsolvencyPractitionerDomainModel>.Ignored)).MustNotHaveHappened();
+        A.CallTo(() => _fakeMapper.Map<InsolvencyPractitionerViewModel>(A<InsolvencyPractitionerWithAuthBodyDomainModel>.Ignored)).MustNotHaveHappened();
     }
 }

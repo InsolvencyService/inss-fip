@@ -43,7 +43,7 @@ namespace INSS.FIP.Services
             return default;
         }
 
-        public async Task<InsolvencyPractitionerDomainModel> IpGetByIpNumberAsync(int ipNumber)
+        public async Task<InsolvencyPractitionerWithAuthBodyDomainModel> IpGetByIpNumberAsync(int ipNumber)
         {
             var apiConnectorRequestModel = new ApiConnectorRequestModel
             {
@@ -53,7 +53,7 @@ namespace INSS.FIP.Services
 
             if (apiResponse.IsSuccessStatusCode)
             {
-                return _mapper.Map<InsolvencyPractitionerDomainModel>(apiResponse.Payload.IP);
+                return _mapper.Map<InsolvencyPractitionerWithAuthBodyDomainModel>(apiResponse.Payload);
             }
 
             _logger.LogError("Error response from {Method} API: {Code}, {Reason}", nameof(IpGetByIpNumberAsync), apiResponse.StatusCode, apiResponse.ErrorReasonPhrase);
