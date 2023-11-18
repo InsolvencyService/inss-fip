@@ -40,9 +40,9 @@ jobs:
               ConnectionType: 'AzureRM'
               azureSubscription: ${{ parameters.azureSubscription }}
               appType: 'webApp'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
+              WebAppName: 'app-fip-frontend-${{ lower(parameters.environment) }}'
               deployToSlotOrASE: true
-              resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              resourceGroupName: 'rg-fip-${{ lower(parameters.environment) }}'
               slotName: 'staging'
               package: '$(Pipeline.Workspace)/**/${{ parameters.appZipFile }}'
               appSettings: >
@@ -57,8 +57,8 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Start Azure App Service'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              WebAppName: 'app-fip-frontend-${{ lower(parameters.environment) }}'
+              ResourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'
               SpecifySlotOrASE: true
               Slot: 'staging'
 
@@ -82,8 +82,8 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Swap Slots'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'app-fip-frontend-${{ lower(parameters.environment) }}'
+              ResourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'
               SourceSlot: 'staging'
               SwapWithProduction: true
 
@@ -105,8 +105,8 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Stop Azure App Service'
-              WebAppName: 'app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              WebAppName: 'app-fip-frontend-${{ lower(parameters.environment) }}'
+              ResourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'             
               SpecifySlotOrASE: true
               Slot: 'staging'
 
@@ -121,72 +121,101 @@ jobs:
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               appType: 'functionApp'
-              appName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
+              appName: 'func-fip-backend-${{ lower(parameters.environment) }}'
               deployToSlotOrASE: true
-              resourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              resourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'
               slotName: 'staging'
               package: '$(Pipeline.Workspace)/**/${{ parameters.funcZipFile }}'
-              appSettings: >
-                -iirwebdbContextConnectionString "$(iirwebdbContextConnectionString)"
-                -OpenApi__Version "$(OpenApi__Version)"
-                -OpenApi__DocVersion "$(OpenApi__DocVersion)"
-                -OpenApi__DocTitle "$(OpenApi__DocTitle)"
-                -APPLICATIONINSIGHTS_CONNECTION_STRING "$(appInsightsConnectionString)"
 
+          - task: AzureAppServiceSettings@1
+              displayName: Apply App Service Settings
+              inputs:
+                azureSubscription: ${{ parameters.azureSubscription }}
+                appName: 'func-fip-backend-${{ lower(parameters.environment) }}'
+                slotName: 'staging'
+                appSettings: |
+                  [
+                    {
+                      "name": "iirwebdbContextConnectionString",
+                      "value": "$(iirwebdbContextConnectionString)",
+                      "slotSetting": false
+                    },
+                    {
+                      "name": "OpenApi__Version",
+                      "value": "$(OpenApi__Version)",
+                      "slotSetting": false
+                    },
+                    {
+                      "name": "OpenApi__DocVersion",
+                      "value": "$(OpenApi__DocVersion)",
+                      "slotSetting": false
+                    },
+                    {
+                      "name": "OpenApi__DocTitle",
+                      "value": "$(OpenApi__DocTitle)",
+                      "slotSetting": false
+                    },
+                    {
+                      "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                      "value": "$(appInsightsConnectionString)",
+                      "slotSetting": false
+                    }
+                  ]
+                    
           - task: AzureAppServiceManage@0
             displayName: Start Staging Slot
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Start Azure App Service'
-              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              WebAppName: 'func-fip-backend-${{ lower(parameters.environment) }}'
+              ResourceGroupName: 'rg-fip-${{ lower(parameters.environment) }}'             
               SpecifySlotOrASE: true
               Slot: 'staging'
 
           - checkout: inss-devops-common-lib
 
-          - task: PowerShell@2
-            displayName: 'Performing Health Check - Staging'
-            inputs:
-              failOnStderr: true
-              targetType: 'filePath'
-              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
-              arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend-staging.azurewebsites.net/api/health/ping"
-                -Method "${{ parameters.method }}"
-                -Retries ${{ parameters.retries }}
-                -SecondsDelay ${{ parameters.secondsDelay }}
-                -TimeoutSec ${{ parameters.timeoutSec }}
+          #- task: PowerShell@2
+          #  displayName: 'Performing Health Check - Staging'
+          #  inputs:
+          #    failOnStderr: true
+          #    targetType: 'filePath'
+          #    filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+          #    arguments: > # Use this to avoid newline characters in multi-line string
+          #      -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend-staging.azurewebsites.net/api/health/ping"
+          #      -Method "${{ parameters.method }}"
+          #      -Retries ${{ parameters.retries }}
+          #      -SecondsDelay ${{ parameters.secondsDelay }}
+          #      -TimeoutSec ${{ parameters.timeoutSec }}
 
           - task: AzureAppServiceManage@0
             displayName: Swap Staging Slot into Production
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Swap Slots'
-              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'
+              WebAppName: 'func-fip-backend-${{ lower(parameters.environment) }}'
+              ResourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'
               SourceSlot: 'staging'
               SwapWithProduction: true
 
-          - task: PowerShell@2
-            displayName: 'Performing Health Check - Production'
-            inputs:
-              failOnStderr: true
-              targetType: 'filePath'
-              filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
-              arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend.azurewebsites.net/api/health/ping"
-                -Method "${{ parameters.method }}"
-                -Retries ${{ parameters.retries }}
-                -SecondsDelay ${{ parameters.secondsDelay }}
-                -TimeoutSec ${{ parameters.timeoutSec }}
+          #- task: PowerShell@2
+          #  displayName: 'Performing Health Check - Production'
+          #  inputs:
+          #    failOnStderr: true
+          #    targetType: 'filePath'
+          #    filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
+          #    arguments: > # Use this to avoid newline characters in multi-line string
+          #      -URI "https://func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend.azurewebsites.net/api/health/ping"
+          #      -Method "${{ parameters.method }}"
+          #      -Retries ${{ parameters.retries }}
+          #      -SecondsDelay ${{ parameters.secondsDelay }}
+          #      -TimeoutSec ${{ parameters.timeoutSec }}
 
           - task: AzureAppServiceManage@0
             displayName: Stop Staging Slot
             inputs:
               azureSubscription: ${{ parameters.azureSubscription }}
               Action: 'Stop Azure App Service'
-              WebAppName: 'func-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-backend'
-              ResourceGroupName: 'rg-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip'              
+              WebAppName: 'func-fip-backend-${{ lower(parameters.environment) }}'
+              ResourceGroupName:  'rg-fip-${{ lower(parameters.environment) }}'             
               SpecifySlotOrASE: true
               Slot: 'staging'

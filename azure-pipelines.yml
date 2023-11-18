@@ -20,7 +20,7 @@ stages:
 - stage: BuildTest
   displayName: 'Build and Test'
   jobs:  
-    - job: 
+    - job:
       steps:
       - task: UseDotNet@2
         inputs:
@@ -73,7 +73,7 @@ stages:
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-Dev
   jobs:
