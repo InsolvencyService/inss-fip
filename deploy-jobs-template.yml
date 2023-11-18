@@ -71,7 +71,7 @@ jobs:
               targetType: 'filePath'
               filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
               arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend-staging.azurewebsites.net/health/ping"
+                -URI "https://app-fip-frontend-${{ lower(parameters.environment) }}-staging.azurewebsites.net/health/ping"
                 -Method "${{ parameters.method }}"
                 -Retries ${{ parameters.retries }}
                 -SecondsDelay ${{ parameters.secondsDelay }}
@@ -94,7 +94,7 @@ jobs:
               targetType: 'filePath'
               filePath: $(System.DefaultWorkingDirectory)\powershell\InvokeRequestWithRetry.ps1
               arguments: > # Use this to avoid newline characters in multi-line string
-                -URI "https://app-${{ parameters.location }}-${{ lower(parameters.environment) }}-fip-frontend.azurewebsites.net/health/ping"
+                -URI "https://app-fip-frontend-${{ lower(parameters.environment) }}.azurewebsites.net/health/ping"
                 -Method "${{ parameters.method }}"
                 -Retries ${{ parameters.retries }}
                 -SecondsDelay ${{ parameters.secondsDelay }}
