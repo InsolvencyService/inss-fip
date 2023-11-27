@@ -73,7 +73,7 @@ stages:
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
-  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: succeeded()
   variables:
     - group: FIP-Dev
   jobs:
@@ -93,7 +93,7 @@ stages:
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
   variables:
     - group: FIP-PreProd
   jobs:
@@ -103,7 +103,7 @@ stages:
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
-#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+#   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
 #   variables:
 #     - group: FIP-Prod
 #   jobs:
