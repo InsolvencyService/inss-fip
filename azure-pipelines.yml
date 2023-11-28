@@ -80,6 +80,7 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'Dev'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
@@ -90,6 +91,7 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'SIT'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
@@ -100,6 +102,7 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'PreProd'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
@@ -110,3 +113,4 @@ stages:
 #     - template: deploy-jobs-template.yml
 #       parameters:
 #         environment: 'Prod'
+#        azureSubscription: 'AppServicesDevOps-Prod'
