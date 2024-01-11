@@ -20,7 +20,7 @@ stages:
 - stage: BuildTest
   displayName: 'Build and Test'
   jobs:  
-    - job: 
+    - job:
       steps:
       - task: UseDotNet@2
         inputs:
@@ -73,40 +73,44 @@ stages:
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: succeeded()
   variables:
     - group: FIP-Dev
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'Dev'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   variables:
     - group: FIP-SIT
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'SIT'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
   variables:
     - group: FIP-PreProd
   jobs:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'PreProd'
+        azureSubscription: 'AppServicesDevOps-NonProd'
 
 # - stage: DeployProd
 #   displayName: 'Deploy to Prod'
-#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+#   condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
 #   variables:
 #     - group: FIP-Prod
 #   jobs:
 #     - template: deploy-jobs-template.yml
 #       parameters:
 #         environment: 'Prod'
+#        azureSubscription: 'AppServicesDevOps-Prod'
