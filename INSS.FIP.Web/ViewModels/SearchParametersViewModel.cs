@@ -8,6 +8,7 @@ namespace INSS.FIP.Web.ViewModels;
 public class SearchParametersViewModel : IValidatableObject
 {
     private const string RegExForName = "^[a-zA-Z ]+(([',.\\-][a-zA-Z ])?[a-zA-Z ]*)*$";
+    private const string RegExForCompanyName = "^[a-zA-Z ]+(([',&.\\-][a-zA-Z ])?[a-zA-Z ]*)*$";
     private const string StringLengthValidationError = "{0} is limited to between 1 and {1} characters";
     private const string InvalidCharactersValidationError = "{0} is too long or contains invalid characters";
     private const string PostcodeValidationError = "Enter a real postcode";
@@ -31,7 +32,7 @@ public class SearchParametersViewModel : IValidatableObject
     public string? LastName { get; set; }
 
     [StringLength(100, ErrorMessage = StringLengthValidationError)]
-    [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
+    [RegularExpression(RegExForCompanyName, ErrorMessage = InvalidCharactersValidationError)]
     public string? Company { get; set; }
 
     [DisplayName("Town or City")]
