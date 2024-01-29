@@ -8,8 +8,9 @@ namespace INSS.FIP.Web.ViewModels;
 public class SearchParametersViewModel : IValidatableObject
 {
     private const string RegExForName = "^[a-zA-Z ]+(([',.\\-][a-zA-Z ])?[a-zA-Z ]*)*$";
+    private const string RegExForCompanyName = "^[a-zA-Z0-9&.,'\\\\-]+([ ()][a-zA-Z0-9&.,'\\\\-]*)*$";
     private const string StringLengthValidationError = "{0} is limited to between 1 and {1} characters";
-    private const string InvalidCharactersValidationError = "{0} is too long or contains invalid characters";
+    private const string InvalidCharacterValidationError = "{0} contains invalid character";
     private const string PostcodeValidationError = "Enter a real postcode";
 
     public IEnumerable<BreadcrumbItemViewModel>? Breadcrumbs { get; set; }
@@ -22,21 +23,21 @@ public class SearchParametersViewModel : IValidatableObject
 
     [Display(Name = "First name")]
     [StringLength(100, ErrorMessage = StringLengthValidationError)]
-    [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
+    [RegularExpression(RegExForName, ErrorMessage = InvalidCharacterValidationError)]
     public string? FirstName { get; set; }
 
     [Display(Name = "Last name")]
     [StringLength(100, ErrorMessage = StringLengthValidationError)]
-    [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
+    [RegularExpression(RegExForName, ErrorMessage = InvalidCharacterValidationError)]
     public string? LastName { get; set; }
 
     [StringLength(100, ErrorMessage = StringLengthValidationError)]
-    [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
+    [RegularExpression(RegExForCompanyName, ErrorMessage = InvalidCharacterValidationError)]
     public string? Company { get; set; }
 
     [DisplayName("Town or City")]
     [StringLength(100, ErrorMessage = StringLengthValidationError)]
-    [RegularExpression(RegExForName, ErrorMessage = InvalidCharactersValidationError)]
+    [RegularExpression(RegExForName, ErrorMessage = InvalidCharacterValidationError)]
     public string? Town { get; set; }
 
     [StringLength(8, ErrorMessage = StringLengthValidationError)]
