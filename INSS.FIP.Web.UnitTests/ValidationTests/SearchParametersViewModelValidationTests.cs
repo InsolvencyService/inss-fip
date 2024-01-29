@@ -1,10 +1,7 @@
-﻿using System.Linq;
-using INSS.FIP.Services;
+﻿using INSS.FIP.Services;
 using INSS.FIP.Web.ViewModels;
+using System.Linq;
 using Xunit;
-using INSS.FIP.Web.ViewModels;
-using System.Collections.Generic;
-using System.Reflection;
 namespace INSS.FIP.Web.UnitTests.ValidationTests;
 
 [Trait("Category", "SearchParametersViewModel Validation - Unit Tests")]
