@@ -17,6 +17,7 @@ public class SearchParametersViewModelValidationTests
     [InlineData(null, null, "comp & comp1", null, null)]
     [InlineData(null, null, "comp1 & comp2", null, null)]
     [InlineData(null, null, "comp(Re10) comp", null, null)]
+    [InlineData(null, null, "comp(Re10) & Moore T/A comp", null, null)]
     [InlineData(null, null, null, "town", null)]
     [InlineData(null, null, null, "town'town", null)]
     [InlineData(null, null, null, null, "NN1 1DB")]
