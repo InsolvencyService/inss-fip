@@ -50,8 +50,6 @@ jobs:
                 -EnvironmentBanner "${{ parameters.environment }}" 
                 -EnvironmentBannerText "$(EnvironmentBannerText)"
                 -FipApiConnectorClientOptions__BaseAddress "$(FipApiConnectorClientOptions__BaseAddress)"
-                -APPLICATIONINSIGHTS_CONNECTION_STRING "$(appInsightsConnectionString)"
-
           - task: AzureAppServiceManage@0
             displayName: Start Staging Slot
             inputs:
@@ -131,8 +129,7 @@ jobs:
                 -OpenApi__Version "$(OpenApi__Version)"
                 -OpenApi__DocVersion "$(OpenApi__DocVersion)"
                 -OpenApi__DocTitle "$(OpenApi__DocTitle)"
-                -APPLICATIONINSIGHTS_CONNECTION_STRING "$(appInsightsConnectionString)"
-
+                
          
           - task: AzureAppServiceManage@0
             displayName: Start Staging Slot

@@ -69,7 +69,7 @@ stages:
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)' 
           artifactName: 'INSS.FIP'
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: succeeded()
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
