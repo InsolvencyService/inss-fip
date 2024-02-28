@@ -1,0 +1,116 @@
+trigger:
+- develop
+  
+pool:
+  vmImage: windows-latest
+
+variables:
+- name: buildConfiguration
+  value: 'Release'
+
+resources:
+  repositories:
+  - repository: inss-devops-common-lib
+    type: github
+    endpoint: InsolvencyService
+    name: InsolvencyService/inss-devops-common-lib
+    ref: develop
+    
+stages:
+- stage: BuildTest
+  displayName: 'Build and Test'
+  jobs:  
+    - job:
+      steps:
+      - task: UseDotNet@2
+        inputs:
+          version: '6.0.x'
+
+      - task: DotNetCoreCLI@2
+        displayName: NuGet Restore
+        inputs:
+          command: 'restore'
+          projects: '**/INSS.FIP.sln'
+  
+      - task: Npm@1
+        inputs:
+          command: 'ci' 
+          workingDir: $(System.DefaultWorkingDirectory)/INSS.FIP.WEB
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Solution'
+        inputs:
+          command: 'build'
+          projects: |
+            **/INSS.FIP*.csproj
+            !**/INSS.FIP.QA*.csproj
+          # projects: '**/INSS.FIP.sln'
+          arguments: '--configuration $(buildConfiguration)'        
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run Tests'
+        inputs:
+          command: test
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish Project'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: |
+            **/INSS.FIP*.csproj
+            !**/INSS.FIP.QA*.csproj
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)' 
+          artifactName: 'INSS.FIP'
+        condition: succeeded()
+
+- stage: DeployDev
+  displayName: 'Deploy to Dev'
+  condition: succeeded()
+  variables:
+    - group: FIP-Dev
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'Dev'
+        azureSubscription: 'AppServicesDevOps-NonProd'
+
+- stage: DeploySIT
+  displayName: 'Deploy to SIT'
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
+  variables:
+    - group: FIP-SIT
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'SIT'
+        azureSubscription: 'AppServicesDevOps-NonProd'
+
+- stage: DeployPreProd
+  displayName: 'Deploy to PreProd'
+  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
+  variables:
+    - group: FIP-PreProd
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'PreProd'
+        azureSubscription: 'AppServicesDevOps-NonProd'
+
+- stage: DeployProd
+  displayName: 'Deploy to Prod'
+  condition: and(succeeded(), contains(variables['build.sourceBranch'], 'refs/heads/release/'))
+  variables:
+    - group: FIP-Prod
+  jobs:
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'Prod'
+        azureSubscription: 'AppServicesDevOps-Prod'

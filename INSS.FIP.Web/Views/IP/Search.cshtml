@@ -1,0 +1,127 @@
+﻿@model INSS.FIP.Web.ViewModels.SearchParametersViewModel
+@{
+    ViewData["Title"] = "Search";
+
+    var firstNameError = ViewContext?.ModelState["FirstName"]?.Errors != null && ViewContext.ModelState["FirstName"].Errors.Count > 0;
+    var lastNameError = ViewContext?.ModelState["LastName"]?.Errors != null && ViewContext.ModelState["LastName"].Errors.Count > 0;
+    var companyError = ViewContext?.ModelState["Company"]?.Errors != null && ViewContext.ModelState["Company"].Errors.Count > 0;
+    var townError = ViewContext?.ModelState["Town"]?.Errors != null && ViewContext.ModelState["Town"].Errors.Count > 0;
+    var postcodeError = ViewContext?.ModelState["Postcode"]?.Errors != null && ViewContext.ModelState["Postcode"].Errors.Count > 0;
+}
+
+@section Breadcrumb 
+{
+    <partial name="_Breadcrumb" for=Breadcrumbs />
+}
+
+@{
+    if (!string.IsNullOrWhiteSpace(Model.ShowWarningMessage))
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+                @Model.ShowWarningMessage
+            </strong>
+        </div>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        @await Html.PartialAsync("_ValidationSummary", ViewData.ModelState)
+
+        <h1 class="govuk-heading-l">Search</h1>
+
+        <p class="govuk-body govuk-input--width-30">You can search for an insolvency practitioner by name, company, town, city or postcode.</p>
+
+        <form asp-controller="IP" asp-action="Search" method="post" class="inss-app-validation">
+            @Html.AntiForgeryToken()
+            
+            <input type="hidden" asp-for="PageNumber" />
+            <input type="hidden" asp-for="PageSize" />
+            
+            <div class="@(firstNameError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
+                <label class="govuk-label" for="FirstName">
+                    First name
+                </label>
+                @if (firstNameError)
+                {
+                    @await Html.PartialAsync("_ValidationError", ViewContext.ModelState["FirstName"].Errors)
+                }
+                <input class="govuk-input govuk-input--width-30" id="FirstName" name="FirstName" type="text" asp-for="FirstName">
+            </div>
+
+            <div class="@(lastNameError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
+                <label class="govuk-label" for="LastName">
+                    Last name
+                </label>
+                @if (lastNameError)
+                {
+                    @await Html.PartialAsync("_ValidationError", ViewContext.ModelState["LastName"].Errors)
+                }
+                <input class="govuk-input govuk-input--width-30" id="LastName" name="LastName" type="text" asp-for="LastName">
+            </div>
+
+            <div class="@(companyError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
+                <label class="govuk-label" for="Company">
+                    Company
+                </label>
+                @if (companyError)
+                {
+                    @await Html.PartialAsync("_ValidationError", ViewContext.ModelState["Company"].Errors)
+                }
+                <input class="govuk-input govuk-input--width-30" id="Company" name="Company" type="text" asp-for="Company">
+            </div>
+
+            <div class="@(townError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
+                <label class="govuk-label" for="Town">
+                    Town or city
+                </label>
+                @if (townError)
+                {
+                    @await Html.PartialAsync("_ValidationError", ViewContext.ModelState["Town"].Errors)
+                }
+                <input class="govuk-input govuk-input--width-30" id="Town" name="Town" type="text" asp-for="Town">
+            </div>
+
+            <div class="@(postcodeError ? "govuk-form-group govuk-form-group--error" : "govuk-form-group")">
+                <label class="govuk-label" for="Postcode">
+                    Postcode
+                </label>
+                @if (postcodeError)
+                {
+                    @await Html.PartialAsync("_ValidationError", ViewContext.ModelState["Postcode"].Errors)
+                }
+                <input class="govuk-input govuk-input--width-10" id="Postcode" name="Postcode" type="text" asp-for="Postcode">
+            </div>
+
+            <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" type="submit">
+                Search
+            </button>
+        </form>
+    </div>
+    
+    <div class="govuk-grid-column-one-third">
+        <aside class="app-related-items" role="complementary">
+            <h2 class="govuk-heading-s" id="subsection-title">
+                Related content
+            </h2>
+            <nav role="navigation" aria-labelledby="subsection-title">
+                <ul class="govuk-list govuk-!-font-size-16">
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/get-help-insolvency-service">
+                            Get help from the Insolvency Service
+                        </a>
+                    </li>
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/browse/tax/court-claims-debt-bankruptcy">
+                            Find out more about bankruptcy and insolvency
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+    </div>
+</div>

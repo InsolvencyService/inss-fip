@@ -1,0 +1,57 @@
+﻿@model INSS.FIP.Web.ViewModels.SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Search results";
+}
+
+@section Breadcrumb {
+    <partial name="_Breadcrumb" for=Breadcrumbs />
+}
+
+@if(Model?.SearchResults != null && Model.SearchResults.Any())
+{
+    <div class="govuk-grid-row">
+            <h1 class="govuk-heading-l">
+                @ViewData["Title"]
+            </h1>
+        <p class="govuk-body">Select the name of an insolvency practitioner to view their details.</p>
+    </div>
+
+    <div class="govuk-grid-row">
+        <form asp-controller="IP" asp-action="Results">
+            <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header govuk-!-width-one-third">@Html.DisplayNameFor(model => model.SearchResults!.First().Name)</th>
+                        <th scope="col" class="govuk-table__header govuk-!-width-one-third">@Html.DisplayNameFor(model => model.SearchResults!.First().Company)</th>
+                        <th scope="col" class="govuk-table__header">@Html.DisplayNameFor(model => model.SearchResults!.First().Town)</th>
+                        <th scope="col" class="govuk-table__header">@Html.DisplayNameFor(model => model.SearchResults!.First().Postcode)</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @foreach (var searchResult in Model.SearchResults) {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                <a class="govuk-link govuk-link--no-visited-state" asp-controller="IP", asp-action="Details"
+                                   asp-route-ipNumber="@searchResult.IpNumber" asp-route-pageNumber="@Model.Paged.PageNumber">@Html.DisplayFor(modelItem => searchResult.Name)</a>
+                            </td>
+                            <td class="govuk-table__cell">@Html.DisplayFor(modelItem => searchResult.Company)</td>
+                            <td class="govuk-table__cell">@Html.DisplayFor(modelItem => searchResult.Town)</td>
+                            <td class="govuk-table__cell">@Html.DisplayFor(modelItem => searchResult.Postcode)</td>
+                        </tr>
+                    }
+                </tbody>
+                <ftoot>
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell" colspan="6">
+                            @if (Model?.Paged?.TotalResults > Model?.SearchResults.Count())
+                            {
+                               <partial name="_Paging" for=Paged />
+                            }
+                        </td>
+                    </tr>
+                </ftoot>
+            </table>
+        </form>
+    </div>
+}
