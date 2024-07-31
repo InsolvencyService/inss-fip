@@ -73,7 +73,7 @@ stages:
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
-  condition: succeeded()
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-Dev
   jobs:
@@ -84,7 +84,7 @@ stages:
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: FIP-SIT
   jobs:
