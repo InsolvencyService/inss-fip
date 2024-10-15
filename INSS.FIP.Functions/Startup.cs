@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using INSS.FIP.Data;
+using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.DataAccess;
 using INSS.FIP.Functions;
 using INSS.FIP.Interfaces;
@@ -21,7 +22,19 @@ public class Startup : FunctionsStartup
         builder.Services.AddHttpClient();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        builder.Services.AddTransient(_ =>
+        //builder.Services.AddTransient(_ =>
+        //{
+        //    var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
+        //    return new iirwebdbContext(connectionString);
+        //});
+
+        builder.Services.AddTransient<SourceDbContext>(_ =>
+        {
+            var connectionString = Environment.GetEnvironmentVariable("sourceDbContextConnectionString");
+            return new SourceDbContext(connectionString);
+        });
+
+        builder.Services.AddTransient<iirwebdbContext>(_ =>
         {
             var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
             return new iirwebdbContext(connectionString);

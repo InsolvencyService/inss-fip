@@ -26,9 +26,11 @@ namespace INSS.FIP.Data
         public virtual DbSet<CiIndivDischarge> CiIndivDischarges { get; set; } = null!;
         public virtual DbSet<CiIndividual> CiIndividuals { get; set; } = null!;
         public virtual DbSet<CiIp> CiIps { get; set; } = null!;
+        public virtual DbSet<FindIp> FindIps { get; set; } = null!;
         public virtual DbSet<CiIpAddress> CiIpAddresses { get; set; } = null!;
         public virtual DbSet<CiIpAppt> CiIpAppts { get; set; } = null!;
         public virtual DbSet<CiIpAuthorisingBody> CiIpAuthorisingBodies { get; set; } = null!;
+        public virtual DbSet<FindIpAuthBody> FindIpAuthBodies { get; set; } = null!;
         public virtual DbSet<CiIvaCase> CiIvaCases { get; set; } = null!;
         public virtual DbSet<CiOffice> CiOffices { get; set; } = null!;
         public virtual DbSet<CiOfficeCourt> CiOfficeCourts { get; set; } = null!;
@@ -919,6 +921,73 @@ namespace INSS.FIP.Data
                     .HasColumnName("title");
             });
 
+            modelBuilder.Entity<FindIp>(entity =>
+            {
+                entity.HasKey(e => e.IpNo);
+
+                entity.ToTable("find_ip");
+
+                entity.Property(e => e.IpNo)
+                    .HasColumnName("IpNo")
+                    .IsRequired();
+
+                entity.Property(e => e.Forenames)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("Forenames");
+
+                entity.Property(e => e.Surname)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("Surname");
+
+                entity.Property(e => e.RegisteredFirmName)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredFirmName");
+
+                entity.Property(e => e.RegisteredAddressLine3)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredAddressLine3");
+
+                entity.Property(e => e.RegisteredAddressLine4)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredAddressLine4");
+
+                entity.Property(e => e.RegisteredAddressLine5)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredAddressLine5");
+
+                entity.Property(e => e.RegisteredPostCode)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredPostCode");
+
+                entity.Property(e => e.RegisteredPhone)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredPhone");
+
+                entity.Property(e => e.IpEmailAddress)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("IpEmailAddress");
+
+                entity.Property(e => e.IncludeOnInternet)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("IncludeOnInternet")
+                    .HasDefaultValueSql("(' ')");
+
+                entity.Property(e => e.LicensingBody)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("LicensingBody");
+            });
+
             modelBuilder.Entity<CiIp>(entity =>
             {
                 entity.HasKey(e => e.IpNo);
@@ -1285,6 +1354,53 @@ namespace INSS.FIP.Data
                     .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("auth_body_website");
+            });
+
+            modelBuilder.Entity<FindIpAuthBody>(entity =>
+            {
+                entity.HasKey(e => e.AuthBodyCode);  // Setting primary key
+
+                entity.ToTable("findipauthbody");  // Mapping to table name
+
+                entity.Property(e => e.AuthBodyCode)
+                    .HasMaxLength(5)  // Matches the definition in the table
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyCode");
+
+                entity.Property(e => e.AuthBodyName)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyName");
+
+                entity.Property(e => e.AuthBodyAddressLine1)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyAddressLine1");
+
+                entity.Property(e => e.AuthBodyAddressLine2)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyAddressLine2");
+
+                entity.Property(e => e.AuthBodyAddressLine3)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyAddressLine3");
+
+                entity.Property(e => e.AuthBodyAddressLine4)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyAddressLine4");
+
+                entity.Property(e => e.AuthBodyAddressLine5)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyAddressLine5");
+
+                entity.Property(e => e.AuthBodyPostcode)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyPostcode");
             });
 
             modelBuilder.Entity<CiIvaCase>(entity =>
