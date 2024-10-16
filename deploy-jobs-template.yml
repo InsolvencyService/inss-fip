@@ -47,7 +47,7 @@ jobs:
               package: '$(Pipeline.Workspace)/**/${{ parameters.appZipFile }}'
               appSettings: >
                 -PhaseBanner "$(phaseBanner)"
-                -EnvironmentBanner "${{ parameters.environment }}" 
+                -EnvironmentBanner "$(EnvironmentBanner)"
                 -EnvironmentBannerText "$(EnvironmentBannerText)"
                 -FipApiConnectorClientOptions__BaseAddress "$(FipApiConnectorClientOptions__BaseAddress)"
           - task: AzureAppServiceManage@0
