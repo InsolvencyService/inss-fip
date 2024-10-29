@@ -4,12 +4,11 @@ using INSS.FIP.Interfaces;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.Functions.Functions.AuthBody;
 
@@ -26,7 +25,7 @@ public class AuthBodyGetHttpTrigger
         _authBodyService = authBodyService.ThrowIfNullOrDefault();
     }
 
-    [FunctionName("AuthBody")]
+    [Function("AuthBody")]
     [OpenApiOperation(operationId: "AuthBody", tags: new[] { "AuthBody" }, Summary = "Returns Authorising Bodies", Description = "Returns Authorising Bodies.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<FipApiAuthBodyResponseModel>), Summary = "Success", Description = "List of Authorising Bodies")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NoContent, Summary = "No Authorising Bodies found", Description = "No Authorising Bodies found")]

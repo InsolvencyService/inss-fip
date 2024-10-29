@@ -1,6 +1,6 @@
-﻿using INSS.FIP.Functions.Functions.Health;
+﻿using INSS.FIP.Functions.Functions.AuthBody;
+using INSS.FIP.Functions.Functions.Health;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -15,7 +15,7 @@ public class HealthPingGetHttpTriggerTests
         // Arrange
 
         // Act
-        var result = HealthPingGetHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()));
+        var result = HealthPingGetHttpTrigger.Run(new DefaultHttpContext().Request);
 
         // Assert
         Assert.IsType<OkResult>(result);

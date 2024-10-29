@@ -6,7 +6,6 @@ using INSS.FIP.Functions.Functions.AuthBody;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -35,7 +34,7 @@ public class AuthBodyGetHttpTriggerTests
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).Returns(dummyFipApiAuthBodyResponseModels);
 
         // Act
-        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()));
+        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpContext().Request);
 
         // Assert
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).MustHaveHappenedOnceExactly();
@@ -54,7 +53,7 @@ public class AuthBodyGetHttpTriggerTests
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).Returns(dummyFipApiAuthBodyResponseModels);
 
         // Act
-        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()));
+        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpContext().Request);
 
         // Assert
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).MustHaveHappenedOnceExactly();
@@ -73,7 +72,7 @@ public class AuthBodyGetHttpTriggerTests
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).Returns(nullFipApiAuthBodyResponseModels);
 
         // Act
-        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()));
+        var result = await _authBodyGetHttpTrigger.Run(new DefaultHttpContext().Request);
 
         // Assert
         A.CallTo(() => _fakeAuthBodyService.GetAsync()).MustHaveHappenedOnceExactly();
