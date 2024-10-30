@@ -6,13 +6,12 @@ using INSS.FIP.Models.ResponseModels;
 using INSS.FIP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 namespace INSS.FIP.Functions.Functions.WebMessage;
 
@@ -29,7 +28,7 @@ public class WebMessageGetHttpTrigger
         _webMessageService = webMessageService.ThrowIfNullOrDefault();
     }
 
-    [FunctionName("WebMessage")]
+    [Function("WebMessage")]
     [OpenApiOperation(operationId: "WebMessage", tags: new[] { "WebMessage" }, Summary = "Gets web messages for an application", Description = "Gets web messages for an application.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiParameter(name: "applicationPrefix", In = ParameterLocation.Path, Required = false, Type = typeof(string), Explode = false, Summary = "Application prefix", Description = "Application prefix", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<FipApiSearchResultResponseModel>), Summary = "Web messages", Description = "List of Web messages")]

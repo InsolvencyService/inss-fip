@@ -7,7 +7,6 @@ using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels.WebMessage;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -37,7 +36,7 @@ public class WebMessageHttpTriggerTests
         A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).Returns(dummyFipApiWebMessageResponseModels);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), applicationPrefix);
+        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
         A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
@@ -55,7 +54,7 @@ public class WebMessageHttpTriggerTests
         var dummyFipApiWebMessageResponseModels = A.CollectionOfDummy<FipApiWebMessageResponseModel>(0);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), applicationPrefix);
+        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
         A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustNotHaveHappened();
@@ -75,7 +74,7 @@ public class WebMessageHttpTriggerTests
         A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).Returns(nullFipApiWebMessageResponseModels);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), applicationPrefix);
+        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
         A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();

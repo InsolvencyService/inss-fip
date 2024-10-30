@@ -10,34 +10,31 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureServices(services =>
+RetryPolicyOptions retryPolicyOptions = new()
 {
-    RetryPolicyOptions retryPolicyOptions = new()
-    {
-        BackoffPower = 2,
-        Count = 3
-    };
+    BackoffPower = 2,
+    Count = 3
+};
 
-    services.AddCsp(nonceByteAmount: 32);
-    services.AddApplicationInsightsTelemetry();
-    services.AddHttpClient();
-    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-    services.TryAddSingleton(builder.Configuration.GetRequiredSection(nameof(FipApiConnectorClientOptions)).Get<FipApiConnectorClientOptions>());
-    services.AddTransient<IAuthBodyService, AuthBodyService>();
-    services.AddTransient<IInsolvencyPractitionerService, InsolvencyPractitionerService>();
-    services.AddTransient<IWebMessageService, WebMessageService>();
+builder.Services.AddCsp(nonceByteAmount: 32);
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddHttpClient();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.TryAddSingleton(builder.Configuration.GetRequiredSection(nameof(FipApiConnectorClientOptions)).Get<FipApiConnectorClientOptions>());
+builder.Services.AddTransient<IAuthBodyService, AuthBodyService>();
+builder.Services.AddTransient<IInsolvencyPractitionerService, InsolvencyPractitionerService>();
+builder.Services.AddTransient<IWebMessageService, WebMessageService>();
 
-    Polly.Registry.IPolicyRegistry<string> policyRegistry = services.AddPolicyRegistry();
-    const string retryPolicyName = "RetryPolicyName";
+Polly.Registry.IPolicyRegistry<string> policyRegistry = builder.Services.AddPolicyRegistry();
+const string retryPolicyName = "RetryPolicyName";
 
-    services
-        .AddPolicies(policyRegistry, retryPolicyName, retryPolicyOptions)
-        .AddHttpClient<IFipApiConnector, FipApiConnector, FipApiConnectorClientOptions>(retryPolicyName);
+builder.Services
+    .AddPolicies(policyRegistry, retryPolicyName, retryPolicyOptions)
+    .AddHttpClient<IFipApiConnector, FipApiConnector, FipApiConnectorClientOptions>(retryPolicyName);
 
-    services.AddSession(options =>
-    {
-        options.IdleTimeout = TimeSpan.FromMinutes(10);
-    });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
 });
 
 // Add services to the container.
