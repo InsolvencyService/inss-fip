@@ -1,6 +1,7 @@
 using AutoMapper;
 using INSS.FIP.Data;
 using INSS.FIP.Data.FCMCDataSource;
+using INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,9 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Net.Mime;
@@ -17,15 +20,18 @@ namespace INSS.FIP.Functions.Functions.DBSynchFCMCToInsight;
 
 public class DBSynchGetHttpTrigger
 {
+    private readonly ILogger<IpGetSearchHttpTrigger> _logger;
     private readonly IMapper _mapper;
     private readonly iirwebdbContext _iirwebdbContext;
     private readonly SourceDbContext _sourceDbContext;
 
     public DBSynchGetHttpTrigger(
+       ILogger<IpGetSearchHttpTrigger> logger,
        IMapper mapper,
        iirwebdbContext iirwebdbContext,
        SourceDbContext sourceDbContext)
     {
+        _logger = logger.ThrowIfNullOrDefault();
         _mapper = mapper;
         _iirwebdbContext = iirwebdbContext;
         _sourceDbContext = sourceDbContext;
@@ -42,10 +48,14 @@ public class DBSynchGetHttpTrigger
     public async Task<IActionResult> Run(
        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "DBSynch/{applicationPrefix}")] HttpRequest req, string? applicationPrefix)
     {
+        Console.WriteLine("DBSynch Triger start");
+        
         await SynchronizeFindIpsDataAsync();
         await SynchronizeFindIPAuthBodyDataAsync();
-
+        
+        Console.WriteLine("DBSynch Triger End");
         return new OkResult();
+
     }
     public async Task SynchronizeFindIpsDataAsync()
     {
@@ -67,7 +77,8 @@ public class DBSynchGetHttpTrigger
                     if (item.IpNo == null) // Check for nulls
                     {
                         // Handle or log the null case
-                        Console.WriteLine("Mapped data contains a record with NULL IpNo");
+                        _logger.LogTrace("Mapped data contains a record with NULL IpNo");
+
                     }
                 }
                 var existingRecords = await _iirwebdbContext.FindIps.ToListAsync();
@@ -81,6 +92,8 @@ public class DBSynchGetHttpTrigger
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Exception: Inside SynchronizeFindIpsDataAsync");
+                Console.WriteLine(ex);
                 await transaction.RollbackAsync();
                 throw;
             }
@@ -108,6 +121,8 @@ public class DBSynchGetHttpTrigger
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Exception: Inside SynchronizeFindIPAuthBodyDataAsync");
+                Console.WriteLine(ex);
                 await transaction.RollbackAsync();
                 throw;
             }
