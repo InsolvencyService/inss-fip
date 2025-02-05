@@ -9,15 +9,8 @@ var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
     .ConfigureServices(services =>
     {
-        //builder.Services.AddApplicationInsightsTelemetry();
         services.AddHttpClient();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-        //builder.Services.AddTransient(_ =>
-        //{
-        //    var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
-        //    return new iirwebdbContext(connectionString);
-        //});
 
         services.AddTransient<SourceDbContext>(_ =>
         {

@@ -1,8 +1,13 @@
-﻿namespace INSS.FIP.Data.FCMCDataSource
+﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
+
+namespace INSS.FIP.Data.FCMCDataSource
 {
+    [Keyless]
     public partial class vw_findipauthbody
     {
-        public string AuthBodyCode { get; set; } // varchar(5)
+        [AllowNull]
+        public string? AuthBodyCode { get; set; } // varchar(5)
         public string? AuthBodyName { get; set; } // varchar(8000)
         public string? AuthBodyAddressLine1 { get; set; } // varchar(8000)
         public string? AuthBodyAddressLine2 { get; set; } // varchar(8000)

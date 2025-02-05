@@ -38,8 +38,7 @@ namespace INSS.FIP.Data.FCMCDataSource
             modelBuilder.Entity<vw_FindIp>(entity =>
             {
                 entity.HasNoKey();
-                entity.ToView("vw_findip");
-
+                entity.ToView("vw_findip", "ext");
 
                 entity.Property(e => e.IpNo)
                     .HasColumnName("IpNo")
@@ -104,14 +103,14 @@ namespace INSS.FIP.Data.FCMCDataSource
 
             modelBuilder.Entity<vw_findipauthbody>(entity =>
             {
-                entity.HasKey(e => e.AuthBodyCode);
-
-                entity.ToView("vw_findipauthbody");
+                //entity.HasKey(e => e.AuthBodyCode);
+                entity.HasNoKey();
+                entity.ToView("vw_findipauthbody", "ext");
 
                 entity.Property(e => e.AuthBodyCode)
                     .HasMaxLength(5)
                     .HasColumnName("AuthBodyCode")
-                    .IsRequired();
+                    .HasDefaultValue("null");
 
                 entity.Property(e => e.AuthBodyName)
                     .HasMaxLength(8000)

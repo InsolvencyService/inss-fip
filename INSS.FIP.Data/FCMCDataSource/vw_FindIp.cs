@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace INSS.FIP.Data.FCMCDataSource
 {
+    [Keyless]
     public partial class vw_FindIp
     {
         public String IpNo { get; set; }
