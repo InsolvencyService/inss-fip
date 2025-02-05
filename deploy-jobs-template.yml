@@ -126,6 +126,7 @@ jobs:
               package: '$(Pipeline.Workspace)/**/${{ parameters.funcZipFile }}'
               appSettings: >
                 -iirwebdbContextConnectionString "$(iirwebdbContextConnectionString)"
+                -sourceDbContextConnectionString "$(insightDbContextConnectionString)"
                 -OpenApi__Version "$(OpenApi__Version)"
                 -OpenApi__DocVersion "$(OpenApi__DocVersion)"
                 -OpenApi__DocTitle "$(OpenApi__DocTitle)"
