@@ -2,10 +2,12 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
 
+    "sourceDbContextConnectionString": "Data Source=[FCMC db connction string]",
     "iirwebdbContextConnectionString": "Data Source=[iirwebdb db connction string]",
-
+    "usingFCMCtableView": "true",
+    
     "OpenApi__Version": "v3",
     "OpenApi__DocVersion": "1.0.0",
     "OpenApi__DocTitle": "Swagger FIP Services"
