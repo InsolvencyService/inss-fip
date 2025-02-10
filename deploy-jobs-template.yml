@@ -127,7 +127,8 @@ jobs:
               appSettings: >
                 -iirwebdbContextConnectionString "$(iirwebdbContextConnectionString)"
                 -sourceDbContextConnectionString "$(sourceDbContextConnectionString)"
-                -usingFCMCtableView "$(usingFCMCtableView)"
+                 "name": "snapshotTimercron","value": "$(snapshotTimercron)",
+                -CronPattern "$(cronpattern)"
                 -OpenApi__Version "$(OpenApi__Version)"
                 -OpenApi__DocVersion "$(OpenApi__DocVersion)"
                 -OpenApi__DocTitle "$(OpenApi__DocTitle)"
