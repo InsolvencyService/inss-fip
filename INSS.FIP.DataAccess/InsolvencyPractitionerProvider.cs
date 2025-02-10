@@ -142,7 +142,7 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
                           join cab in _iirwebdbContext.CiIpAuthorisingBodies
                               on cip.LicensingBody equals cab.AuthBodyCode into jab
                           from x in jab.DefaultIfEmpty()
-                          where Convert.ToInt32(cip.IpNo) == ipNumber && cip.IncludeOnInternet == "Y"
+                          where Convert.ToInt32(cip.IpNo) == ipNumber && cip.IncludeOnInternet == "Yes"
                           select new { IP = cip, IpAb = x }).FirstOrDefaultAsync();
 
 
