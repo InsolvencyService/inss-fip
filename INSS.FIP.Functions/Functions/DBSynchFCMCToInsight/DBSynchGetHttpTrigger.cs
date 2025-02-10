@@ -6,6 +6,7 @@ using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Net.Mime;
+using TimerTriggerAttribute = Microsoft.Azure.Functions.Worker.TimerTriggerAttribute;
 
 namespace INSS.FIP.Functions.Functions.DBSynchFCMCToInsight;
 
@@ -37,24 +39,36 @@ public class DBSynchGetHttpTrigger
     }
 
 
-
     [Function("DBSynch")]
     [OpenApiOperation(operationId: "DBSynch", tags: new[] { "DBSynch" }, Summary = "Transfer data from fcmc to Insight.", Description = "Transfer data from fcmc to Insight.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<FipApiSearchResultResponseModel>), Summary = "DB Synch", Description = "Transfer data from fcmc to Insight.")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
-    public async Task<IActionResult> Run(
-       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DBSynch")] HttpRequest req)
+    public void Run([TimerTrigger("%CronPattern%")] Microsoft.Azure.Functions.Worker.TimerInfo myTimer)
+    //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DBSynch")] HttpRequest req)
+    {
+        DBSynch();
+    }
+
+    [Function("DBSynchHttp")]
+    [OpenApiOperation(operationId: "DBSynchHttp", tags: new[] { "DBSynchHttp" }, Summary = "Transfer data from fcmc to Insight.", Description = "Transfer data from fcmc to Insight.", Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<FipApiSearchResultResponseModel>), Summary = "DB Synch", Description = "Transfer data from fcmc to Insight.")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
+    public void  Run([Microsoft.Azure.Functions.Worker.HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DBSynch")] HttpRequest req)
+    {
+        DBSynch();
+    }
+    private void DBSynch()
     {
         Console.WriteLine("DBSynch Triger start");
 
-        await SynchronizeFindIpsDataAsync();
-        await SynchronizeFindIPAuthBodyDataAsync();
+        SynchronizeFindIpsDataAsync();
+        SynchronizeFindIPAuthBodyDataAsync();
 
         Console.WriteLine("DBSynch Triger End");
-        return new OkResult();
-
     }
     public async Task SynchronizeFindIpsDataAsync()
     {

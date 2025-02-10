@@ -1,11 +1,19 @@
 {
   "version": "2.0",
   "logging": {
+    "console": {
+      "isEnabled": true
+    },
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,
         "excludedTypes": "Request"
       }
+    }
+  },
+  "extensions": {
+    "timers": {
+      "schedule": "0 */5 * * * *"
     }
   }
 }
