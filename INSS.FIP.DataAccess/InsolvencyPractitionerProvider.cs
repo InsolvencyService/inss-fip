@@ -145,7 +145,7 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
         }
         else
         {
-            var results = await GetByIpNumberAsync(ipGetByIpNumberRequestModel);
+            var results = await GetByIpNumber(ipGetByIpNumberRequestModel);
             return await Task.FromResult(results);
         }
     }
