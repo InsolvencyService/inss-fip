@@ -56,7 +56,7 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
     {
         if (Convert.ToBoolean(_configuration["usingFCMCtableView"]))
         {
-            var results = await SearchAsyncUsingFCMCView(ipSearchRequestModel, BaseQueryFCMCView);
+            var results = await SearchUsingFCMCViewAsync(ipSearchRequestModel, BaseQueryFCMCView);
             return await Task.FromResult(results);
 
         }
@@ -66,7 +66,7 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
             return await Task.FromResult(results);
         }
     }
-    private async Task<IList<FipApiSearchResultResponseModel>> SearchAsyncUsingFCMCView(IpSearchRequestModel ipSearchRequestModel, IQueryable<FindIp> query)
+    private async Task<IList<FipApiSearchResultResponseModel>> SearchUsingFCMCViewAsync(IpSearchRequestModel ipSearchRequestModel, IQueryable<FindIp> query)
     {
         if (!string.IsNullOrWhiteSpace(ipSearchRequestModel.LastName))
         {
@@ -137,9 +137,42 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
 
     public async Task<FipApiInsolvencyPractitionerWithAuthResponseModel> GetByIpNumberAsync(IpGetByIpNumberRequestModel ipGetByIpNumberRequestModel)
     {
+        if (Convert.ToBoolean(_configuration["usingFCMCtableView"]))
+        {
+            var results = await GetByIpNumberUsingFCMCView(ipGetByIpNumberRequestModel);
+            return await Task.FromResult(results);
+
+        }
+        else
+        {
+            var results = await GetByIpNumberAsync(ipGetByIpNumberRequestModel);
+            return await Task.FromResult(results);
+        }
+    }
+
+    public async Task<FipApiInsolvencyPractitionerWithAuthResponseModel> GetByIpNumber(IpGetByIpNumberRequestModel ipGetByIpNumberRequestModel)
+    {
+        var ipNumber = ipGetByIpNumberRequestModel.IpNumber;
+        var data = await (from cip in _iirwebdbContext.CiIps
+                          join cab in _iirwebdbContext.CiIpAuthorisingBodies
+                              on cip.LicensingBody equals cab.AuthBodyCode into jab
+                          from x in jab.DefaultIfEmpty()
+                          where Convert.ToInt32(cip.IpNo) == ipNumber && cip.IncludeOnInternet == "Y"
+                          select new { IP = cip, IpAb = x }).FirstOrDefaultAsync();
+
+
+        var ip = _mapper.Map<CiIp, FipApiInsolvencyPractitionerResponseModel>(data?.IP);
+        var authBody = _mapper.Map<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>(data?.IpAb);
+
+        var result = new FipApiInsolvencyPractitionerWithAuthResponseModel { IP = ip, AuthorisingBody = authBody };
+
+        return result;
+    }
+    public async Task<FipApiInsolvencyPractitionerWithAuthResponseModel> GetByIpNumberUsingFCMCView(IpGetByIpNumberRequestModel ipGetByIpNumberRequestModel)
+    {
         var ipNumber = ipGetByIpNumberRequestModel.IpNumber;
         var data = await (from cip in _iirwebdbContext.FindIps
-                          join cab in _iirwebdbContext.CiIpAuthorisingBodies
+                          join cab in _iirwebdbContext.FindIpAuthBodies
                               on cip.LicensingBody equals cab.AuthBodyCode into jab
                           from x in jab.DefaultIfEmpty()
                           where Convert.ToInt32(cip.IpNo) == ipNumber && cip.IncludeOnInternet == "Yes"
@@ -147,7 +180,7 @@ public class InsolvencyPractitionerProvider : IInsolvencyPractitionerProvider
 
 
         var ip = _mapper.Map<FindIp, FipApiInsolvencyPractitionerResponseModel>(data?.IP);
-        var authBody = _mapper.Map<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>(data?.IpAb);
+        var authBody = _mapper.Map<FindIpAuthBody, FipApiAuthBodyResponseModel>(data?.IpAb);
 
         var result = new FipApiInsolvencyPractitionerWithAuthResponseModel { IP = ip, AuthorisingBody = authBody };
 

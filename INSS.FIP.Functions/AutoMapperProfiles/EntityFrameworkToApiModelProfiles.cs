@@ -24,6 +24,7 @@ public class EntityFrameworkToApiModelProfiles : Profile
         CreateMap<FipApiSearchRequestModel, IpSearchRequestModel>();
 
         CreateMap<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>();
+        CreateMap<FindIpAuthBody, FipApiAuthBodyResponseModel>();
 
         CreateMap<vw_FindIp, FindIp>()
             .ForMember(dest => dest.IpNo, opt => opt.MapFrom(src => SafeParseInt(src.IpNo)))
