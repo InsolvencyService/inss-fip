@@ -1,18 +1,25 @@
-using INSS.FIP.DataAccess;
-using INSS.FIP.Interfaces;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using INSS.FIP.Data;
+using INSS.FIP.Data.FCMCDataSource;
+using INSS.FIP.DataAccess;
+using INSS.FIP.Functions.Helper;
+using INSS.FIP.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
     .ConfigureServices(services =>
     {
-        //builder.Services.AddApplicationInsightsTelemetry();
         services.AddHttpClient();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        services.AddTransient(_ =>
+        services.AddTransient<SourceDbContext>(_ =>
+        {
+            var connectionString = Environment.GetEnvironmentVariable("sourceDbContextConnectionString");
+            return new SourceDbContext(connectionString);
+        });
+
+        services.AddTransient<iirwebdbContext>(_ =>
         {
             var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
             return new iirwebdbContext(connectionString);
@@ -21,6 +28,7 @@ var host = new HostBuilder()
         services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
         services.AddTransient<IWebMessageProvider, WebMessageProvider>();
+        services.AddTransient<IDbSync, DbSync>();
     })
     .Build();
 

@@ -13,6 +13,8 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi.Core" Version="1.5.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
@@ -23,9 +25,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\INSS.FIP.DataAccess\INSS.FIP.DataAccess.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Data\INSS.FIP.Data.csproj" />
     <ProjectReference Include="..\INSS.FIP.Interfaces\INSS.FIP.Interfaces.csproj" />
     <ProjectReference Include="..\INSS.FIP.Models\INSS.FIP.Models.csproj" />
-    <ProjectReference Include="..\INSS.FIP.Data\INSS.FIP.Data.csproj" />
     <ProjectReference Include="..\INSS.FIP.Services\INSS.FIP.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
