@@ -38,7 +38,7 @@ namespace INSS.FIP.Functions.Helper
             _logger.LogInformation("DBSynch Triger End");
         }
 
-        private void SynchronizeFindIpsDataAsync()
+        private bool SynchronizeFindIpsDataAsync()
         {
             using (var transaction = _iirwebdbContext.Database.BeginTransaction())
             {
@@ -46,14 +46,9 @@ namespace INSS.FIP.Functions.Helper
                 {
                     var viewData = _sourceDbContext.vw_FindIps.ToList();
 
-                    var uniqueViewData = viewData
-                    .GroupBy(x => x.IpNo)
-                    .Select(g => g.First())
-                    .Where(x => !string.IsNullOrEmpty(x.IpNo)) 
-                    .ToList();
 
-                    var mappedData = _mapper.Map<List<FindIp>>(uniqueViewData);
-                  
+                    var mappedData = _mapper.Map<List<FindIp>>(viewData);
+
                     var existingRecords = _iirwebdbContext.FindIps.ToList();
                     _iirwebdbContext.FindIps.RemoveRange(existingRecords);
 
@@ -70,11 +65,11 @@ namespace INSS.FIP.Functions.Helper
                     _logger.LogError(ex.Message);
                     throw;
                 }
-
+                return true;
             }
         }
 
-        private void SynchronizeFindIPAuthBodyDataAsync()
+        private bool SynchronizeFindIPAuthBodyDataAsync()
         {
             using (var transaction = _iirwebdbContext.Database.BeginTransaction())
             {
@@ -83,22 +78,12 @@ namespace INSS.FIP.Functions.Helper
                     var viewData = _sourceDbContext.vw_findipauthbodies.ToList();
 
                     var mappedData = _mapper.Map<List<FindIpAuthBody>>(viewData);
-                    var i = 0;
-                    foreach (var item in mappedData)
-                    {
-                        if (item.AuthBodyCode == null) // Check for nulls
-                        {
-                            // Handle or log the null case
-                            item.AuthBodyCode = "null" + i;
-                            _logger.LogTrace("Mapped data contains a record with NULL AuthBodyCode");
-                            i++;
-                        }
-                    }
+ 
                     var existingRecords = _iirwebdbContext.FindIpAuthBodies.ToList();
                     _iirwebdbContext.FindIpAuthBodies.RemoveRange(existingRecords);
-
                     _iirwebdbContext.FindIpAuthBodies.AddRange(mappedData);
-
+                    
+                    _iirwebdbContext.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -109,6 +94,7 @@ namespace INSS.FIP.Functions.Helper
                     throw;
                 }
             }
+            return true ;
         }
 
 
