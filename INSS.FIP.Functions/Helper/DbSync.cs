@@ -4,6 +4,7 @@ using INSS.FIP.Data;
 using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.Interfaces;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.Functions.Helper
@@ -49,8 +50,8 @@ namespace INSS.FIP.Functions.Helper
 
                     var mappedData = _mapper.Map<List<FindIp>>(viewData);
 
-                    var existingRecords = _iirwebdbContext.FindIps.ToList();
-                    _iirwebdbContext.FindIps.RemoveRange(existingRecords);
+                    _iirwebdbContext.FindIps.ExecuteDelete();
+
 
                     _iirwebdbContext.FindIps.AddRange(mappedData);
 
@@ -79,8 +80,8 @@ namespace INSS.FIP.Functions.Helper
 
                     var mappedData = _mapper.Map<List<FindIpAuthBody>>(viewData);
  
-                    var existingRecords = _iirwebdbContext.FindIpAuthBodies.ToList();
-                    _iirwebdbContext.FindIpAuthBodies.RemoveRange(existingRecords);
+                    _iirwebdbContext.FindIpAuthBodies.ExecuteDelete();
+
                     _iirwebdbContext.FindIpAuthBodies.AddRange(mappedData);
                     
                     _iirwebdbContext.SaveChanges();
