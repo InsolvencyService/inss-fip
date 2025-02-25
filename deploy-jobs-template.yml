@@ -128,6 +128,7 @@ jobs:
                 -iirwebdbContextConnectionString "$(iirwebdbContextConnectionString)"
                 -sourceDbContextConnectionString "$(sourceDbContextConnectionString)"
                 -CronPattern "$(CronPattern)"
+                -usingFCMCtableView "$(usingFCMCtableView)"
                 -OpenApi__Version "$(OpenApi__Version)"
                 -OpenApi__DocVersion "$(OpenApi__DocVersion)"
                 -OpenApi__DocTitle "$(OpenApi__DocTitle)"
