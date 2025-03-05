@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INSS.FIP.Interfaces\INSS.FIP.Interfaces.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Models\INSS.FIP.Models.csproj" />
+    <ProjectReference Include="..\INSS.FIP.Data\INSS.FIP.Data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+﻿@model string
+
+@{
+    const string govukFormGroupErrorClass = "govuk-form-group--error";
+    const string govukInputErrorClass = "govuk-input--error";
+    var showErrorClassForInput = string.Empty;
+    var hintId = string.Empty;
+    var showErrorClass = string.Empty;
+    var errorKey = ViewData.ModelMetadata.PropertyName;
+    var selectList = ViewData["SelectList"] as SelectList;
+    var defaultSelect = $"{ViewData["DefaultSelect"]}";
+
+    if (errorKey != null && 
+        ViewData.ModelState.Keys.Contains(errorKey) && 
+        ViewData.ModelState[errorKey]?.Errors != null && 
+        ViewData.ModelState[errorKey]!.Errors.Any())
+    {
+        showErrorClassForInput = govukInputErrorClass;
+        showErrorClass = govukFormGroupErrorClass;
+    }
+}
+
+<div class="govuk-form-group @showErrorClass">
+    @Html.LabelFor(model => model, new { @class = "govuk-label" })
+
+    @if (!string.IsNullOrWhiteSpace(ViewData.ModelMetadata.Description))
+    {
+        hintId = ViewData.ModelMetadata.Name + "-hint";
+
+        <span id="@hintId" class="govuk-hint">
+            @ViewData.ModelMetadata.Description
+        </span>
+    }
+
+    @Html.ValidationMessageFor(model => model, string.Empty, new { @class = "govuk-error-message", @id = ViewData.ModelMetadata.Name + "-error" })
+
+    @Html.DropDownListFor(model => model, selectList, defaultSelect, new{
+        @class = "govuk-input " + showErrorClassForInput,
+        aria_describedby = hintId
+    })
+</div>

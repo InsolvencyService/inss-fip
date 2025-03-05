@@ -1,0 +1,45 @@
+﻿@model int?
+
+@{ 
+    const string govukFormGroupErrorClass = "govuk-form-group--error";
+    const string govukInputErrorClass = "govuk-input--error";
+    var showErrorClassForInput = string.Empty;
+    var hintId = string.Empty;
+    var showErrorClass = string.Empty;
+    var errorKey = ViewData.ModelMetadata.PropertyName;
+
+    if (errorKey != null && 
+        ViewData.ModelState.Keys.Contains(errorKey) && 
+        ViewData.ModelState[errorKey]?.Errors != null && 
+        ViewData.ModelState[errorKey]!.Errors.Any())
+    {
+        showErrorClassForInput = govukInputErrorClass;
+        showErrorClass = govukFormGroupErrorClass;
+    }
+}
+
+<div class="govuk-form-group @showErrorClass">
+    @Html.LabelFor(model => model, new { @class = "govuk-label" })
+
+    @if (!string.IsNullOrWhiteSpace(ViewData.ModelMetadata.Description))
+    {
+        hintId = ViewData.ModelMetadata.Name + "-hint";
+
+        <span id="@hintId" class="govuk-hint">
+            @ViewData.ModelMetadata.Description
+        </span>
+    }
+
+    @Html.ValidationMessageFor(model => model, string.Empty, new { @class = "govuk-error-message", @id = ViewData.ModelMetadata.Name + "-error" })
+
+    @Html.TextBoxFor(model => model, new
+    {
+        @class = "govuk-input " + showErrorClassForInput,
+        type = "number",
+        maxLength = "10",
+        pattern = "[0-9]*",
+        inputmode = "numeric",
+        autocomplete = "off",
+        aria_describedby = hintId
+    })
+</div>

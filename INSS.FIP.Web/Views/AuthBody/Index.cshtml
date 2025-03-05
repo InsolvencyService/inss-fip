@@ -1,0 +1,72 @@
+﻿@model INSS.FIP.Web.ViewModels.AuthBodiesViewModel
+
+@{
+    ViewData["Title"] = "Authorising Bodies";
+}
+
+@section Breadcrumb {
+    <partial name="_Breadcrumb" for=Breadcrumbs />
+}
+
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+@if(Model?.AuthBodies != null && Model.AuthBodies.Any())
+{
+    @foreach (var authBody in Model.AuthBodies) {
+        <div id="@authBody.Abbreviation">
+            <h3 class="govuk-heading-m">Authorising Body Details</h3>
+            <div>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Abbreviation)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Abbreviation)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Name)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Name)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Address)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Address)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Telephone)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Telephone)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Fax)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Fax)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Website)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@authBody.Website" target="_blank">@Html.DisplayFor(model => authBody.Website)</a>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    }
+}

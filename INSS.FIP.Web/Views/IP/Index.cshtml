@@ -1,0 +1,99 @@
+﻿@model INSS.FIP.Web.ViewModels.SpecialMessageViewModel
+
+@{
+    ViewData["Title"] = "Find an insolvency practitioner";
+}
+
+
+@if (Model.ShowMessage)
+{
+    <div class="govuk-warning-text">
+        <h2 class="govuk-heading-m">Special Notice</h2>
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Special Notice</span>
+            @Model.Message
+        </strong>
+    </div>
+
+	<hr class="govuk-section-break govuk-section-break--l govuk-section-break govuk-section-break--visible">
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @ViewData["Title"]
+        </h1>
+    </div>
+    <div class="govuk-grid-column-one-third">
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <p class="govuk-body">
+            Find licenced insolvency practitioners in your area, including their contact details and authorising body.
+            You can search by:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>name</li>
+            <li>company</li>
+            <!--
+            <li>insolvency practitioner number</li>
+            -->
+            <li>town or city</li>
+            <li>postcode</li>
+        </ul>
+
+        @if (!Model.HideSearch)
+        {
+            <a asp-controller="IP" asp-action="Search" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+                Start now
+                <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                </svg>
+            </a>
+
+        }
+
+        <h2 class="govuk-heading-m">Before you start</h2>
+
+        <p class="govuk-body">
+            The service contains information about insolvency practitioners who have agreed to include their details.
+            It is <strong>not</strong> a complete list of all insolvency practitioners in the UK.
+        </p>
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+
+        <aside class="app-related-items" role="complementary">
+            <h2 class="govuk-heading-s" id="subsection-title">
+                Related content
+            </h2>
+            <nav role="navigation" aria-labelledby="subsection-title">
+                <ul class="govuk-list govuk-!-font-size-16">
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/get-help-insolvency-service">
+                            Get help from the Insolvency Service
+                        </a>
+                    </li>
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.gov.uk/browse/tax/court-claims-debt-bankruptcy">
+                            Find out more about bankruptcy and insolvency
+                        </a>
+                    </li>
+                    <li>
+                        <a class="govuk-link--no-visited-state" href="https://www.insolvencydirect.bis.gov.uk/ExternalOnlineForms/GeneralEnquiry.aspx">
+                            Give feedback about the Find an insolvency practitioner service
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </aside>
+
+    </div>
+</div>
