@@ -28,24 +28,26 @@ public class WebMessageGetHttpTrigger
         _webMessageService = webMessageService.ThrowIfNullOrDefault();
     }
 
-    [Function("WebMessage")]
-    [OpenApiOperation(operationId: "WebMessage", tags: new[] { "WebMessage" }, Summary = "Gets web messages for an application", Description = "Gets web messages for an application.", Visibility = OpenApiVisibilityType.Important)]
+    //Change name from 'WebMessage' to 'GetWebPageBannerMessage'
+
+    [Function("GetWebPageBannerMessage")]
+    [OpenApiOperation(operationId: "GetWebPageBannerMessage", tags: new[] { "WebMessage" }, Summary = "Gets web page banner messages for an application", Description = "Gets web page banner messages for an application.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiParameter(name: "applicationPrefix", In = ParameterLocation.Path, Required = false, Type = typeof(string), Explode = false, Summary = "Application prefix", Description = "Application prefix", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<FipApiSearchResultResponseModel>), Summary = "Web messages", Description = "List of Web messages")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
     public async Task<IActionResult> Run(
-       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "WebMessage/{applicationPrefix}")] HttpRequest req, string? applicationPrefix)
+       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetWebPageBannerMessage/{applicationPrefix}")] HttpRequest req, string? applicationPrefix)
     {
-        _logger.LogTrace("Executing WebMessage get list");
+        _logger.LogTrace("Executing GetWebPageBannerMessage get list");
 
         var webMessageRequestModel = new WebMessageRequestModel { ApplicationPrefix = applicationPrefix, };
         var validationResults = ValidationHelpers.ValidateModel(webMessageRequestModel);
 
         if (validationResults != null && validationResults.Any())
         {
-            _logger.LogError("Executed WebMessage get list, with validation failures. {validationFailures}", validationResults);
+            _logger.LogError("Executed GetWebPageBannerMessage get list, with validation failures. {validationFailures}", validationResults);
 
             return new BadRequestResult();
         }
@@ -54,12 +56,12 @@ public class WebMessageGetHttpTrigger
 
         if (result != null)
         {
-            _logger.LogInformation("Executed WebMessage get list, returning {count} results.", result.Count);
+            _logger.LogInformation("Executed GetWebPageBannerMessage get list, returning {count} results.", result.Count);
 
             return new OkObjectResult(result);
         }
 
-        _logger.LogError("Execute WebMessage get list failed.");
+        _logger.LogError("Execute GetWebPageBannerMessage get list failed.");
 
         return new StatusCodeResult(StatusCodes.Status500InternalServerError);
     }

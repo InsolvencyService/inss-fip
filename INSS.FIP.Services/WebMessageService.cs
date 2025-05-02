@@ -27,7 +27,7 @@ namespace INSS.FIP.Services
         {
             var apiConnectorRequestModel = new ApiConnectorRequestModel
             {
-                Uri = new Uri($"api/WebMessage/{applicationPrefix}", UriKind.Relative),
+                Uri = new Uri($"api/GetWebPageBannerMessage/{applicationPrefix}", UriKind.Relative),
             };
 
             var apiResponse = await _fipApiConnector.ProcessAsync<IList<FipApiWebMessageResponseModel>>(apiConnectorRequestModel);
