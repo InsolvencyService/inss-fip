@@ -68,7 +68,7 @@ public class EntityFrameworkToApiModelProfiles : Profile
             .ForMember(d => d.RegisteredAddressLine4, opt => opt.MapFrom(s => s.RegisteredAddressLine4))
             .ForMember(d => d.Email, opt => opt.MapFrom(s => s.IpEmailAddress));
 
-        CreateMap<WebMessage, FipApiWebMessageResponseModel>()
+        CreateMap<GetWebPageBannerMessage, FipApiGetWebPageBannerMessageResponseModel>()
             .ForMember(d => d.HideSearch, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.HideSearch) && s.HideSearch.Equals("Y", StringComparison.OrdinalIgnoreCase)));
     }
 }

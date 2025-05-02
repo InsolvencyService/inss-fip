@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace INSS.FIP.Data
 {
-    public partial class WebMessage
+    public partial class GetWebPageBannerMessage
     {
         public int Id { get; set; }
         public string Application { get; set; } = null!;

@@ -14,10 +14,10 @@ public class IpControllerIndexTests : BaseIpController
     public async Task IpControllerIndexReturnsSuccess()
     {
         // Arrange
-        var serviceWebMessagesGetResults = A.CollectionOfDummy<WebMessageDomainModel>(2);
+        var serviceGetWebPageBannerMessagesGetResults = A.CollectionOfDummy<GetWebPageBannerMessageDomainModel>(2);
         using var controller = BuildIpController();
 
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<string>.Ignored)).Returns(serviceWebMessagesGetResults);
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<string>.Ignored)).Returns(serviceGetWebPageBannerMessagesGetResults);
 
         // Act
         var result = await controller.Index();
@@ -28,7 +28,7 @@ public class IpControllerIndexTests : BaseIpController
 
         Assert.NotNull(model);
 
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map(A<WebMessageDomainModel>.Ignored, A<SpecialMessageViewModel>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeMapper.Map(A<GetWebPageBannerMessageDomainModel>.Ignored, A<SpecialMessageViewModel>.Ignored)).MustHaveHappenedOnceExactly();
     }
 }

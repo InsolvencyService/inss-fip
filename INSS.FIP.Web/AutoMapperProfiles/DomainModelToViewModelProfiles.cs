@@ -10,7 +10,7 @@ public class DomainModelToViewModelProfiles : Profile
 {
     public DomainModelToViewModelProfiles()
     {
-        CreateMap<WebMessageDomainModel, SpecialMessageViewModel>()
+        CreateMap<GetWebPageBannerMessageDomainModel, SpecialMessageViewModel>()
             .ForMember(d => d.ShowMessage, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.Message)));
 
         CreateMap<AuthBodyDomainModel, AuthBodyViewModel>()

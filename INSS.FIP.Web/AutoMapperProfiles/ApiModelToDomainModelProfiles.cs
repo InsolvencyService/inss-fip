@@ -14,7 +14,7 @@ public class ApiModelToDomainModelProfiles : Profile
     {
         CreateMap<FipApiAuthBodyResponseModel, AuthBodyDomainModel>();
 
-        CreateMap<FipApiWebMessageResponseModel, WebMessageDomainModel>();
+        CreateMap<FipApiGetWebPageBannerMessageResponseModel, GetWebPageBannerMessageDomainModel>();
 
         CreateMap<FipApiInsolvencyPractitionerResponseModel, InsolvencyPractitionerDomainModel>();
 

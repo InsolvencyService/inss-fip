@@ -2,18 +2,18 @@
 using AutoMapper;
 using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
-using INSS.FIP.Models.RequestModels.WebMessage;
+using INSS.FIP.Models.RequestModels.GetWebPageBannerMessage;
 using INSS.FIP.Models.ResponseModels;
 
 namespace INSS.FIP.DataAccess;
 
 [ExcludeFromCodeCoverage]
-public class WebMessageProvider : IWebMessageProvider
+public class GetWebPageBannerMessageProvider : IGetWebPageBannerMessageProvider
 {
     private readonly IMapper _mapper;
     private readonly iirwebdbContext _iirwebdbContext;
 
-    public WebMessageProvider(
+    public GetWebPageBannerMessageProvider(
         IMapper mapper,
         iirwebdbContext iirwebdbContext)
     {
@@ -21,24 +21,24 @@ public class WebMessageProvider : IWebMessageProvider
         _iirwebdbContext = iirwebdbContext;
     }
 
-    private IQueryable<WebMessage> BaseQuery
+    private IQueryable<GetWebPageBannerMessage> BaseQuery
     {
         get
         {
-            var query = from a in _iirwebdbContext.WebMessages
+            var query = from a in _iirwebdbContext.GetWebPageBannerMessages
                         select a;
 
             return query;
         }
     }
 
-    public async Task<IList<FipApiWebMessageResponseModel>> GetAsync(WebMessageRequestModel request)
+    public async Task<IList<FipApiGetWebPageBannerMessageResponseModel>> GetAsync(GetWebPageBannerMessageRequestModel request)
     {
         var query = BaseQuery;
 
         var results = (from a in query
                        where a.Application.StartsWith(request.ApplicationPrefix!)
-                       select _mapper.Map<FipApiWebMessageResponseModel>(a)
+                       select _mapper.Map<FipApiGetWebPageBannerMessageResponseModel>(a)
                       ).ToList();
 
         return await Task.FromResult(results);

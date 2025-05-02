@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.Services
 {
-    public class WebMessageService : IWebMessageService
+    public class GetWebPageBannerMessageService : IGetWebPageBannerMessageService
     {
-        private readonly ILogger<WebMessageService> _logger;
+        private readonly ILogger<GetWebPageBannerMessageService> _logger;
         private readonly IFipApiConnector _fipApiConnector;
         private readonly IMapper _mapper;
 
-        public WebMessageService(
-            ILogger<WebMessageService> logger,
+        public GetWebPageBannerMessageService(
+            ILogger<GetWebPageBannerMessageService> logger,
             IMapper mapper,
             IFipApiConnector fipApiConnector)
         {
@@ -23,18 +23,18 @@ namespace INSS.FIP.Services
             _fipApiConnector = fipApiConnector;
         }
 
-        public async Task<IList<WebMessageDomainModel>> GetAsync(string applicationPrefix)
+        public async Task<IList<GetWebPageBannerMessageDomainModel>> GetAsync(string applicationPrefix)
         {
             var apiConnectorRequestModel = new ApiConnectorRequestModel
             {
-                Uri = new Uri($"api/WebMessage/{applicationPrefix}", UriKind.Relative),
+                Uri = new Uri($"api/GetWebPageBannerMessage/{applicationPrefix}", UriKind.Relative),
             };
 
-            var apiResponse = await _fipApiConnector.ProcessAsync<IList<FipApiWebMessageResponseModel>>(apiConnectorRequestModel);
+            var apiResponse = await _fipApiConnector.ProcessAsync<IList<FipApiGetWebPageBannerMessageResponseModel>>(apiConnectorRequestModel);
 
             if (apiResponse.IsSuccessStatusCode)
             {
-                return _mapper.Map<IList<WebMessageDomainModel>>(apiResponse.Payload);
+                return _mapper.Map<IList<GetWebPageBannerMessageDomainModel>>(apiResponse.Payload);
             }
 
             _logger.LogError("Error response from {Method} API: {Code}, {Reason}", nameof(GetAsync), apiResponse.StatusCode, apiResponse.ErrorReasonPhrase);

@@ -14,17 +14,17 @@ public class IpController : Controller
     private readonly ILogger<IpController> _logger;
     private readonly IMapper _mapper;
     private readonly IInsolvencyPractitionerService _insolvencyPractitionerService;
-    private readonly IWebMessageService _webMessageService;
+    private readonly IGetWebPageBannerMessageService _GetWebPageBannerMessageService;
 
     public IpController(ILogger<IpController> logger, 
         IMapper mapper, 
         IInsolvencyPractitionerService insolvencyPractitionerService,
-        IWebMessageService webMessageService)
+        IGetWebPageBannerMessageService GetWebPageBannerMessageService)
     {
         _logger = logger;
         _mapper = mapper;
         _insolvencyPractitionerService = insolvencyPractitionerService;
-        _webMessageService = webMessageService;
+        _GetWebPageBannerMessageService = GetWebPageBannerMessageService;
     }
 
     public SearchParametersViewModel? SessionSearchParametersViewModel
@@ -57,12 +57,12 @@ public class IpController : Controller
     public async Task<IActionResult> Index()
     {
         var specialMessageViewModel = new SpecialMessageViewModel();
-        var webMessageDomainModels = await _webMessageService.GetAsync("fip");
-        var webMessageDomainModel = webMessageDomainModels?.FirstOrDefault();
+        var GetWebPageBannerMessageDomainModels = await _GetWebPageBannerMessageService.GetAsync("fip");
+        var GetWebPageBannerMessageDomainModel = GetWebPageBannerMessageDomainModels?.FirstOrDefault();
 
-        if (webMessageDomainModel != null)
+        if (GetWebPageBannerMessageDomainModel != null)
         {
-            _mapper.Map(webMessageDomainModel, specialMessageViewModel);
+            _mapper.Map(GetWebPageBannerMessageDomainModel, specialMessageViewModel);
         }
 
         return View(specialMessageViewModel);

@@ -56,7 +56,7 @@ namespace INSS.FIP.Data
         public virtual DbSet<TmpCasesCsv> TmpCasesCsvs { get; set; } = null!;
         public virtual DbSet<Visit> Visits { get; set; } = null!;
         public virtual DbSet<VisitsArchived> VisitsArchiveds { get; set; } = null!;
-        public virtual DbSet<WebMessage> WebMessages { get; set; } = null!;
+        public virtual DbSet<GetWebPageBannerMessage> GetWebPageBannerMessages { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -2713,7 +2713,7 @@ namespace INSS.FIP.Data
                     .HasColumnName("User_Agent");
             });
 
-            modelBuilder.Entity<WebMessage>(entity =>
+            modelBuilder.Entity<GetWebPageBannerMessage>(entity =>
             {
                 entity.ToTable("web_messages");
 

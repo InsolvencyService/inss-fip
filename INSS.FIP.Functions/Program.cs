@@ -27,7 +27,7 @@ var host = new HostBuilder()
 
         services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
-        services.AddTransient<IWebMessageProvider, WebMessageProvider>();
+        services.AddTransient<IGetWebPageBannerMessageProvider, GetWebPageBannerMessageProvider>();
         services.AddTransient<IDbSync, DbSync>();
     })
     .Build();

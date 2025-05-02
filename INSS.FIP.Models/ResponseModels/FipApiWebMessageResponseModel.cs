@@ -3,7 +3,7 @@
 namespace INSS.FIP.Models.ResponseModels;
 
 [ExcludeFromCodeCoverage]
-public class FipApiWebMessageResponseModel
+public class FipApiGetWebPageBannerMessageResponseModel
 {
     public bool HideSearch { get; set; }
 

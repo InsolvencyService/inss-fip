@@ -3,7 +3,7 @@
 namespace INSS.FIP.Models.DomainModels;
 
 [ExcludeFromCodeCoverage]
-public class WebMessageDomainModel
+public class GetWebPageBannerMessageDomainModel
 {
     public bool HideSearch { get; set; }
 

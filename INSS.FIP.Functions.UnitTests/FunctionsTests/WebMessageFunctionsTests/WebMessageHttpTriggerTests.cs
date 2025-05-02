@@ -2,82 +2,82 @@
 using System.Net;
 using System.Threading.Tasks;
 using FakeItEasy;
-using INSS.FIP.Functions.Functions.WebMessage;
+using INSS.FIP.Functions.Functions.GetWebPageBannerMessage;
 using INSS.FIP.Interfaces;
-using INSS.FIP.Models.RequestModels.WebMessage;
+using INSS.FIP.Models.RequestModels.GetWebPageBannerMessage;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
 
-namespace INSS.FIP.Functions.UnitTests.FunctionsTests.WebMessageFunctionsTests;
+namespace INSS.FIP.Functions.UnitTests.FunctionsTests.GetWebPageBannerMessageFunctionsTests;
 
-[Trait("Category", "WebMessage Function - Unit Tests")]
-public class WebMessageHttpTriggerTests
+[Trait("Category", "GetWebPageBannerMessage Function - Unit Tests")]
+public class GetWebPageBannerMessageHttpTriggerTests
 {
-    private readonly ILogger<WebMessageGetHttpTrigger> _fakeLogger = A.Fake<ILogger<WebMessageGetHttpTrigger>>();
-    private readonly IWebMessageProvider _fakeWebMessageService = A.Fake<IWebMessageProvider>();
-    private readonly WebMessageGetHttpTrigger _WebMessageHttpTrigger;
+    private readonly ILogger<GetWebPageBannerMessageGetHttpTrigger> _fakeLogger = A.Fake<ILogger<GetWebPageBannerMessageGetHttpTrigger>>();
+    private readonly IGetWebPageBannerMessageProvider _fakeGetWebPageBannerMessageService = A.Fake<IGetWebPageBannerMessageProvider>();
+    private readonly GetWebPageBannerMessageGetHttpTrigger _GetWebPageBannerMessageHttpTrigger;
 
-    public WebMessageHttpTriggerTests()
+    public GetWebPageBannerMessageHttpTriggerTests()
     {
-        _WebMessageHttpTrigger = new WebMessageGetHttpTrigger(_fakeLogger, _fakeWebMessageService);
+        _GetWebPageBannerMessageHttpTrigger = new GetWebPageBannerMessageGetHttpTrigger(_fakeLogger, _fakeGetWebPageBannerMessageService);
     }
 
     [Fact]
-    public async Task WebMessageHttpTriggerWithValidRequestReturnsOk()
+    public async Task GetWebPageBannerMessageHttpTriggerWithValidRequestReturnsOk()
     {
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.OK;
         const string applicationPrefix = "fip";
-        var dummyFipApiWebMessageResponseModels = A.CollectionOfDummy<FipApiWebMessageResponseModel>(2);
+        var dummyFipApiGetWebPageBannerMessageResponseModels = A.CollectionOfDummy<FipApiGetWebPageBannerMessageResponseModel>(2);
 
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).Returns(dummyFipApiWebMessageResponseModels);
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<GetWebPageBannerMessageRequestModel>.Ignored)).Returns(dummyFipApiGetWebPageBannerMessageResponseModels);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
+        var result = await _GetWebPageBannerMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<GetWebPageBannerMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
 
         var statusResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal((int)expectedResult, statusResult.StatusCode);
     }
 
     [Fact]
-    public async Task WebMessageHttpTriggerWithInvalidParamaterReturnsBadRequest()
+    public async Task GetWebPageBannerMessageHttpTriggerWithInvalidParamaterReturnsBadRequest()
     {
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.BadRequest;
         string applicationPrefix = string.Empty;
-        var dummyFipApiWebMessageResponseModels = A.CollectionOfDummy<FipApiWebMessageResponseModel>(0);
+        var dummyFipApiGetWebPageBannerMessageResponseModels = A.CollectionOfDummy<FipApiGetWebPageBannerMessageResponseModel>(0);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
+        var result = await _GetWebPageBannerMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustNotHaveHappened();
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<GetWebPageBannerMessageRequestModel>.Ignored)).MustNotHaveHappened();
 
         var statusResult = Assert.IsType<BadRequestResult>(result);
         Assert.Equal((int)expectedResult, statusResult.StatusCode);
     }
 
     [Fact]
-    public async Task WebMessageHttpTriggerWithNullDataReturnsInternalServerError()
+    public async Task GetWebPageBannerMessageHttpTriggerWithNullDataReturnsInternalServerError()
     {
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.InternalServerError;
         const string applicationPrefix = "fip";
-        IList<FipApiWebMessageResponseModel>? nullFipApiWebMessageResponseModels = default;
+        IList<FipApiGetWebPageBannerMessageResponseModel>? nullFipApiGetWebPageBannerMessageResponseModels = default;
 
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).Returns(nullFipApiWebMessageResponseModels);
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<GetWebPageBannerMessageRequestModel>.Ignored)).Returns(nullFipApiGetWebPageBannerMessageResponseModels);
 
         // Act
-        var result = await _WebMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
+        var result = await _GetWebPageBannerMessageHttpTrigger.Run(new DefaultHttpContext().Request, applicationPrefix);
 
         // Assert
-        A.CallTo(() => _fakeWebMessageService.GetAsync(A<WebMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeGetWebPageBannerMessageService.GetAsync(A<GetWebPageBannerMessageRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
 
         var statusResult = Assert.IsType<StatusCodeResult>(result);
         Assert.Equal((int)expectedResult, statusResult.StatusCode);
