@@ -5,6 +5,7 @@ using INSS.FIP.Models.RequestModels;
 using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
 using INSS.FIP.Models.ResponseModels;
 using INSS.FIP.Data.FCMCDataSource;
+using INSS.FIP.Models.ResponseModels.CentrallyManagedParties;
 
 namespace INSS.FIP.Functions.AutoMapperProfiles;
 
@@ -21,6 +22,8 @@ public class EntityFrameworkToApiModelProfiles : Profile
 
     public EntityFrameworkToApiModelProfiles()
     {
+        CreateMap<FipApiBankruptcyCreditorsResponseModel, BankruptcyCreditorsList>();
+
         CreateMap<FipApiSearchRequestModel, IpSearchRequestModel>();
 
         CreateMap<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>();
@@ -70,5 +73,7 @@ public class EntityFrameworkToApiModelProfiles : Profile
 
         CreateMap<WebMessage, FipApiWebMessageResponseModel>()
             .ForMember(d => d.HideSearch, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.HideSearch) && s.HideSearch.Equals("Y", StringComparison.OrdinalIgnoreCase)));
+
+        //CreateMap<BankruptcyCreditorsList>
     }
 }
