@@ -84,7 +84,7 @@ stages:
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
+  condition: and(succeeded())
   variables:
     - group: FIP-SIT
   jobs:
