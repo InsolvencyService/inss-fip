@@ -84,7 +84,7 @@ stages:
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(succeeded())
+  condition: succeeded()
   variables:
     - group: FIP-SIT
   jobs:
