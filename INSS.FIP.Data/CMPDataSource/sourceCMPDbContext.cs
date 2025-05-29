@@ -1,11 +1,6 @@
 ﻿using INSS.FIP.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace INSS.FIP.Data.CMPDataSource;
 
@@ -34,8 +29,8 @@ public class sourceCMPDbContext : DbContext, IDbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var viewName = _configuration["CMPDataViewName"] ?? "vw_Eiir";
-        string viewSchema = _configuration["CMPDataViewNameSchema"] ?? "ext";
+        var viewName = _configuration["CMPDataViewName"];
+        string viewSchema = _configuration["CMPDataViewNameSchema"]!;
         modelBuilder.Entity<View_Data>()
             .HasNoKey()
             .ToView(viewName, schema: viewSchema);

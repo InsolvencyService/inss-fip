@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace INSS.FIP.Data;
 
-public partial class BankruptcyCreditorsList
+public class BankruptcyCreditorsList : IComparable<BankruptcyCreditorsList>
 {
     public int Id { get; set; }
     public string SourceRef { get; set; }
@@ -18,4 +13,10 @@ public partial class BankruptcyCreditorsList
     public string County { get; set; }
     public string PostCode { get; set; }
     public string Country { get; set; }
+
+    public int CompareTo(BankruptcyCreditorsList? other)
+    {
+        if (other == null) return 1;
+        return string.Compare(this.Name, other.Name, StringComparison.Ordinal);
+    }
 }
