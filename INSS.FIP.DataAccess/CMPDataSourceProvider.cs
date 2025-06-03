@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.DataAccess;
 
-public class CMPDataSourceProvider : IDataSourceProvider<CentrallyManagedPartyResponseModel>
+public class CMPDataSourceProvider : IDataSourceProvider<CentrallyManagedPartyModel>
 {
     private readonly sourceCMPDbContext _sourceDbContext;
     private readonly ILogger<CMPDataSourceProvider> _logger;
@@ -17,10 +17,10 @@ public class CMPDataSourceProvider : IDataSourceProvider<CentrallyManagedPartyRe
         _logger = logger;
     }
 
-    public async Task<List<CentrallyManagedPartyResponseModel>> GetDataFromViewAsync()
+    public async Task<List<CentrallyManagedPartyModel>> GetDataFromViewAsync()
     {
         var result = await _sourceDbContext.viewData.AsNoTracking()
-            .Select(x => new CentrallyManagedPartyResponseModel
+            .Select(x => new CentrallyManagedPartyModel
             {
                 SourceRef = x.SourceRef,
                 Name = x.Name,

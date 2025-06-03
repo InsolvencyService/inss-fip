@@ -71,6 +71,5 @@ public class EntityFrameworkToApiModelProfiles : Profile
         CreateMap<WebMessage, FipApiWebMessageResponseModel>()
             .ForMember(d => d.HideSearch, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.HideSearch) && s.HideSearch.Equals("Y", StringComparison.OrdinalIgnoreCase)));
 
-        //CreateMap<BankruptcyCreditorsList>
     }
 }

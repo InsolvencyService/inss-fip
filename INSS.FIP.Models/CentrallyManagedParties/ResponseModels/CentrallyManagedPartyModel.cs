@@ -3,7 +3,7 @@
 namespace INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
 
 [ExcludeFromCodeCoverage]
-public class CentrallyManagedPartyResponseModel
+public class CentrallyManagedPartyModel
 {
     public string SourceRef { get; set; }
     public string Name { get; set; }

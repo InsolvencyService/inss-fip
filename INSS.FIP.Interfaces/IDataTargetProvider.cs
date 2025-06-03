@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INSS.FIP.Interfaces;
 
-public interface IDataTargetRepository<T>
+public interface IDataTargetProvider<T>
 {
     Task TruncateAndInsertAsync(List<T> data);
 }

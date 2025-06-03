@@ -47,9 +47,9 @@ var host = new HostBuilder()
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
         services.AddTransient<IWebMessageProvider, WebMessageProvider>();
         services.AddTransient<IDbSync, DbSync>();
-        services.AddTransient<IDbSyncData<CentrallyManagedPartyResponseModel, BankruptcyCreditorsList>, DbSyncCMPData<CentrallyManagedPartyResponseModel, BankruptcyCreditorsList>>();
-        services.AddTransient<IDataSourceProvider<CentrallyManagedPartyResponseModel>, CMPDataSourceProvider>();
-        services.AddTransient<IDataTargetRepository<BankruptcyCreditorsList>, BankruptcyCreditorsRepository>();
+        services.AddTransient<IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList>, DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList>>();
+        services.AddTransient<IDataSourceProvider<CentrallyManagedPartyModel>, CMPDataSourceProvider>();
+        services.AddTransient<IDataTargetProvider<BankruptcyCreditorsList>, BankruptcyCreditorsRepository>();
     })
     .Build();
 

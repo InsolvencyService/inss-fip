@@ -3,11 +3,18 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "BankruptcyCreditorsSyncSchedulePattern": "schedule pattern for centrally managed party",
+    "CMPDataViewName": "Centrally Managed Party View Name",
+    "CMPDataViewNameSchema": "Centrally Managed Party Schema Name",
 
     "sourceDbContextConnectionString": "Data Source=[FCMC db connction string]",
     "iirwebdbContextConnectionString": "Data Source=[iirwebdb db connction string]",
+
+    "sourceCMPDbContextConnectionString": "Data Source=[source CMP db connction string]",
+    "targetCMPDbContextConnectionString": "Data Source=[target CMP db connction string]",
+
     "usingFCMCtableView": "true",
-    
+
     "OpenApi__Version": "v3",
     "OpenApi__DocVersion": "1.0.0",
     "OpenApi__DocTitle": "Swagger FIP Services"

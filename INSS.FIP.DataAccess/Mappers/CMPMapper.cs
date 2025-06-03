@@ -8,6 +8,6 @@ public class CMPMapper : Profile
 {
     public CMPMapper()
     {
-        CreateMap<CentrallyManagedPartyResponseModel, BankruptcyCreditorsList>();
+        CreateMap<CentrallyManagedPartyModel, BankruptcyCreditorsList>();
     }
 }

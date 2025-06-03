@@ -14,10 +14,10 @@ namespace INSS.FIP.Functions.Functions.CentrallyManagedParty;
 public class CMPSyncGetHttpTrigger
 {
     private readonly ILogger<CMPSyncGetHttpTrigger> _logger;
-    private readonly IDbSyncData<CentrallyManagedPartyResponseModel, BankruptcyCreditorsList> _dbSyncCMPData;
+    private readonly IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList> _dbSyncCMPData;
 
     public CMPSyncGetHttpTrigger(ILogger<CMPSyncGetHttpTrigger> logger,
-        IDbSyncData<CentrallyManagedPartyResponseModel, BankruptcyCreditorsList> dbSyncCMPData)
+        IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList> dbSyncCMPData)
     {
         _logger = logger;
         _dbSyncCMPData = dbSyncCMPData;
@@ -25,7 +25,7 @@ public class CMPSyncGetHttpTrigger
 
     [Function("CMPSyncGetHttp")]
     [OpenApiOperation(operationId: "CMPSyncGetHttp", tags: new[] { "CMPSyncGetHttp" }, Summary = "Transfer data from Insight to bankcruptcy.", Description = "Transfer data from Insight to bankcruptcy.", Visibility = OpenApiVisibilityType.Important)]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<CentrallyManagedPartyResponseModel>), Summary = "Synch Get Timer Trigger", Description = "Transfer data from Insight to bankcruptcy.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<CentrallyManagedPartyModel>), Summary = "Synch Get Timer Trigger", Description = "Transfer data from Insight to bankcruptcy.")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
