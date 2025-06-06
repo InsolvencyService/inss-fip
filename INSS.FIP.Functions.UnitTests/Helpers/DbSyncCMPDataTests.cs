@@ -34,7 +34,7 @@ public class DbSyncCMPDataTests
     {
         // Arrange
         const string viewName = ConstantValues.ViewName;
-        const string orderByColumn = ConstantValues.OrderByColumn;
+
 
         var dummySourceData = A.CollectionOfDummy<CentrallyManagedPartyModel>(2).ToList();
         var dummyMappedData = A.CollectionOfDummy<BankruptcyCreditorsList>(2).ToList();
@@ -44,7 +44,7 @@ public class DbSyncCMPDataTests
         A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync(orderByColumn);
+        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
 
         // Assert
         Assert.True(result, ConstantValues.SynchronizationSuccessfulMessage);
@@ -58,7 +58,6 @@ public class DbSyncCMPDataTests
     {
         // Arrange
         const string viewName = ConstantValues.ViewName;
-        const string orderByColumn = ConstantValues.OrderByColumn;
 
         var emptySourceData = new List<CentrallyManagedPartyModel>();
         
@@ -67,7 +66,7 @@ public class DbSyncCMPDataTests
         A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync(orderByColumn);
+        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
 
         // Assert
         Assert.True(result, "Synchronization return true with empty data");

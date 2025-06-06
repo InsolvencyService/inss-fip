@@ -30,7 +30,6 @@ public class CMPSynchGetTimerTrigger
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
     public async Task Run([TimerTrigger("%BankruptcyCreditorsSyncSchedulePattern%")] TimerInfo myTimer)
     {
-        string orderBy = "Name";
-        await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync(orderBy);
+        await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
     }
 }

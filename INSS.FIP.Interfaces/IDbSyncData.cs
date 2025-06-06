@@ -8,5 +8,5 @@ namespace INSS.FIP.Interfaces;
 
 public interface IDbSyncData<TData>
 {
-    Task<bool> SynchronizeBankruptcyCreditorsAsync(string orderByColumn);
+    Task<bool> SynchronizeBankruptcyCreditorsAsync();
 }
