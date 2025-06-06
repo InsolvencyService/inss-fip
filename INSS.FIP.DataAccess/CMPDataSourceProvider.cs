@@ -1,6 +1,6 @@
 ﻿using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Interfaces;
-using INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

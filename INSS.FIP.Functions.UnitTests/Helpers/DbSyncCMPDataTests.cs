@@ -3,7 +3,7 @@ using FakeItEasy;
 using INSS.FIP.Data;
 using INSS.FIP.Functions.Helper;
 using INSS.FIP.Interfaces;
-using INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;

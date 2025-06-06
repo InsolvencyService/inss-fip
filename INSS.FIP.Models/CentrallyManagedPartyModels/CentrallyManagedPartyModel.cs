@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
+namespace INSS.FIP.Models.CentrallyManagedPartyModels;
 
 [ExcludeFromCodeCoverage]
 public class CentrallyManagedPartyModel

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using INSS.FIP.Data;
-using INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
 
 namespace INSS.FIP.DataAccess.Mappers;
 

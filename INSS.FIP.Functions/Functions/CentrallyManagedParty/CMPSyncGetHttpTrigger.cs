@@ -1,6 +1,5 @@
 ﻿using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
-using INSS.FIP.Models.CentrallyManagedParties.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -8,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using System.Net.Mime;
 using System.Net;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
 
 namespace INSS.FIP.Functions.Functions.CentrallyManagedParty;
 
