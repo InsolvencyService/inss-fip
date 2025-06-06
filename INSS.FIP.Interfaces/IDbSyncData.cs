@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INSS.FIP.Interfaces;
 
-public interface IDbSyncData<TSource, TTarget>
+public interface IDbSyncData<TData>
 {
     Task<bool> SynchronizeBankruptcyCreditorsAsync(string orderByColumn);
 }

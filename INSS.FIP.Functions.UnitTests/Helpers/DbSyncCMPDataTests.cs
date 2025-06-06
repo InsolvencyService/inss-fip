@@ -6,10 +6,8 @@ using INSS.FIP.Interfaces;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,18 +16,17 @@ namespace INSS.FIP.Functions.UnitTests.Helpers;
 public class DbSyncCMPDataTests
 {
     private readonly IDataSourceProvider<CentrallyManagedPartyModel> _fakeSourceProvider = A.Fake<IDataSourceProvider<CentrallyManagedPartyModel>>();
-    private readonly IDataTargetProvider<BankruptcyCreditorsList> _fakeTargetRepository = A.Fake<IDataTargetProvider<BankruptcyCreditorsList>>();
-    private readonly ILogger<DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList>> _fakeLogger = A.Fake<ILogger<DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList>>>();
+    private readonly IDataTargetProvider<CentrallyManagedPartyModel> _fakeTargetRepository = A.Fake<IDataTargetProvider<CentrallyManagedPartyModel>>();
+    private readonly ILogger<DbSyncCMPData<CentrallyManagedPartyModel>> _fakeLogger = A.Fake<ILogger<DbSyncCMPData<CentrallyManagedPartyModel>>>();
     private readonly IMapper _fakeMapper = A.Fake<IMapper>();
-    private readonly DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList> _dbSyncCMPData;
+    private readonly DbSyncCMPData<CentrallyManagedPartyModel> _dbSyncCMPData;
 
     public DbSyncCMPDataTests()
     {
-        _dbSyncCMPData = new DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList>(
+        _dbSyncCMPData = new DbSyncCMPData<CentrallyManagedPartyModel>(
             _fakeSourceProvider,
             _fakeTargetRepository,
-            _fakeLogger,
-            _fakeMapper);
+            _fakeLogger);
     }
 
     [Fact]
@@ -43,10 +40,8 @@ public class DbSyncCMPDataTests
         var dummyMappedData = A.CollectionOfDummy<BankruptcyCreditorsList>(2).ToList();
 
         A.CallTo(() => _fakeSourceProvider.GetDataFromViewAsync())
-            .Returns(Task.FromResult(dummySourceData.Cast<CentrallyManagedPartyModel>().ToList()));
-        A.CallTo(() => _fakeMapper.Map<List<BankruptcyCreditorsList>>(dummySourceData)).Returns(dummyMappedData);
-        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<BankruptcyCreditorsList>>._)).Returns(Task.CompletedTask);
-
+            .Returns(Task.FromResult(dummySourceData.Cast<CentrallyManagedPartyModel>().ToList()));       
+        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
         var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync(orderByColumn);
@@ -55,8 +50,7 @@ public class DbSyncCMPDataTests
         Assert.True(result, ConstantValues.SynchronizationSuccessfulMessage);
 
         A.CallTo(() => _fakeSourceProvider.GetDataFromViewAsync()).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<List<BankruptcyCreditorsList>>(dummySourceData)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<BankruptcyCreditorsList>>.That.Matches(list => list.Count == dummyMappedData.Count))).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -67,12 +61,10 @@ public class DbSyncCMPDataTests
         const string orderByColumn = ConstantValues.OrderByColumn;
 
         var emptySourceData = new List<CentrallyManagedPartyModel>();
-        var emptyMappedData = new List<BankruptcyCreditorsList>();
-
+        
         A.CallTo(() => _fakeSourceProvider.GetDataFromViewAsync())
             .Returns(Task.FromResult(emptySourceData.Cast<CentrallyManagedPartyModel>().ToList()));
-        A.CallTo(() => _fakeMapper.Map<List<BankruptcyCreditorsList>>(emptySourceData.AsEnumerable())).Returns(emptyMappedData);
-        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<BankruptcyCreditorsList>>._)).Returns(Task.CompletedTask);
+        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
         var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync(orderByColumn);
@@ -81,8 +73,7 @@ public class DbSyncCMPDataTests
         Assert.True(result, "Synchronization return true with empty data");
 
         A.CallTo(() => _fakeSourceProvider.GetDataFromViewAsync()).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<List<BankruptcyCreditorsList>>(emptySourceData.AsEnumerable())).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<BankruptcyCreditorsList>>.That.IsEmpty())).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>.That.IsEmpty())).MustHaveHappenedOnceExactly();
     }
 
     [Fact]

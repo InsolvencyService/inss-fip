@@ -5,29 +5,24 @@ using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.Functions.Helper;
 
-public class DbSyncCMPData<TSource, TTarget> : IDbSyncData<TSource, TTarget> where TTarget : IComparable<TTarget>
+public class DbSyncCMPData<TData> : IDbSyncData<TData>
 {
-    private readonly IDataSourceProvider<TSource> _sourceProvider;
-    private readonly IDataTargetProvider<TTarget> _targetProvider;
-    private readonly ILogger<DbSyncCMPData<TSource, TTarget>> _logger;
-    private readonly IMapper _mapper;
+    private readonly IDataSourceProvider<TData> _sourceProvider;
+    private readonly IDataTargetProvider<TData> _targetProvider;
+    private readonly ILogger<DbSyncCMPData<TData>> _logger;
 
-    public DbSyncCMPData(IDataSourceProvider<TSource> sourceProvider, IDataTargetProvider<TTarget> targetProvider, ILogger<DbSyncCMPData<TSource, TTarget>> logger,
-        IMapper mapper)
+    public DbSyncCMPData(IDataSourceProvider<TData> sourceProvider, IDataTargetProvider<TData> targetProvider, ILogger<DbSyncCMPData<TData>> logger)
     {
         _sourceProvider = sourceProvider;
         _targetProvider = targetProvider;
         _logger = logger;
-        _mapper = mapper;
     }
 
     public async Task<bool> SynchronizeBankruptcyCreditorsAsync(string orderByColumn)
     {
         var sourceData = await _sourceProvider.GetDataFromViewAsync();
 
-        var mappedData = _mapper.Map<List<TTarget>>(sourceData);
-
-        await _targetProvider.TruncateAndInsertAsync(mappedData);
+        await _targetProvider.TruncateAndInsertAsync(sourceData);
 
         return true;
     }

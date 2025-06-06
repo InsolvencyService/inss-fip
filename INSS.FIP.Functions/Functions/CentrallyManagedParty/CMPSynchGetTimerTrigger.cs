@@ -13,10 +13,10 @@ namespace INSS.FIP.Functions.Functions.CentrallyManagedParty;
 public class CMPSynchGetTimerTrigger
 {
     private readonly ILogger<CMPSynchGetTimerTrigger> _logger;
-    private readonly IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList> _dbSyncCMPData;
+    private readonly IDbSyncData<CentrallyManagedPartyModel> _dbSyncCMPData;
 
     public CMPSynchGetTimerTrigger(ILogger<CMPSynchGetTimerTrigger> logger,
-        IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList> dbSyncCMPData)
+        IDbSyncData<CentrallyManagedPartyModel> dbSyncCMPData)
     {
         _logger = logger;
         _dbSyncCMPData = dbSyncCMPData;

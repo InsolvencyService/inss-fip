@@ -2,7 +2,6 @@ using INSS.FIP.Data;
 using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.DataAccess;
-using INSS.FIP.DataAccess.Repository;
 using INSS.FIP.Functions.Helper;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
@@ -47,9 +46,10 @@ var host = new HostBuilder()
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
         services.AddTransient<IWebMessageProvider, WebMessageProvider>();
         services.AddTransient<IDbSync, DbSync>();
-        services.AddTransient<IDbSyncData<CentrallyManagedPartyModel, BankruptcyCreditorsList>, DbSyncCMPData<CentrallyManagedPartyModel, BankruptcyCreditorsList>>();
+
+        services.AddTransient<IDbSyncData<CentrallyManagedPartyModel>, DbSyncCMPData<CentrallyManagedPartyModel>>();
         services.AddTransient<IDataSourceProvider<CentrallyManagedPartyModel>, CMPDataSourceProvider>();
-        services.AddTransient<IDataTargetProvider<BankruptcyCreditorsList>, BankruptcyCreditorsRepository>();
+        services.AddTransient<IDataTargetProvider<CentrallyManagedPartyModel>, BankruptcyCreditorsProvider>();
     })
     .Build();
 

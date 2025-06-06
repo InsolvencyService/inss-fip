@@ -3,38 +3,40 @@ using INSS.FIP.Data;
 using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.Interfaces;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace INSS.FIP.DataAccess.Repository;
+namespace INSS.FIP.DataAccess;
 
-public class BankruptcyCreditorsRepository : IDataTargetProvider<BankruptcyCreditorsList>
+public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedPartyModel>
 {
     private readonly targetCMPDbContext _targetCMPDbContext; 
-    private readonly ILogger<BankruptcyCreditorsRepository> _logger;
+    private readonly ILogger<BankruptcyCreditorsProvider> _logger;
     private readonly IMapper _mapper;
 
-    public BankruptcyCreditorsRepository(targetCMPDbContext targetCMPDbContext, ILogger<BankruptcyCreditorsRepository> logger, IMapper mapper)
+    public BankruptcyCreditorsProvider(targetCMPDbContext targetCMPDbContext, ILogger<BankruptcyCreditorsProvider> logger, IMapper mapper)
     {
         _targetCMPDbContext = targetCMPDbContext;
         _logger = logger;
         _mapper = mapper;
     }
 
-    public async Task TruncateAndInsertAsync(List<BankruptcyCreditorsList> data)
+    public async Task TruncateAndInsertAsync(List<CentrallyManagedPartyModel> data)
     {
-        using var transaction = await _targetCMPDbContext.Database.BeginTransactionAsync();
 
-        var orderedData = data;
-        orderedData.Sort();
+        var mappedData = _mapper.Map<List<BankruptcyCreditorsList>>(data);
+        mappedData.Sort();
+
+        using var transaction = await _targetCMPDbContext.Database.BeginTransactionAsync();
 
         try
         {
             _logger.LogInformation("Truncating BankruptcyCreditorsList table");
             await _targetCMPDbContext.BankruptcyCreditorsLists.ExecuteDeleteAsync();
 
-            _logger.LogInformation("Inserting {Count} records into BankruptcyCreditorsList table", orderedData.Count);
-            await _targetCMPDbContext.BankruptcyCreditorsLists.AddRangeAsync(orderedData);
+            _logger.LogInformation("Inserting {Count} records into BankruptcyCreditorsList table", mappedData.Count);
+            await _targetCMPDbContext.BankruptcyCreditorsLists.AddRangeAsync(mappedData);
 
             await _targetCMPDbContext.SaveChangesAsync();
             await transaction.CommitAsync();
