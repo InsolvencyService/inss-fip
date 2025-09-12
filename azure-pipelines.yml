@@ -24,7 +24,7 @@ stages:
       steps:
       - task: UseDotNet@2
         inputs:
-          version: '6.0.x'
+          version: '8.0.x'
 
       - task: DotNetCoreCLI@2
         displayName: NuGet Restore
@@ -84,7 +84,7 @@ stages:
 
 - stage: DeploySIT
   displayName: 'Deploy to SIT'
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
+  condition: succeeded()
   variables:
     - group: FIP-SIT
   jobs:

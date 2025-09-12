@@ -3,13 +3,13 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeItEasy;
+using INSS.FIP.Functions.Functions.AuthBody;
 using INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels;
 using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -35,7 +35,7 @@ public class IpGetSearchHttpTriggerTests
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.OK;
         var dummyFipApiSearchResultResponseModels = A.CollectionOfDummy<FipApiSearchResultResponseModel>(2);
-        var request = new DefaultHttpRequest(new DefaultHttpContext());
+        var request = new DefaultHttpContext().Request;
         request.HttpContext.Request.QueryString = new QueryString("?LastName=smith");
         var ipSearchRequestModel = new IpSearchRequestModel { LastName = "smith" };
 
@@ -58,7 +58,7 @@ public class IpGetSearchHttpTriggerTests
     {
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.BadRequest;
-        var request = new DefaultHttpRequest(new DefaultHttpContext());
+        var request = new DefaultHttpContext().Request;
 
         // Act
         var result = await _ipGetSearchHttpTrigger.Run(request);
@@ -77,7 +77,7 @@ public class IpGetSearchHttpTriggerTests
         // Arrange
         const HttpStatusCode expectedResult = HttpStatusCode.InternalServerError;
         IList<FipApiSearchResultResponseModel>? nullFipApiSearchResultResponseModels = default;
-        var request = new DefaultHttpRequest(new DefaultHttpContext());
+        var request = new DefaultHttpContext().Request;
         request.HttpContext.Request.QueryString = new QueryString("?LastName=smith");
         var ipSearchRequestModel = new IpSearchRequestModel { LastName = "smith" };
 

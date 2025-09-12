@@ -6,13 +6,12 @@ using INSS.FIP.Models.ResponseModels;
 using INSS.FIP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 namespace INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 
@@ -29,7 +28,7 @@ public class IpGetByIpNumberHttpTrigger
         _insolvencyPractitionerService = insolvencyPractitionerService.ThrowIfNullOrDefault();
     }
 
-    [FunctionName("IP")]
+    [Function("IP")]
     [OpenApiOperation(operationId: "IP", tags: new[] { "IP" }, Summary = "Returns Insolvency Practitioner by their IP number", Description = "Get the IP by their IP number.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiParameter(name: "ipNumber", In = ParameterLocation.Path, Required = true, Type = typeof(int), Explode = false, Summary = "IP number", Description = "Insolvency Practitioner's IP number", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(FipApiInsolvencyPractitionerResponseModel), Summary = "Success", Description = "An Insolvency Practitioner")]

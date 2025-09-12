@@ -1,12 +1,12 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using FakeItEasy;
+using INSS.FIP.Functions.Functions.Health;
 using INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels.InsolvencyPractitioner;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -36,7 +36,7 @@ public class IpGetByIpNumberHttpTriggerTests
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).Returns(dummyFipApiInsolvencyPractitionerResponseModel);
 
         // Act
-        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), ipNumber);
+        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpContext().Request, ipNumber);
 
         // Assert
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
@@ -54,7 +54,7 @@ public class IpGetByIpNumberHttpTriggerTests
         var dummyFipApiInsolvencyPractitionerResponseModel = A.Dummy<FipApiInsolvencyPractitionerResponseModel>();
 
         // Act
-        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), ipNumber);
+        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpContext().Request, ipNumber);
 
         // Assert
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).MustNotHaveHappened();
@@ -74,7 +74,7 @@ public class IpGetByIpNumberHttpTriggerTests
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).Returns(nullFipApiInsolvencyPractitionerResponseModel);
 
         // Act
-        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpRequest(new DefaultHttpContext()), ipNumber);
+        var result = await _ipGetByIpNumberHttpTrigger.Run(new DefaultHttpContext().Request, ipNumber);
 
         // Assert
         A.CallTo(() => _fakeInsolvencyPractitionerService.GetByIpNumberAsync(A<IpGetByIpNumberRequestModel>.Ignored)).MustHaveHappenedOnceExactly();
