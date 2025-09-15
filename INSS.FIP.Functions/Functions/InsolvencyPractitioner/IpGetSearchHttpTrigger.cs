@@ -9,13 +9,12 @@ using INSS.FIP.Models.ResponseModels;
 using INSS.FIP.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
 namespace INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 
@@ -35,7 +34,7 @@ public class IpGetSearchHttpTrigger
         _insolvencyPractitionerService = insolvencyPractitionerService.ThrowIfNullOrDefault();
     }
 
-    [FunctionName("IpSearch")]
+    [Function("IpSearch")]
     [OpenApiOperation(operationId: "IpSearch", tags: new[] { "IP" }, Summary = "Finds Insolvency Practitioners using various search clues", Description = "Search using the combination of supplied paramaters.", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiParameter(name: "Company", In = ParameterLocation.Query, Required = false, Type = typeof(string), Explode = false, Summary = "IP's Company name", Description = "Insolvency Practitioner's company name", Visibility = OpenApiVisibilityType.Important)]
     [OpenApiParameter(name: "FirstName", In = ParameterLocation.Query, Required = false, Type = typeof(string), Explode = false, Summary = "IP's first name", Description = "Insolvency Practitioner's first name", Visibility = OpenApiVisibilityType.Important)]

@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
+
+
 
 namespace INSS.FIP.Functions.Configurations;
 
