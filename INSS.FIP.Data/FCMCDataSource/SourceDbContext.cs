@@ -34,7 +34,6 @@ namespace INSS.FIP.Data.FCMCDataSource
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
             modelBuilder.Entity<vw_FindIp>(entity =>
             {
                 entity.HasNoKey();
