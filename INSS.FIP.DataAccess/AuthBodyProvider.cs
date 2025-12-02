@@ -4,7 +4,6 @@ using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.ResponseModels;
 using Microsoft.Extensions.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace INSS.FIP.DataAccess;
 

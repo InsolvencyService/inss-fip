@@ -3,21 +3,10 @@ using INSS.FIP.Data;
 using INSS.FIP.DataAccess;
 using INSS.FIP.Functions.AutoMapperProfiles;
 using INSS.FIP.Interfaces;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FakeItEasy;
 using Xunit;
-using INSS.FIP.Functions.Functions.AuthBody;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using Azure.Identity;
-using System.Drawing;
-using System.Configuration;
 
 namespace INSS.FIP.Functions.UnitTests.ProviderTests
 {
