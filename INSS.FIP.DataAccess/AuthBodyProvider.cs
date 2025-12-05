@@ -3,6 +3,7 @@ using AutoMapper;
 using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.ResponseModels;
+using Microsoft.Extensions.Configuration;
 
 namespace INSS.FIP.DataAccess;
 
@@ -11,13 +12,16 @@ public class AuthBodyProvider : IAuthBodyProvider
 {
     private readonly IMapper _mapper;
     private readonly iirwebdbContext _iirwebdbContext;
+    private readonly IConfiguration _configuration;
 
     public AuthBodyProvider(
         IMapper mapper,
-        iirwebdbContext iirwebdbContext)
+        iirwebdbContext iirwebdbContext,
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _iirwebdbContext = iirwebdbContext;
+        _configuration = configuration;
     }
 
     private IQueryable<CiIpAuthorisingBody> BaseQuery
@@ -31,14 +35,35 @@ public class AuthBodyProvider : IAuthBodyProvider
         }
     }
 
+    private IQueryable<Data.FCMCDataSource.FindIpAuthBody> BaseQueryFCMCView
+    {
+        get
+        {
+            var query = from a in _iirwebdbContext.FindIpAuthBodies
+                        select a;
+
+            return query;
+        }
+    }
+
     public async Task<IList<FipApiAuthBodyResponseModel>> GetAsync()
     {
-        var query = BaseQuery;
+        var results = new List<FipApiAuthBodyResponseModel>();
 
-        var results = (from a in query
+        if (Convert.ToBoolean(_configuration["usingFCMCtableView"]))
+        {
+            results = (from a in BaseQueryFCMCView
                        orderby a.AuthBodyName
                        select _mapper.Map<FipApiAuthBodyResponseModel>(a)
-                      ).ToList();
+              ).ToList();
+        }
+        else 
+        {
+            results = (from a in BaseQuery
+                       orderby a.AuthBodyName
+                       select _mapper.Map<FipApiAuthBodyResponseModel>(a)
+              ).ToList();
+        }
 
         return await Task.FromResult(results);
     }
