@@ -25,7 +25,5 @@ public class AuthBodyViewModel
 
     public string Telephone { get; set; } = null!;
 
-    public string Fax { get; set; } = null!;
-
     public string Website { get; set; } = null!;
 }
