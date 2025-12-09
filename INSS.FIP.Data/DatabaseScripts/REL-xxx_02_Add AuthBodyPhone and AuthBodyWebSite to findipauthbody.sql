@@ -24,7 +24,7 @@ BEGIN TRY
 			[AuthBodyAddressLine5] [varchar](8000) NULL,
 			[AuthBodyPostcode] [varchar](8000) NULL,
 			[AuthBodyPhone] [varchar](8000) NULL,
-			[AuthBodyWebSite] [varchar](8000) NULL,
+			[AuthBodyWebsite] [varchar](8000) NULL,
 		PRIMARY KEY CLUSTERED 
 		(
 			[AuthBodyCode] ASC

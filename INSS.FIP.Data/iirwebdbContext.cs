@@ -1402,6 +1402,16 @@ namespace INSS.FIP.Data
                     .HasMaxLength(8000)
                     .IsUnicode(false)
                     .HasColumnName("AuthBodyPostcode");
+
+                entity.Property(e => e.AuthBodyPhone)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyPhone");
+
+                entity.Property(e => e.AuthBodyWebsite)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("AuthBodyWebsite");
             });
 
             modelBuilder.Entity<CiIvaCase>(entity =>

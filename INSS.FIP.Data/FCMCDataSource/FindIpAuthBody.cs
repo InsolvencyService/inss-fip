@@ -12,5 +12,9 @@ namespace INSS.FIP.Data.FCMCDataSource
         public string? AuthBodyAddressLine4 { get; set; }
         public string? AuthBodyAddressLine5 { get; set; }
         public string? AuthBodyPostcode { get; set; }
+
+        public string? AuthBodyPhone { get; set; }
+
+        public string? AuthBodyWebsite { get; set; }
     }
 }
