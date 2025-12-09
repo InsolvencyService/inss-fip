@@ -947,6 +947,16 @@ namespace INSS.FIP.Data
                     .IsUnicode(false)
                     .HasColumnName("RegisteredFirmName");
 
+                entity.Property(e => e.RegisteredAddressLine1)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredAddressLine1");
+
+                entity.Property(e => e.RegisteredAddressLine2)
+                    .HasMaxLength(8000)
+                    .IsUnicode(false)
+                    .HasColumnName("RegisteredAddressLine2");
+
                 entity.Property(e => e.RegisteredAddressLine3)
                     .HasMaxLength(8000)
                     .IsUnicode(false)
