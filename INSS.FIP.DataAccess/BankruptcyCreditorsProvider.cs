@@ -24,18 +24,21 @@ public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedP
 
     public async Task TruncateAndInsertAsync(List<CentrallyManagedPartyModel> data)
     {
+        data.Sort();
 
         var mappedData = _mapper.Map<List<BankruptcyCreditorsList>>(data);
-        mappedData.Sort();
+
+        //Assign an ID to each record based on its position in the sorted list to maintain consistent ordering in the database
+        for (int i=0; i < mappedData.Count; i++)
+        {
+            mappedData[i].Id = i + 1;
+        }
 
         using var transaction = await _targetCMPDbContext.Database.BeginTransactionAsync();
 
         try
         {
-            _logger.LogInformation("Truncating BankruptcyCreditorsList table");
             await _targetCMPDbContext.BankruptcyCreditorsLists.ExecuteDeleteAsync();
-
-            _logger.LogInformation("Inserting {Count} records into BankruptcyCreditorsList table", mappedData.Count);
             await _targetCMPDbContext.BankruptcyCreditorsLists.AddRangeAsync(mappedData);
 
             await _targetCMPDbContext.SaveChangesAsync();
@@ -44,8 +47,7 @@ public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedP
         catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            _logger.LogError(ex, "Error occured during truncate and insert operation. Rolled back transaction");
-            throw;
+            throw new CMPSyncDatabaseException("Error saving data to BankruptcyCreditorsList table",ex) ;
         }
     }
 }

@@ -29,8 +29,8 @@ public class CMPSyncHttpTrigger
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
-    public void Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "CMPSyncHttp")] HttpRequest req)
+    public async Task Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "CMPSyncHttp")] HttpRequest req)
     {
-        _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
+        await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
     }
 }

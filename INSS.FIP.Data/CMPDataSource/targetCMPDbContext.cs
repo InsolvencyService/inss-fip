@@ -6,16 +6,21 @@ namespace INSS.FIP.Data.CMPDataSource;
 public class targetCMPDbContext : DbContext, IDbContext
 {
     private readonly string? _connectionString;
+
     public targetCMPDbContext()
     { }
+
     public targetCMPDbContext(string? connectionString)
     {
         _connectionString = connectionString;
     }
+
     public targetCMPDbContext(DbContextOptions<targetCMPDbContext> options)
         : base(options)
     { }
+
     public virtual DbSet<BankruptcyCreditorsList> BankruptcyCreditorsLists { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured && !string.IsNullOrWhiteSpace(_connectionString))
@@ -28,9 +33,12 @@ public class targetCMPDbContext : DbContext, IDbContext
     {
         modelBuilder.Entity<BankruptcyCreditorsList>(entity =>
         {
-            entity.HasKey(x => x.Id);
-            entity.Property(x => x.Id).ValueGeneratedOnAdd();
+            entity.HasKey(e => e.Id).HasName("PK_Id_BankruptcyCreditorsList");
+
             entity.ToTable("BankruptcyCreditorsList");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.SourceRef).HasMaxLength(450);
         });
     }
 }
