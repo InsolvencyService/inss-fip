@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace INSS.FIP.Interfaces;
+namespace INSS.FIP.Interfaces.CMP;
 
-public interface IDbSyncData<TData>
+public interface IDataSourceProvider<T>
 {
-    Task<bool> SynchronizeDataAsync();
+    Task<List<T>> GetDataFromViewAsync();
 }

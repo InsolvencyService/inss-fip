@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using INSS.FIP.Interfaces;
+using INSS.FIP.Interfaces.CMP;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 

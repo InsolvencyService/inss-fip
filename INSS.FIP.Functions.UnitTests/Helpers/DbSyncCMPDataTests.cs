@@ -2,7 +2,7 @@
 using FakeItEasy;
 using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Functions.Helper;
-using INSS.FIP.Interfaces;
+using INSS.FIP.Interfaces.CMP;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

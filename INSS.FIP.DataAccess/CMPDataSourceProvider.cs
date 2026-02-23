@@ -1,11 +1,11 @@
 ﻿using INSS.FIP.Data.CMPDataSource;
-using INSS.FIP.Interfaces;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Data.SqlClient;
 
 using System.Collections.Generic;
+using INSS.FIP.Interfaces.CMP;
 
 
 namespace INSS.FIP.DataAccess;
