@@ -31,6 +31,6 @@ public class CMPSyncHttpTrigger
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
     public async Task Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "CMPSyncHttp")] HttpRequest req)
     {
-        await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
+        await _dbSyncCMPData.SynchronizeDataAsync();
     }
 }

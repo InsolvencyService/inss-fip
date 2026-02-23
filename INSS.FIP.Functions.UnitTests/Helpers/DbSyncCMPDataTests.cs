@@ -44,7 +44,7 @@ public class DbSyncCMPDataTests
         A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
+        var result = await _dbSyncCMPData.SynchronizeDataAsync();
 
         // Assert
         Assert.True(result, ConstantValues.SynchronizationSuccessfulMessage);
@@ -66,7 +66,7 @@ public class DbSyncCMPDataTests
         A.CallTo(() => _fakeTargetRepository.TruncateAndInsertAsync(A<List<CentrallyManagedPartyModel>>._)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
+        var result = await _dbSyncCMPData.SynchronizeDataAsync();
 
         // Assert
         Assert.True(result, "Synchronization return true with empty data");

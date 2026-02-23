@@ -18,7 +18,7 @@ public class DbSyncCMPData<TData> : IDbSyncData<TData>
         _logger = logger;
     }
 
-    public async Task<bool> SynchronizeBankruptcyCreditorsAsync()
+    public async Task<bool> SynchronizeDataAsync()
     {
         var sourceData = await _sourceProvider.GetDataFromViewAsync();
 
