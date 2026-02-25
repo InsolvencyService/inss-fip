@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FakeItEasy;
-using INSS.FIP.Data;
+using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Functions.Helper;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
@@ -79,8 +79,8 @@ public class DbSyncCMPDataTests
     public void BankruptcyCreditorsList_CompareTo_HandlesNullNames()
     {
         // Arrange
-        var item1 = new BankruptcyCreditorsList { Name = string.Empty };
-        var item2 = new BankruptcyCreditorsList { Name = "Alice" };
+        var item1 = new CentrallyManagedPartyModel { Name = string.Empty };
+        var item2 = new CentrallyManagedPartyModel { Name = "Alice" };
 
         // Act & Assert
         Assert.True(item1.CompareTo(item2) < 0, "Null Name should come before non-null Name");
@@ -91,9 +91,9 @@ public class DbSyncCMPDataTests
     public void BankruptcyCreditorsList_CompareTo_SortsByNameCorrectly()
     {
         // Arrange
-        var item1 = new BankruptcyCreditorsList { Name = "Alice", Id = 1 };
-        var item2 = new BankruptcyCreditorsList { Name = "Bob", Id = 2 };
-        var item3 = new BankruptcyCreditorsList { Name = "Alice", Id = 3 }; // Same name, different Id
+        var item1 = new CentrallyManagedPartyModel { Name = "Alice"};
+        var item2 = new CentrallyManagedPartyModel { Name = "Bob" };
+        var item3 = new CentrallyManagedPartyModel { Name = "Alice" }; // Same name, different Id
 
         // Act & Assert
         Assert.True(item1.CompareTo(item2) < 0, "Alice should come before Bob");

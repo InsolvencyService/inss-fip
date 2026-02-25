@@ -18,7 +18,7 @@ public class sourceCMPDbContext : DbContext, IDbContext
     public sourceCMPDbContext(DbContextOptions<sourceCMPDbContext> options)
         : base(options)
     { }
-    public virtual DbSet<View_Data> viewData { get; set; }
+    public virtual DbSet<VwOdsInssightcmp> viewData { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -27,13 +27,29 @@ public class sourceCMPDbContext : DbContext, IDbContext
             optionsBuilder.UseSqlServer(_connectionString);
         }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var viewName = _configuration["CMPDataViewName"];
         string viewSchema = _configuration["CMPDataViewNameSchema"]!;
-        modelBuilder.Entity<View_Data>()
-            .HasNoKey()
-            .ToView(viewName, schema: viewSchema);
+
+        modelBuilder.Entity<VwOdsInssightcmp>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView(viewName, schema: viewSchema);
+
+            entity.Property(e => e.AddressLine1).HasMaxLength(4000);
+            entity.Property(e => e.AddressLine2).HasMaxLength(4000);
+            entity.Property(e => e.AddressLine3).HasMaxLength(4000);
+            entity.Property(e => e.Country).HasMaxLength(4000);
+            entity.Property(e => e.County).HasMaxLength(4000);
+            entity.Property(e => e.Name).HasMaxLength(4000);
+            entity.Property(e => e.PostCode).HasMaxLength(4000);
+            entity.Property(e => e.SourceRef).HasMaxLength(4000);
+            entity.Property(e => e.Town).HasMaxLength(4000);
+        });
 
     }
+
 }

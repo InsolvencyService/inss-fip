@@ -3,7 +3,7 @@
 namespace INSS.FIP.Models.CentrallyManagedPartyModels;
 
 [ExcludeFromCodeCoverage]
-public class CentrallyManagedPartyModel
+public class CentrallyManagedPartyModel : IComparable<CentrallyManagedPartyModel>
 {
     public string SourceRef { get; set; }
     public string Name { get; set; }
@@ -14,4 +14,10 @@ public class CentrallyManagedPartyModel
     public string County { get; set; }
     public string PostCode { get; set; }
     public string Country { get; set; }
+
+    public int CompareTo(CentrallyManagedPartyModel other)
+    {
+        if (other == null) return 1;
+        return string.Compare(this.Name, other.Name, StringComparison.Ordinal);
+    }
 }

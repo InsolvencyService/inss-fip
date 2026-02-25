@@ -1,6 +1,5 @@
 ﻿using INSS.FIP.Data;
 using INSS.FIP.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
@@ -11,26 +10,26 @@ using INSS.FIP.Models.CentrallyManagedPartyModels;
 
 namespace INSS.FIP.Functions.Functions.CentrallyManagedParty;
 
-public class CMPSyncGetHttpTrigger
+public class CMPSyncTimerTrigger
 {
-    private readonly ILogger<CMPSyncGetHttpTrigger> _logger;
+    private readonly ILogger<CMPSyncTimerTrigger> _logger;
     private readonly IDbSyncData<CentrallyManagedPartyModel> _dbSyncCMPData;
 
-    public CMPSyncGetHttpTrigger(ILogger<CMPSyncGetHttpTrigger> logger,
+    public CMPSyncTimerTrigger(ILogger<CMPSyncTimerTrigger> logger,
         IDbSyncData<CentrallyManagedPartyModel> dbSyncCMPData)
     {
         _logger = logger;
         _dbSyncCMPData = dbSyncCMPData;
     }
 
-    [Function("CMPSyncGetHttp")]
-    [OpenApiOperation(operationId: "CMPSyncGetHttp", tags: new[] { "CMPSyncGetHttp" }, Summary = "Transfer data from Insight to bankcruptcy.", Description = "Transfer data from Insight to bankcruptcy.", Visibility = OpenApiVisibilityType.Important)]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<CentrallyManagedPartyModel>), Summary = "Synch Get Timer Trigger", Description = "Transfer data from Insight to bankcruptcy.")]
+    [Function("CMPSyncTimerTrigger")]
+    [OpenApiOperation(operationId: "CMPSyncTimerTrigger", tags: new[] { "CMPSyncTimerTrigger" }, Summary = "Transfer data from INSSight to Creditor Service.", Description = "Transfer data from INSSight to Creditor Service.", Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(IList<CentrallyManagedPartyModel>), Summary = "CMP Synch Timer Trigger", Description = "Transfer data from INSSight to Creditor Service.")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid request/validation failures", Description = "Invalid request/validation failures")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Summary = "Error processing request", Description = "Error processing request")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for HttpTrigger signature")]
-    public void Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "CMPSyncGetHttp")] HttpRequest req)
+    public async Task Run([TimerTrigger("%BankruptcyCreditorsSyncSchedulePattern%")] TimerInfo myTimer)
     {
-        _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
+        await _dbSyncCMPData.SynchronizeBankruptcyCreditorsAsync();
     }
 }
