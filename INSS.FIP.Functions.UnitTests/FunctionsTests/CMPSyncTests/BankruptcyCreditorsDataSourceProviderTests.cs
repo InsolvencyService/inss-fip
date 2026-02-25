@@ -16,14 +16,17 @@ using System.Diagnostics.CodeAnalysis;
 namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
 {
     
-    public class BankruptcyCreditorsDataSourceProviderTests
+    public partial class BankruptcyCreditorsDataSourceProviderTests
     {
         private IMapper _mapper;
 
-        [Fact]  
-        public async Task CentrallyManagedPartyTransformationTests()
+        //Checks the transformation of CMP data from source is converted to the target
+        //In accordance with the findings from https://inssdigital.atlassian.net/wiki/x/BwByFwE
+        //There will be a bit of duplication of tests here with that done on CentrallyManagedPartyModel itself w.r.t null values
+        [Theory]
+        [MemberData(nameof(GetCMPTransformationTestData))]
+        public async Task CentrallyManagedPartyTransformationTests(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
         {
-
             //Arrange
             var repoMock = new Mock<IBankruptcyCreditorsRepository>();
             var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
@@ -31,10 +34,6 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
             List<BankruptcyCreditorsList> args = null;
             repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
                     .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
-
-            var entitiesToAdd = new List<BankruptcyCreditorsList> {new BankruptcyCreditorsList { Id = 1 },
-                                new BankruptcyCreditorsList { Id = 2 }};
-
 
             MapperConfiguration mapperConfig = new(
                 cfg =>
@@ -48,14 +47,72 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
             var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
 
             //Act
-            await aProvider.TruncateAndInsertAsync(new List<CentrallyManagedPartyModel> 
-            {
-                new CentrallyManagedPartyModel (),
-                new CentrallyManagedPartyModel ()
-            });
+            await aProvider.TruncateAndInsertAsync(input);
+
 
             //Assert 
-            Assert.Equal(entitiesToAdd, args, new BankruptcyCreditorsListListComparer());
+            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
+        }
+
+
+        [Theory]
+        [MemberData(nameof(GetCMPTransformation_Sort_TestData))]
+        public async Task Ensure_records_are_sorted_by_name(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            //Arrange
+            var repoMock = new Mock<IBankruptcyCreditorsRepository>();
+            var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
+
+            List<BankruptcyCreditorsList> args = null;
+            repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
+                    .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
+
+            MapperConfiguration mapperConfig = new(
+                cfg =>
+                {
+                    cfg.AddProfile(new CMPMapper());
+
+                });
+
+            _mapper = new Mapper(mapperConfig);
+
+            var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
+
+            //Act
+            await aProvider.TruncateAndInsertAsync(input);
+
+            //Assert 
+            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCMPTransformation_RemoveDuplicatesByNameAndSourceRef_TestData))]
+        public async Task Ensure_duplicates_definedby_SourceRef_and_name_are_removed(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            //Arrange
+            var repoMock = new Mock<IBankruptcyCreditorsRepository>();
+            var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
+
+            List<BankruptcyCreditorsList> args = null;
+            repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
+                    .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
+
+            MapperConfiguration mapperConfig = new(
+                cfg =>
+                {
+                    cfg.AddProfile(new CMPMapper());
+
+                });
+
+            _mapper = new Mapper(mapperConfig);
+
+            var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
+
+            //Act
+            await aProvider.TruncateAndInsertAsync(input);
+
+            //Assert 
+            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
         }
 
 

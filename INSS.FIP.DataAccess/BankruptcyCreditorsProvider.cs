@@ -27,6 +27,8 @@ public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedP
     {
         data.Sort();
 
+        data = RemoveDuplicates(data);
+
         var mappedData = _mapper.Map<List<BankruptcyCreditorsList>>(data);
 
         //Assign an ID to each record based on its position in the sorted list to maintain consistent ordering in the database
@@ -50,5 +52,20 @@ public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedP
             await _bankruptcyCreditorsRepo.RollbackTransactionAsync();
             throw new CMPSyncDatabaseException("Error saving data to BankruptcyCreditorsList table",ex) ;
         }
+    }
+
+    private List<CentrallyManagedPartyModel> RemoveDuplicates(List<CentrallyManagedPartyModel> data)
+    {
+        var dict = new Dictionary<string, CentrallyManagedPartyModel>();
+
+        foreach(var item in data)
+        {
+            if (!dict.ContainsKey($"{item.SourceRef ?? ""}_{ item.Name}"))
+            {
+                dict.Add($"{item.SourceRef ?? ""}_{item.Name}", item);
+            }
+        }
+
+        return dict.Values.ToList();
     }
 }
