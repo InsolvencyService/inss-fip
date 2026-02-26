@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using INSS.FIP.Interfaces;
+using INSS.FIP.Interfaces.CMP;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +18,7 @@ public class DbSyncCMPData<TData> : IDbSyncData<TData>
         _logger = logger;
     }
 
-    public async Task<bool> SynchronizeBankruptcyCreditorsAsync()
+    public async Task<bool> SynchronizeDataAsync()
     {
         var sourceData = await _sourceProvider.GetDataFromViewAsync();
 

@@ -1,9 +1,11 @@
 using INSS.FIP.Data;
 using INSS.FIP.Data.CMPDataSource;
+using INSS.FIP.Data.CMPDataSource.Interfaces;
 using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.DataAccess;
 using INSS.FIP.Functions.Helper;
 using INSS.FIP.Interfaces;
+using INSS.FIP.Interfaces.CMP;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,11 +38,13 @@ var host = new HostBuilder()
             return new sourceCMPDbContext(connectionString, configuration);
         });
 
-        services.AddTransient<targetCMPDbContext>(sp =>
+        services.AddScoped<targetCMPDbContext>(sp =>
         {
             var connectionString = Environment.GetEnvironmentVariable("targetCMPDbContextConnectionString");
             return new targetCMPDbContext(connectionString);
         });
+
+        services.AddScoped<IBankruptcyCreditorsRepository, BankruptcyCreditorsRepository>();
 
         services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
