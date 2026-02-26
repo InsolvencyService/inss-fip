@@ -27,68 +27,31 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
         [MemberData(nameof(GetCMPTransformationTestData))]
         public async Task CentrallyManagedPartyTransformationTests(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
         {
-            //Arrange
-            var repoMock = new Mock<IBankruptcyCreditorsRepository>();
-            var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
-
-            List<BankruptcyCreditorsList> args = null;
-            repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
-                    .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
-
-            MapperConfiguration mapperConfig = new(
-                cfg =>
-                {
-                    cfg.AddProfile(new CMPMapper());
-
-                });
-
-            _mapper = new Mapper(mapperConfig);
-
-            var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
-
-            //Act
-            await aProvider.TruncateAndInsertAsync(input);
-
-
-            //Assert 
-            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
         }
-
 
         [Theory]
         [MemberData(nameof(GetCMPTransformation_Sort_TestData))]
         public async Task Ensure_records_are_sorted_by_name(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
         {
-            //Arrange
-            var repoMock = new Mock<IBankruptcyCreditorsRepository>();
-            var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
-
-            List<BankruptcyCreditorsList> args = null;
-            repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
-                    .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
-
-            MapperConfiguration mapperConfig = new(
-                cfg =>
-                {
-                    cfg.AddProfile(new CMPMapper());
-
-                });
-
-            _mapper = new Mapper(mapperConfig);
-
-            var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
-
-            //Act
-            await aProvider.TruncateAndInsertAsync(input);
-
-            //Assert 
-            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
         }
 
         [Theory]
         [MemberData(nameof(GetCMPTransformation_RemoveDuplicatesByNameAndSourceRef_TestData))]
         public async Task Ensure_duplicates_definedby_SourceRef_and_name_are_removed(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
         {
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
+        }
+
+        /// <summary>
+        /// Common unit test method - allows for name of specific calling tests to be visible in test results
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        private async Task CommonCentrallyManagedParty_UnitTest(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
             //Arrange
             var repoMock = new Mock<IBankruptcyCreditorsRepository>();
             var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
@@ -111,12 +74,15 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
             //Act
             await aProvider.TruncateAndInsertAsync(input);
 
+
             //Assert 
             Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
         }
 
 
+        #region supporting classes
 
+        //Custom equality comparers to allow for comparison of lists of BankruptcyCreditorsList objects based on their property values rather than reference equality
         private class BankruptcyCreditorsListListComparer : IEqualityComparer<List<BankruptcyCreditorsList>>
         {
 
@@ -199,5 +165,7 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
             }
 
         }
+
+        #endregion supporting classes
     }
 }
