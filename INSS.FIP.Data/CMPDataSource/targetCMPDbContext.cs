@@ -3,19 +3,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace INSS.FIP.Data.CMPDataSource;
 
-public class targetCMPDbContext : DbContext, IDbContext
+public class TargetCMPDbContext : DbContext, IDbContext
 {
     private readonly string? _connectionString;
 
-    public targetCMPDbContext()
+    public TargetCMPDbContext()
     { }
 
-    public targetCMPDbContext(string? connectionString)
+    public TargetCMPDbContext(string? connectionString)
     {
         _connectionString = connectionString;
     }
 
-    public targetCMPDbContext(DbContextOptions<targetCMPDbContext> options)
+    public TargetCMPDbContext(DbContextOptions<TargetCMPDbContext> options)
         : base(options)
     { }
 

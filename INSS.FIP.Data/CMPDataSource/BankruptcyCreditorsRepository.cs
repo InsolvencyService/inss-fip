@@ -6,10 +6,10 @@ namespace INSS.FIP.Data.CMPDataSource
 {
     public class BankruptcyCreditorsRepository : IBankruptcyCreditorsRepository
     {
-        private readonly targetCMPDbContext _context;
+        private readonly TargetCMPDbContext _context;
         private IDbContextTransaction? _transaction;
 
-        public BankruptcyCreditorsRepository(targetCMPDbContext context)
+        public BankruptcyCreditorsRepository(TargetCMPDbContext context)
         {
             _context = context;
         }

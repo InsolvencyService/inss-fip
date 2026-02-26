@@ -12,10 +12,10 @@ namespace INSS.FIP.DataAccess;
 
 public class CMPDataSourceProvider : IDataSourceProvider<CentrallyManagedPartyModel>
 {
-    private readonly sourceCMPDbContext _sourceDbContext;
+    private readonly SourceCMPDbContext _sourceDbContext;
     private readonly ILogger<CMPDataSourceProvider> _logger;
 
-    public CMPDataSourceProvider(sourceCMPDbContext sourceCMPDbContext, ILogger<CMPDataSourceProvider> logger)
+    public CMPDataSourceProvider(SourceCMPDbContext sourceCMPDbContext, ILogger<CMPDataSourceProvider> logger)
     {
         _sourceDbContext = sourceCMPDbContext;
         _logger = logger;

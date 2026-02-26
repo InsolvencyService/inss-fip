@@ -31,17 +31,17 @@ var host = new HostBuilder()
             return new iirwebdbContext(connectionString);
         });
 
-        services.AddTransient<sourceCMPDbContext>(sp =>
+        services.AddTransient<SourceCMPDbContext>(sp =>
         {
             var connectionString = Environment.GetEnvironmentVariable("sourceCMPDbContextConnectionString");
             var configuration = sp.GetRequiredService<IConfiguration>();
-            return new sourceCMPDbContext(connectionString, configuration);
+            return new SourceCMPDbContext(connectionString, configuration);
         });
 
-        services.AddScoped<targetCMPDbContext>(sp =>
+        services.AddScoped<TargetCMPDbContext>(sp =>
         {
             var connectionString = Environment.GetEnvironmentVariable("targetCMPDbContextConnectionString");
-            return new targetCMPDbContext(connectionString);
+            return new TargetCMPDbContext(connectionString);
         });
 
         services.AddScoped<IBankruptcyCreditorsRepository, BankruptcyCreditorsRepository>();
