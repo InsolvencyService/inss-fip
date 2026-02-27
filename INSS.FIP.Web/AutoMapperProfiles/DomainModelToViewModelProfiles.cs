@@ -18,6 +18,7 @@ public class DomainModelToViewModelProfiles : Profile
             .ForMember(d => d.Name, opt => opt.MapFrom(s => s.AuthBodyName))
             .ForMember(d => d.Address, opt => opt.MapFrom(s => string.Join(", ", $"{s.AuthBodyAddressLine1}|{s.AuthBodyAddressLine2}|{s.AuthBodyAddressLine3}|{s.AuthBodyAddressLine4}|{s.AuthBodyAddressLine5}|{s.AuthBodyPostcode}".Split('|', StringSplitOptions.RemoveEmptyEntries))))
             .ForMember(d => d.Telephone, opt => opt.MapFrom(s => s.AuthBodyPhone))
+            .ForMember(d => d.Fax, opt => opt.MapFrom(s => s.AuthBodyFaxNo))
             .ForMember(d => d.Website, opt => opt.MapFrom(s => s.AuthBodyWebsite));
 
         CreateMap<SearchResultDomainModel, SearchResultViewModel>()

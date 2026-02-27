@@ -1,0 +1,171 @@
+﻿
+using AutoMapper;
+using INSS.FIP.Data.CMPDataSource;
+using INSS.FIP.Data.CMPDataSource.Interfaces;
+using INSS.FIP.DataAccess;
+using INSS.FIP.DataAccess.Mappers;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xunit;
+using Moq;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
+{
+    
+    public partial class BankruptcyCreditorsDataSourceProviderTests
+    {
+        private IMapper _mapper;
+
+        //Checks the transformation of CMP data from source is converted to the target
+        //In accordance with the findings from https://inssdigital.atlassian.net/wiki/x/BwByFwE
+        //There will be a bit of duplication of tests here with that done on CentrallyManagedPartyModel itself w.r.t null values
+        [Theory]
+        [MemberData(nameof(GetCMPTransformationTestData))]
+        public async Task CentrallyManagedPartyTransformationTests(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCMPTransformation_Sort_TestData))]
+        public async Task Ensure_records_are_sorted_by_name(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCMPTransformation_RemoveDuplicatesByNameAndSourceRef_TestData))]
+        public async Task Ensure_duplicates_definedby_SourceRef_and_name_are_removed(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            await CommonCentrallyManagedParty_UnitTest(input, expected);
+        }
+
+        /// <summary>
+        /// Common unit test method - allows for name of specific calling tests to be visible in test results
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        private async Task CommonCentrallyManagedParty_UnitTest(List<CentrallyManagedPartyModel> input, List<BankruptcyCreditorsList> expected)
+        {
+            //Arrange
+            var repoMock = new Mock<IBankruptcyCreditorsRepository>();
+            var logger = new Mock<ILogger<BankruptcyCreditorsProvider>>();
+
+            List<BankruptcyCreditorsList> args = null;
+            repoMock.Setup(c => c.AddBankruptcyCreditorsListAsync(It.IsAny<List<BankruptcyCreditorsList>>()))
+                    .Callback<List<BankruptcyCreditorsList>>((bcl) => args = bcl);
+
+            MapperConfiguration mapperConfig = new(
+                cfg =>
+                {
+                    cfg.AddProfile(new CMPMapper());
+
+                });
+
+            _mapper = new Mapper(mapperConfig);
+
+            var aProvider = new BankruptcyCreditorsProvider(repoMock.Object, logger.Object, _mapper);
+
+            //Act
+            await aProvider.TruncateAndInsertAsync(input);
+
+
+            //Assert 
+            Assert.Equal(expected, args, new BankruptcyCreditorsListListComparer());
+        }
+
+
+        #region supporting classes
+
+        //Custom equality comparers to allow for comparison of lists of BankruptcyCreditorsList objects based on their property values rather than reference equality
+        private class BankruptcyCreditorsListListComparer : IEqualityComparer<List<BankruptcyCreditorsList>>
+        {
+
+            public bool Equals(List<BankruptcyCreditorsList>? x, List<BankruptcyCreditorsList>? y)
+            {
+                if (x == null && y == null)
+                {
+                    return true;
+                }
+
+                if (x == null || y == null)
+                {
+                    return false;
+                }
+
+                if (x.Count != y.Count)
+                {
+                    return false;
+                }
+
+                var bclComparer = new BankruptcyCreditorsListComparer();
+
+                for (int i = 0; i < x.Count; i++)
+                {
+                    if (!bclComparer.Equals(x[i], y[i]))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+
+            }
+
+            public int GetHashCode([DisallowNull] List<BankruptcyCreditorsList> obj)
+            {
+                int value = 0;
+
+                for (int i = 0; i < obj.Count; i++)
+                {
+                    value = value + (int)Math.Pow(2, i);
+                }
+
+                return value;
+            }
+        }
+
+
+
+        private class BankruptcyCreditorsListComparer : IEqualityComparer<BankruptcyCreditorsList>
+        {
+
+            public bool Equals(BankruptcyCreditorsList? x, BankruptcyCreditorsList? y)
+            {
+                if (x == null && y == null)
+                {
+                    return true;
+                }
+
+                if (x == null || y == null)
+                {
+                    return false;
+                }
+
+                var properties = typeof(BankruptcyCreditorsList).GetProperties();
+                foreach (var property in properties)
+                {
+                    if (property.GetValue(x)?.ToString() != property.GetValue(y)?.ToString())
+                    {
+                        return false;
+                    }
+                }
+
+                return true; 
+            }
+
+            public int GetHashCode([DisallowNull] BankruptcyCreditorsList obj)
+            {
+                return obj.ToString().ToLower().GetHashCode();
+            }
+
+        }
+
+        #endregion supporting classes
+    }
+}

@@ -21,7 +21,7 @@ public class CentrallyManagedPartyModel : IComparable<CentrallyManagedPartyModel
     //All other properties should return empty string if set to null
     //See findings from https://inssdigital.atlassian.net/wiki/x/BwByFwE
     
-    public string SourceRef { get => String.IsNullOrEmpty(_sourceRef) ? null : _sourceRef; set => _sourceRef = value; }
+    public string SourceRef { get => string.IsNullOrEmpty(_sourceRef) ? null : _sourceRef; set => _sourceRef = value; }
     public string Name { get => _name ?? ""; set => _name = value; }
     public string AddressLine1 { get => ""; set => _addressLine1 = value; }
     public string AddressLine2 { get => _addressLine2 ?? ""; set => _addressLine2 = value; }

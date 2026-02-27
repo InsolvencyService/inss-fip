@@ -1,5 +1,6 @@
 ﻿using INSS.FIP.Data.FCMCDataSource;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace INSS.FIP.Data
 {
@@ -17,7 +18,9 @@ namespace INSS.FIP.Data
 
         public iirwebdbContext(DbContextOptions<iirwebdbContext> options)
             : base(options)
-        { }
+        {
+        }
+
 
         public virtual DbSet<AnonCaseName> AnonCaseNames { get; set; } = null!;
         public virtual DbSet<CasesCsv> CasesCsvs { get; set; } = null!;
@@ -68,6 +71,7 @@ namespace INSS.FIP.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<AnonCaseName>(entity =>
             {
                 entity.HasNoKey();

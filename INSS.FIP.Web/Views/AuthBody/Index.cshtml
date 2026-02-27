@@ -51,6 +51,14 @@
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
+                            @Html.DisplayNameFor(model => model.AuthBodies!.First().Fax)
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Html.DisplayFor(model => authBody.Fax)
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
                             @Html.DisplayNameFor(model => model.AuthBodies!.First().Website)
                         </dt>
                         <dd class="govuk-summary-list__value">

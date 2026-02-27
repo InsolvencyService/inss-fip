@@ -12,6 +12,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DatabaseScripts\" />
+    <ProjectReference Include="..\INSS.FIP.Interfaces\INSS.FIP.Interfaces.csproj" />
   </ItemGroup>
 </Project>

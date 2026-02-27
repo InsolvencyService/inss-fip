@@ -1,20 +1,20 @@
 using INSS.FIP.Data;
+using INSS.FIP.Data.CMPDataSource;
+using INSS.FIP.Data.CMPDataSource.Interfaces;
 using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.DataAccess;
 using INSS.FIP.Functions.Helper;
 using INSS.FIP.Interfaces;
+using INSS.FIP.Interfaces.CMP;
+using INSS.FIP.Models.CentrallyManagedPartyModels;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Azure.Functions.Worker;
-
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
     .ConfigureServices(services =>
     {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.ConfigureFunctionsApplicationInsights();
-
         services.AddHttpClient();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -24,16 +24,36 @@ var host = new HostBuilder()
             return new SourceDbContext(connectionString);
         });
 
-        services.AddTransient<iirwebdbContext>(_ =>
+
+        services.AddTransient<iirwebdbContext>(sp =>
         {
             var connectionString = Environment.GetEnvironmentVariable("iirwebdbContextConnectionString");
             return new iirwebdbContext(connectionString);
         });
 
+        services.AddTransient<sourceCMPDbContext>(sp =>
+        {
+            var connectionString = Environment.GetEnvironmentVariable("sourceCMPDbContextConnectionString");
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            return new sourceCMPDbContext(connectionString, configuration);
+        });
+
+        services.AddScoped<targetCMPDbContext>(sp =>
+        {
+            var connectionString = Environment.GetEnvironmentVariable("targetCMPDbContextConnectionString");
+            return new targetCMPDbContext(connectionString);
+        });
+
+        services.AddScoped<IBankruptcyCreditorsRepository, BankruptcyCreditorsRepository>();
+
         services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
         services.AddTransient<IWebMessageProvider, WebMessageProvider>();
         services.AddTransient<IDbSync, DbSync>();
+
+        services.AddTransient<IDbSyncData<CentrallyManagedPartyModel>, DbSyncCMPData<CentrallyManagedPartyModel>>();
+        services.AddTransient<IDataSourceProvider<CentrallyManagedPartyModel>, CMPDataSourceProvider>();
+        services.AddTransient<IDataTargetProvider<CentrallyManagedPartyModel>, BankruptcyCreditorsProvider>();
     })
     .Build();
 

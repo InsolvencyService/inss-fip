@@ -24,7 +24,6 @@ public class EntityFrameworkToApiModelProfiles : Profile
         CreateMap<FipApiSearchRequestModel, IpSearchRequestModel>();
 
         CreateMap<CiIpAuthorisingBody, FipApiAuthBodyResponseModel>();
-
         CreateMap<FindIpAuthBody, FipApiAuthBodyResponseModel>();
 
         CreateMap<vw_FindIp, FindIp>()
@@ -71,5 +70,6 @@ public class EntityFrameworkToApiModelProfiles : Profile
 
         CreateMap<WebMessage, FipApiWebMessageResponseModel>()
             .ForMember(d => d.HideSearch, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.HideSearch) && s.HideSearch.Equals("Y", StringComparison.OrdinalIgnoreCase)));
+
     }
 }

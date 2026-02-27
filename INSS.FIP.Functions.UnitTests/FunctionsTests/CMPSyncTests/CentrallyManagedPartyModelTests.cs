@@ -28,12 +28,13 @@ namespace INSS.FIP.Functions.UnitTests.FunctionsTests.CMPSyncTests
 
         [Theory]
         [MemberData(nameof(GetCMPModelTestData))]
-        public void AddressLine1_should_always_return_an_emptystring(CentrallyManagedPartyModel input)
+        public void AddressLine1_should_always_return_an_emptystring(CentrallyManagedPartyModel input, CentrallyManagedPartyModel expected)
         {
             //Arrange
             //Act
             //Assert 
-            Assert.Equal("",input.AddressLine1);
+            Assert.Equal("", input.AddressLine1);
+            Assert.Equal("", expected.AddressLine1);
         }
 
         [Theory]
