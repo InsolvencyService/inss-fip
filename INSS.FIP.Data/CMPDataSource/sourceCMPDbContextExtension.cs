@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace INSS.FIP.Data.CMPDataSource
 {
-    public static class sourceCMPDbContextExtension
+    public static class SourceCMPDbContextExtension
     {
-        public static string GetViewNameWithSchema<T>(this sourceCMPDbContext context) where T : class
+        public static string GetViewNameWithSchema<T>(this SourceCMPDbContext context) where T : class
         {
             var entityType = context.Model.FindEntityType(typeof(T));
             var qualifiedViewName = entityType?.GetSchemaQualifiedViewName();

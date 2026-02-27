@@ -4,18 +4,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace INSS.FIP.Data.CMPDataSource;
 
-public class sourceCMPDbContext : DbContext, IDbContext
+public class SourceCMPDbContext : DbContext, IDbContext
 {
     private readonly string? _connectionString;
     private readonly IConfiguration _configuration;
-    public sourceCMPDbContext()
+    public SourceCMPDbContext()
     { }
-    public sourceCMPDbContext(string? connectionString, IConfiguration configuration)
+    public SourceCMPDbContext(string? connectionString, IConfiguration configuration)
     {
         _connectionString = connectionString;
         _configuration = configuration;
     }
-    public sourceCMPDbContext(DbContextOptions<sourceCMPDbContext> options)
+    public SourceCMPDbContext(DbContextOptions<SourceCMPDbContext> options)
         : base(options)
     { }
     public virtual DbSet<VwOdsInssightcmp> viewData { get; set; }
