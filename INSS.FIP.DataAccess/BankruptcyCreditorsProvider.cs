@@ -60,7 +60,7 @@ public class BankruptcyCreditorsProvider : IDataTargetProvider<CentrallyManagedP
 
         foreach(var item in data)
         {
-            if (!dict.ContainsKey($"{item.SourceRef ?? ""}_{ item.Name}"))
+            if (!dict.ContainsKey($"{item.SourceRef ?? ""}_{item.Name}"))
             {
                 dict.Add($"{item.SourceRef ?? ""}_{item.Name}", item);
             }
