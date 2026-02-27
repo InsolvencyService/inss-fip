@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using INSS.FIP.Data;
 using INSS.FIP.Data.CMPDataSource;
 using INSS.FIP.Data.CMPDataSource.Interfaces;
-using INSS.FIP.Data.FCMCDataSource;
 using INSS.FIP.Interfaces.CMP;
 using INSS.FIP.Models.CentrallyManagedPartyModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace INSS.FIP.DataAccess;
