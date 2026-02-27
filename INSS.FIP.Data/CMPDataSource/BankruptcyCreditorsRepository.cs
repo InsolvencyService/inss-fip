@@ -30,7 +30,7 @@ namespace INSS.FIP.Data.CMPDataSource
             {
                 throw new CMPSyncDatabaseException("No transaction in progress to commit.");
             }
-            await _transaction.CommitAsync(); ;
+            await _transaction.CommitAsync();
         }
 
         public async Task DeleteAllBankruptcyCreditorsListAsync()
