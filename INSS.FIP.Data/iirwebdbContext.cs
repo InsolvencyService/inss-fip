@@ -1,6 +1,5 @@
 ﻿using INSS.FIP.Data.FCMCDataSource;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace INSS.FIP.Data
 {
