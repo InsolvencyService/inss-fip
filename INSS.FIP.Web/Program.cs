@@ -21,7 +21,6 @@ builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddHttpClient();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.TryAddSingleton(builder.Configuration.GetRequiredSection(nameof(FipApiConnectorClientOptions)).Get<FipApiConnectorClientOptions>());
-builder.Services.AddTransient<IAuthBodyService, AuthBodyService>();
 builder.Services.AddTransient<IInsolvencyPractitionerService, InsolvencyPractitionerService>();
 builder.Services.AddTransient<IWebMessageService, WebMessageService>();
 

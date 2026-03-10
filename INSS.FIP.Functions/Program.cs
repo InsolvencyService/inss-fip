@@ -30,7 +30,6 @@ var host = new HostBuilder()
             return new iirwebdbContext(connectionString);
         });
 
-        services.AddTransient<IAuthBodyProvider, AuthBodyProvider>();
         services.AddTransient<IInsolvencyPractitionerProvider, InsolvencyPractitionerProvider>();
         services.AddTransient<IWebMessageProvider, WebMessageProvider>();
         services.AddTransient<IDbSync, DbSync>();
