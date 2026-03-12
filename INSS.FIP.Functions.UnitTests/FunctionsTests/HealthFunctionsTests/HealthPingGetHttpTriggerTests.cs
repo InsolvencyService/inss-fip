@@ -1,5 +1,4 @@
-﻿using INSS.FIP.Functions.Functions.AuthBody;
-using INSS.FIP.Functions.Functions.Health;
+﻿using INSS.FIP.Functions.Functions.Health;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;

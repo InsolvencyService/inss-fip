@@ -3,7 +3,6 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeItEasy;
-using INSS.FIP.Functions.Functions.AuthBody;
 using INSS.FIP.Functions.Functions.InsolvencyPractitioner;
 using INSS.FIP.Interfaces;
 using INSS.FIP.Models.RequestModels;
