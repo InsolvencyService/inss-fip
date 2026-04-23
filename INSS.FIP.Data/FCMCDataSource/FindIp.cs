@@ -8,6 +8,8 @@ namespace INSS.FIP.Data.FCMCDataSource
         public string? Forenames { get; set; }
         public string? Surname { get; set; }
         public string? RegisteredFirmName { get; set; }
+        public string? RegisteredAddressLine1 { get; set; }
+        public string? RegisteredAddressLine2 { get; set; }
         public string? RegisteredAddressLine3 { get; set; }
         public string? RegisteredAddressLine4 { get; set; }
         public string? RegisteredAddressLine5 { get; set; }
